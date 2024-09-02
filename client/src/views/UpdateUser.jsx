@@ -1,11 +1,11 @@
 import React from "react";
 
-function CreateUser () {
+function UpdateUser () {
     return (
         <div>
-            Create Users
+            Update Users
         </div>
 
     )
 }
-export default CreateUser;
+export default UpdateUser;
