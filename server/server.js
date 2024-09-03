@@ -1,22 +1,30 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const conDatabase = require('./database');
 
-const conDatabase = require('./database')
+// Local imports
+const SUPPLIER = require('./controllers/SupplierRegController');
 
 const app = express();
+
+// Middleware
 app.use(cors());
 app.use(express.json());
+
+// Routing
+app.use('/', SUPPLIER); // This should work if SUPPLIER is a router object
+
+// Connect to the database
 conDatabase()
-.then(data =>{
-    console.log('Database Connected...');
-    const server = app.listen(3001, () =>{
-        console.log('Server Started at 3001');
+    .then(() => {
+        console.log('Database Connected...');
+        const server = app.listen(3001, () => {
+            console.log('Server Started at port 3001');
+        }).on('error', err => {
+            console.log('Server not started', err);
+        });
 
-    }).on('error', err => {
-        console.log('Server not started', err);
-    });
-
-    module.exports = server;
-})
-.catch(err => console.log('Database connection error:', err));
+        module.exports = server;
+    })
+    .catch(err => console.log('Database connection error:', err));
