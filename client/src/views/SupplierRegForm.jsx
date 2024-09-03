@@ -3,7 +3,7 @@ import bgimg from '../Images/background-image.png';
 import Navigation from './Components/Navigation';
 import Footer from './Components/Footer';
 
-function Home() {
+function Supplier() {
   return (
     <div className='min-h-screen'>
 
@@ -49,4 +49,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Supplier;
