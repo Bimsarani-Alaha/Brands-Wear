@@ -20,7 +20,7 @@ function Login() {
       console.log(password)
       if (response.status === 200) {
         // Navigate to the admin page on successful login
-        navigate('/admin'); // Adjust the path as needed
+        navigate('/AdminPage'); // Adjust the path as needed
       } else {
         // Handle other statuses if needed
         setErrorMessage('Login failed. Please check your email and password.');

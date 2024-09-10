@@ -1,6 +1,7 @@
 import React from 'react';
 import AdminNavigation from './Components/AdminNavigation';
 import Footer from './Components/Footer';
+import { Link } from 'react-router-dom';
 
 function AdminProduct() {
   return (
@@ -54,9 +55,9 @@ function AdminProduct() {
 
             {/* Add Item Button */}
             <div className="text-center">
-              <button className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700">
+              <Link to ='/AdminAdditem'><button className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700">
                 Add Item
-              </button>
+              </button></Link>
             </div>
           </div>
         </div>
