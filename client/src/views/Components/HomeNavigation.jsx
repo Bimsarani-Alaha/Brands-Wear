@@ -2,6 +2,7 @@ import React from 'react';
 import Logo from '../../Images/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 function Navigation() {
   return (
@@ -17,7 +18,7 @@ function Navigation() {
         {/* Right side: User Icon */}
         <div className='flex items-center space-x-4 pr-6'>
           <FontAwesomeIcon icon={faUser} />
-          <button>login</button>
+          <Link to ='/Login'><button>login</button></Link>
         </div>
       </div>
     </div>

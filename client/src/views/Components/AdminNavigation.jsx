@@ -2,6 +2,7 @@ import React from 'react';
 import Logo from '../../Images/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 function Navigation() {
   return (
@@ -15,7 +16,7 @@ function Navigation() {
 
         {/* Center: Navigation Buttons */}
         <div className='flex items-center space-x-2'>
-          <button>Product category</button>
+          <Link to ='/Adminproduct'><button>Product category</button></Link>
           <span>&nbsp;|&nbsp;</span>
           <button>Inventory</button>
           <span>&nbsp;|&nbsp;</span>

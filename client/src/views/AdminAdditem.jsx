@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
+import axios from 'axios'; // Import Axios
 import AdminNavigation from './Components/AdminNavigation';
 import Footer from './Components/Footer';
+import { ToastContainer, toast } from 'react-toastify'; // Import Toast components
+import 'react-toastify/dist/ReactToastify.css'; // Import Toast CSS
 
 function AdminAdditem() {
   const [quantity, setQuantity] = useState(3);
   const [category, setCategory] = useState("Long Frocks");
   const [size, setSize] = useState("M");
   const [availability, setAvailability] = useState("Available");
-  
+  const [price, setPrice] = useState(""); // Add state for price
+
   const handleIncrease = () => {
     setQuantity(prev => prev + 1);
   };
@@ -15,6 +19,28 @@ function AdminAdditem() {
   const handleDecrease = () => {
     if (quantity > 1) {
       setQuantity(prev => prev - 1);
+    }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    
+    try {
+      const response = await axios.post('http://localhost:3001/AddItem', {
+        category,
+        size,
+        price,
+        quantity,
+        availability
+      });
+
+      // Handle success (e.g., show a success message or redirect)
+      toast.success('Item added successfully!');
+      console.log('Item added successfully:', response.data);
+    } catch (error) {
+      // Handle error (e.g., show an error message)
+      toast.error('There was an error adding the item.');
+      toast.error('There was an error adding the item:', error);
     }
   };
 
@@ -29,7 +55,7 @@ function AdminAdditem() {
           <h2 className="text-3xl font-semibold text-gray-700 mb-6">Add New Item</h2>
           
           {/* Form Section */}
-          <div className="flex justify-between items-center mb-6">
+          <form onSubmit={handleSubmit} className="flex justify-between items-center mb-6">
             {/* Image Placeholder */}
             <div className="w-1/3">
               <img src="/path/to/dress/image.png" alt="Dress" className="rounded-lg" />
@@ -79,8 +105,10 @@ function AdminAdditem() {
                 <input 
                   type="text" 
                   id="price" 
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600" 
-                  placeholder="3000.00/=" 
+                  placeholder="3000.00/="
                 />
               </div>
 
@@ -89,6 +117,7 @@ function AdminAdditem() {
                 <label className="block text-gray-600 mb-2" htmlFor="quantity">Quantity</label>
                 <div className="flex items-center space-x-2">
                   <button 
+                    type="button"
                     className="bg-gray-300 text-gray-700 rounded-full px-3 py-1 font-semibold hover:bg-gray-400" 
                     onClick={handleDecrease}
                   >
@@ -102,6 +131,7 @@ function AdminAdditem() {
                     className="w-12 text-center border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600" 
                   />
                   <button 
+                    type="button"
                     className="bg-gray-300 text-gray-700 rounded-full px-3 py-1 font-semibold hover:bg-gray-400" 
                     onClick={handleIncrease}
                   >
@@ -126,17 +156,23 @@ function AdminAdditem() {
 
               {/* Add Item Button */}
               <div className="mt-6">
-                <button className="w-full bg-purple-600 text-white p-2 rounded hover:bg-purple-700 transition-colors duration-200">
+                <button 
+                  type="submit"
+                  className="w-full bg-purple-600 text-white p-2 rounded hover:bg-purple-700 transition-colors duration-200"
+                >
                   Add Item
                 </button>
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
 
       {/* Footer */}
       <Footer />
+
+      {/* Toast Container */}
+      <ToastContainer />
     </div>
   );
 }
