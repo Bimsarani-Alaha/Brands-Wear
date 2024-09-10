@@ -2,6 +2,7 @@ import React from 'react';
 import Logo from '../../Images/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 function Navigation() {
   return (

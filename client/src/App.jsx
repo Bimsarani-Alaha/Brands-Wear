@@ -8,6 +8,7 @@ import UpdateUser from './views/UpdateUser';
 import Login from './views/Login';
 import Home from './views/Home';
 
+import AdminPage from './views/AdminPage';
 import AdminAdditem from './views/AdminAdditem';
 import Adminproduct from './views/Adminproduct';
 
@@ -20,7 +21,7 @@ function App() {
     <Router>
       <Routes>
         {/* User Management Routes */}
-        <Route path="/" element={<Users />} />
+        {/* <Route path="/" element={<Users />} /> */}
         <Route path="/update" element={<UpdateUser />} />
 
         {/* Supplier Management Routes */}
@@ -32,10 +33,10 @@ function App() {
 
         {/* Other Routes */}
         <Route path="/Login" element={<Login />} />
-        <Route path="/Home" element={<Home />} />
+        <Route path="/" element={<Home />} />
         <Route path="/AdminAdditem" element={<AdminAdditem />} />
         <Route path="/Adminproduct" element={<Adminproduct/>} />
-        
+        <Route path="/AdminPage" element={<AdminPage/>} />
 
         <Route path="/UpdateItem" element={<UpdateItem />} />
 
