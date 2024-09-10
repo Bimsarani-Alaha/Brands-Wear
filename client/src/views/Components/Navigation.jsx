@@ -7,14 +7,14 @@ function Navigation() {
   return (
     <div>
       {/* Navigation Bar */}
-      <div className='flex justify-between items-center h-auto bg-[#D9D9D9]'>
+      <div className='flex justify-between items-center h-auto bg-[#D9D9D9] pl-40 pr-40'>
         {/* Left side: Logo */}
         <div className='flex items-center'>
-          <img src={Logo} alt="Logo" className='h-40' />
+          <img src={Logo} alt="Logo" className='h-44' />
         </div>
 
         {/* Center: Navigation Buttons */}
-        <div className='flex items-center space-x-2'>
+        <div className='flex items-center space-x-2 text-2xl'>
           <button>Home</button>
           <span>&nbsp;|&nbsp;</span>
           <button>Order Items</button>

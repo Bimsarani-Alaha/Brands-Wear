@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios'; // Import Axios
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 import bgimg from '../Images/background-image.png';
-import Navigation from './Components/Navigation';
+import HomeNavigation from './Components/HomeNavigation';
 import Footer from './Components/Footer';
 
 function SupplierRegForm() {
@@ -61,93 +61,122 @@ function SupplierRegForm() {
   };
 
   return (
-    <div className='min-h-screen'>
-      <Navigation />
+    <div>
+      <HomeNavigation />
+      <div className="min-h-screen">
+        <div
+          className="flex justify-center bg-cover bg-center h-[80rem] "
+          style={{
+            backgroundImage: `url(${bgimg})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        >
+          <div className="bg-white bg-opacity-70 p-8 rounded-lg shadow-lg w-[40rem] h-[60rem] mt-20 border border-white">
+            <h2 className="text-center text-black text-3xl mb-6 mt-5 font-bold">
+              Welcome To Supplier Registration
+            </h2>
+            <form className="space-y-4" onSubmit={handleSubmit}>
+              <div>
+                <label className="block text-black text-xl mb-5" htmlFor="company">
+                  Supplier Company Name
+                </label>
+                <input
+                  className={`w-full p-3 rounded border transition-all duration-300 ${errors.company ? 'bg-red-100' : 'bg-gray-200'} focus:bg-gray-300 hover:border-black`}
+                  type="text"
+                  id="company"
+                  placeholder="Enter your company name"
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
+                />
+                {errors.company && <p className="text-red-500 text-xs">{errors.company}</p>}
+              </div>
+              <div>
+                <label className="block text-black text-xl mb-5" htmlFor="firstname">
+                  First Name
+                </label>
+                <input
+                  className={`w-full p-3 rounded border transition-all duration-300 ${errors.firstname ? 'bg-red-100' : 'bg-gray-200'} focus:bg-gray-300 hover:border-black`}
+                  type="text"
+                  id="firstname"
+                  placeholder="Enter your first name"
+                  value={firstname}
+                  onChange={(e) => setFirstname(e.target.value)}
+                />
+                {errors.firstname && <p className="text-red-500 text-xs">{errors.firstname}</p>}
+              </div>
+              <div>
+                <label className="block text-black text-xl mb-5" htmlFor="lastname">
+                  Last Name
+                </label>
+                <input
+                  className={`w-full p-3 rounded border transition-all duration-300 ${errors.lastname ? 'bg-red-100' : 'bg-gray-200'} focus:bg-gray-300 hover:border-black`}
+                  type="text"
+                  id="lastname"
+                  placeholder="Enter your last name"
+                  value={lastname}
+                  onChange={(e) => setLastname(e.target.value)}
+                />
+                {errors.lastname && <p className="text-red-500 text-xs">{errors.lastname}</p>}
+              </div>
+              <div>
+                <label className="block text-black text-xl mb-5" htmlFor="email">
+                  Email
+                </label>
+                <input
+                  className={` w-full p-3 rounded border transition-all duration-300 hover:border-black ${errors.email ? 'bg-red-100' : 'bg-gray-200'} focus:bg-gray-300 hover:border-black`}
+                  type="email"
+                  id="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
+              </div>
+              <div>
+                <label className="block text-black text-xl mb-5" htmlFor="contact">
+                  Contact Number
+                </label>
+                <input
+                  className={`w-full p-3 rounded border transition-all duration-300 ${errors.contact ? 'bg-red-100' : 'bg-gray-200'} focus:bg-gray-300 hover:border-black`}
+                  type="text"
+                  id="contact"
+                  placeholder="Enter your contact number"
+                  value={contact}
+                  onChange={(e) => setContact(e.target.value)}
+                />
+                {errors.contact && <p className="text-red-500 text-xs">{errors.contact}</p>}
+              </div>
+              <div>
+                <label className="block text-black text-xl mb-5" htmlFor="address">
+                  Address
+                </label>
+                <input
+                  className={`w-full mb-10 p-3 rounded border transition-all duration-300 ${errors.address ? 'bg-red-100' : 'bg-gray-200'} focus:bg-gray-300 hover:border-black`}
+                  type="text"
+                  id="address"
+                  placeholder="Enter your address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+                {errors.address && <p className="text-red-500 text-xs">{errors.address}</p>}
+              </div>
+              <button
+                className="w-[20rem] bg-purple-500 text-black hover:bg-purple-600 hover:text-white py-3 rounded-lg text-center font-semibold transition duration-300 ease-in-out transform hover:scale-105"
+                type="submit"
+              >
+                Sign up
+              </button>
 
-      <div className="flex justify-center items-center bg-cover bg-center h-screen" style={{ backgroundImage: `url(${bgimg})` }}>
-        <div className="bg-gray-900 bg-opacity-70 p-8 rounded-lg shadow-lg max-w-md w-full">
-          <h2 className="text-center text-white text-2xl mb-6 font-bold">Welcome To Supplier Registration</h2>
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            <div>
-              <label className="block text-white text-sm mb-2" htmlFor="company">Supplier Company Name</label>
-              <input
-                className={`w-full p-3 rounded ${errors.company ? 'bg-red-100' : 'bg-gray-200'} focus:bg-gray-300`}
-                type="text"
-                id="company"
-                placeholder="Enter your company name"
-                value={company}
-                onChange={(e) => setCompany(e.target.value)}
-              />
-              {errors.company && <p className="text-red-500 text-xs">{errors.company}</p>}
-            </div>
-            <div>
-              <label className="block text-white text-sm mb-2" htmlFor="firstname">First Name</label>
-              <input
-                className={`w-full p-3 rounded ${errors.firstname ? 'bg-red-100' : 'bg-gray-200'} focus:bg-gray-300`}
-                type="text"
-                id="firstname"
-                placeholder="Enter your first name"
-                value={firstname}
-                onChange={(e) => setFirstname(e.target.value)}
-              />
-              {errors.firstname && <p className="text-red-500 text-xs">{errors.firstname}</p>}
-            </div>
-            <div>
-              <label className="block text-white text-sm mb-2" htmlFor="lastname">Last Name</label>
-              <input
-                className={`w-full p-3 rounded ${errors.lastname ? 'bg-red-100' : 'bg-gray-200'} focus:bg-gray-300`}
-                type="text"
-                id="lastname"
-                placeholder="Enter your last name"
-                value={lastname}
-                onChange={(e) => setLastname(e.target.value)}
-              />
-              {errors.lastname && <p className="text-red-500 text-xs">{errors.lastname}</p>}
-            </div>
-            <div>
-              <label className="block text-white text-sm mb-2" htmlFor="email">Email</label>
-              <input
-                className={`w-full p-3 rounded ${errors.email ? 'bg-red-100' : 'bg-gray-200'} focus:bg-gray-300`}
-                type="email"
-                id="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
-            </div>
-            <div>
-              <label className="block text-white text-sm mb-2" htmlFor="contact">Contact Number</label>
-              <input
-                className={`w-full p-3 rounded ${errors.contact ? 'bg-red-100' : 'bg-gray-200'} focus:bg-gray-300`}
-                type="text"
-                id="contact"
-                placeholder="Enter your contact number"
-                value={contact}
-                onChange={(e) => setContact(e.target.value)}
-              />
-              {errors.contact && <p className="text-red-500 text-xs">{errors.contact}</p>}
-            </div>
-            <div>
-              <label className="block text-white text-sm mb-2" htmlFor="address">Address</label>
-              <input
-                className={`w-full p-3 rounded ${errors.address ? 'bg-red-100' : 'bg-gray-200'} focus:bg-gray-300`}
-                type="text"
-                id="address"
-                placeholder="Enter your address"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-              />
-              {errors.address && <p className="text-red-500 text-xs">{errors.address}</p>}
-            </div>
-            <button className="w-full bg-purple-500 hover:bg-purple-600 text-white py-3 rounded-lg text-center font-semibold" type="submit">Sign up</button>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
-
       <Footer />
     </div>
   );
+  
+  
 }
 
 export default SupplierRegForm;

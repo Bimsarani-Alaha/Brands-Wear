@@ -5,7 +5,7 @@ function Footer() {
     <div>
       {/* Footer */}
       <footer className="bg-gray-200 p-6">
-        <div className="max-w-screen-xl mx-auto flex justify-between text-sm text-gray-600">
+        <div className="max-w-screen-xl mx-auto flex justify-between text-sm text-gray-600 mt-20">
           <div className="space-y-2">
             <h3 className="font-bold text-gray-800">About Us</h3>
             <p>BRANDS WEAR offers trendy, affordable fashion with a focus on quality and exceptional customer service. Discover your style with us!</p>
