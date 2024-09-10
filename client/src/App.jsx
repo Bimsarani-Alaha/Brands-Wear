@@ -6,7 +6,8 @@ import Users from './views/Users';
 import UpdateUser from './views/UpdateUser';
 import Login from './views/Login';
 import Home from './views/Home';
-
+import AdminAdditem from './views/AdminAdditem';
+import Adminproduct from './views/Adminproduct';
 
 function App() {
   return (
@@ -17,6 +18,9 @@ function App() {
         <Route path="/SupplierRegForm" element={<SupplierRegForm />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Home" element={<Home />} />
+        <Route path="/AdminAdditem" element={<AdminAdditem />} />
+        <Route path="/Adminproduct" element={<Adminproduct/>} />
+        
       </Routes>
     </BrowserRouter>
   );
