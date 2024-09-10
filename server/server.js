@@ -5,7 +5,13 @@ const conDatabase = require('./database');
 
 // Local imports
 const SUPPLIER = require('./controllers/SupplierRegController');
+
+const ADMIN = require('./controllers/AdminController');
+
+
+
 const PRODUCT = require('./controllers/SupplierProductController');
+
 const app = express();
 
 // Middleware
@@ -15,7 +21,11 @@ app.use(express.json());
 // Routing
 
 app.use('/', SUPPLIER); // This should work if SUPPLIER is a router object
+
+app.use('/', ADMIN);
+
 app.use('/', PRODUCT);
+
 
 // Connect to the database
 conDatabase()
