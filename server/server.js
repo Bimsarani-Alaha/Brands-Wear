@@ -1,3 +1,4 @@
+//server,controllers connection route- handle controllers
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -14,7 +15,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Routing
+// Routing-using API(Application programming interface)
 app.use('/', SUPPLIER); // This should work if SUPPLIER is a router object
 app.use('/', ADMIN);
 app.use('/', PRODUCT);

@@ -2,8 +2,11 @@ import React from 'react';
 import HomeNavigation from './Components/HomeNavigation';
 import bgimg from '../Images/homebg.jpeg';
 import Footer from './Components/Footer';
+
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowAltCircleRight, faArrowRight, faLeftRight, faShop } from '@fortawesome/free-solid-svg-icons';
+
 
 function Home() {
   return (

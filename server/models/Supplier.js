@@ -8,6 +8,7 @@ const SupplierSchema = new mongoose.Schema({
         email: String,
         contact: Number,
         address: String,
+        password:String,
 })
 
 const SupplierModel = mongoose.model("Suppliers",SupplierSchema)
