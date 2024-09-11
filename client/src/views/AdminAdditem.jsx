@@ -6,7 +6,7 @@ import { ToastContainer, toast } from 'react-toastify'; // Import Toast componen
 import 'react-toastify/dist/ReactToastify.css'; // Import Toast CSS
 
 function AdminAdditem() {
-  const [quantity, setQuantity] = useState(3);
+  const [quantity, setQuantity] = useState(1);
   const [category, setCategory] = useState("Long Frocks");
   const [size, setSize] = useState("M");
   const [availability, setAvailability] = useState("Available");
@@ -40,7 +40,7 @@ function AdminAdditem() {
     } catch (error) {
       // Handle error (e.g., show an error message)
       toast.error('There was an error adding the item.');
-      toast.error('There was an error adding the item:', error);
+      console.error('There was an error adding the item:', error);
     }
   };
 
@@ -51,26 +51,19 @@ function AdminAdditem() {
 
       {/* Main Content */}
       <div className="flex-grow flex justify-center items-center">
-        <div className="bg-white shadow-lg rounded-lg p-8 max-w-2xl w-full">
-          <h2 className="text-3xl font-semibold text-gray-700 mb-6">Add New Item</h2>
+        <div className="bg-white shadow-lg rounded-lg p-8 max-w-2xl w-full mt-10 mb-20">
+          <h2 className="text-3xl font-semibold text-gray-700 mb-6 text-center">Add New Item</h2>
           
           {/* Form Section */}
-          <form onSubmit={handleSubmit} className="flex justify-between items-center mb-6">
-            {/* Image Placeholder */}
-            <div className="w-1/3">
-              <img src="/path/to/dress/image.png" alt="Dress" className="rounded-lg" />
-            </div>
-            
-            {/* Form Fields */}
-            <div className="w-2/3 space-y-4">
-              {/* Category Dropdown */}
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-4">
               <div>
                 <label className="block text-gray-600 mb-2" htmlFor="category">Category</label>
                 <select 
                   id="category" 
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
+                  className="w-40 p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
                 >
                   <option>Long Frocks</option>
                   <option>Short Frocks</option>
@@ -82,18 +75,21 @@ function AdminAdditem() {
               {/* Size Selection */}
               <div>
                 <label className="block text-gray-600 mb-2">Size</label>
-                <div className="flex space-x-4">
+                <div className="flex space-x-2 justify-center">
                   {["S", "M", "L", "XL"].map((sz) => (
-                    <label className="inline-flex items-center" key={sz}>
+                    <label 
+                      key={sz} 
+                      className={`flex items-center justify-center cursor-pointer ${size === sz ? 'bg-purple-500 text-white' : 'bg-gray-200 text-gray-700'} py-2 px-4 border rounded transition-colors duration-300 ease-in-out`}
+                    >
                       <input 
                         type="radio" 
                         name="size" 
                         value={sz} 
                         checked={size === sz}
                         onChange={() => setSize(sz)}
-                        className="form-radio text-purple-600"
+                        className="hidden"
                       />
-                      <span className="ml-2">{sz}</span>
+                      <span>{sz}</span>
                     </label>
                   ))}
                 </div>
@@ -107,15 +103,14 @@ function AdminAdditem() {
                   id="price" 
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600" 
-                  placeholder="3000.00/="
+                  className="w-[20rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600" 
                 />
               </div>
 
               {/* Quantity Adjuster */}
               <div>
                 <label className="block text-gray-600 mb-2" htmlFor="quantity">Quantity</label>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 justify-center">
                   <button 
                     type="button"
                     className="bg-gray-300 text-gray-700 rounded-full px-3 py-1 font-semibold hover:bg-gray-400" 
@@ -141,28 +136,32 @@ function AdminAdditem() {
               </div>
 
               {/* Availability Dropdown */}
-              <div>
-                <label className="block text-gray-600 mb-2" htmlFor="availability">Availability</label>
-                <select 
-                  id="availability" 
-                  value={availability} 
-                  onChange={(e) => setAvailability(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
-                >
-                  <option>Available</option>
-                  <option>Unavailable</option>
-                </select>
-              </div>
+              <div className="relative">
+              <label className="block text-gray-600 mb-2" htmlFor="availability">Availability</label>
+              <select 
+                id="availability" 
+                value={availability} 
+                onChange={(e) => setAvailability(e.target.value)}
+                className="w-44 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600 pl-10"
+              >
+                <option>Available</option>
+                <option>Unavailable</option>
+              </select>
+              <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <i className="fas fa-chevron-down text-gray-500"></i>
+              </span>
+            </div>
 
-              {/* Add Item Button */}
-              <div className="mt-6">
-                <button 
-                  type="submit"
-                  className="w-full bg-purple-600 text-white p-2 rounded hover:bg-purple-700 transition-colors duration-200"
-                >
-                  Add Item
-                </button>
-              </div>
+            </div>
+
+            {/* Add Item Button */}
+            <div className="text-center">
+              <button 
+                type="submit"
+                className="w-64 h-12 mt-5 mb-6 bg-purple-600 text-white text-xl font-thin p-2 rounded-xl hover:bg-purple-200 hover:text-black transition-colors duration-200"
+              >
+                Add Item
+              </button>
             </div>
           </form>
         </div>
