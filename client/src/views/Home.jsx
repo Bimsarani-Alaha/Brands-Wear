@@ -1,12 +1,14 @@
 import React from 'react';
 import HomeNavigation from './Components/HomeNavigation';
-import bgimg from '../Images/homeback.png';
+import bgimg from '../Images/homebg.jpeg';
 import Footer from './Components/Footer';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowAltCircleRight, faArrowRight, faLeftRight, faShop } from '@fortawesome/free-solid-svg-icons';
 
 function Home() {
   return (
     <div className='min-h-screen flex flex-col'>
-      <HomeNavigation/>
+      <HomeNavigation />
       <div
         className="flex-grow flex items-center justify-center relative"
         style={{
@@ -17,18 +19,28 @@ function Home() {
           minHeight: 'calc(100vh - 5rem)', // adjust based on HomeNavigation height
         }}
       >
-        <div className='text-center text-white space-y-4'>
-          <h1 className='text-4xl font-bold text-black'>Welcome to BRANDS WEAR</h1>
-          <p className='text-2xl text-black'>Your Ultimate Destination for Trendy and Affordable Fashion</p>
+        {/* Background Overlay */}
+        <div className="absolute inset-0 bg-black opacity-40"></div>
+        <div className='relative text-center text-white space-y-6'>
+          <h1 className='text-5xl font-thin mb-4'>Welcome to BRANDS WEAR</h1>
+          <p className='text-xl md:text-2xl font-light'>Your Ultimate Destination for Trendy and Affordable Fashion</p>
+          <button className='mt-6 px-6 py-3 text-xl  text-white font-semibold transition duration-300'>
+            Shop Now
+            <FontAwesomeIcon icon={faArrowRight} className="mx-3" />
+          </button>
         </div>
         {/* Supplier Button Positioned in the Right Corner */}
-        <div className="absolute bottom-10 right-10 text-white p-4 rounded shadow">
-          If you’re a supplier <button className="ml-2 p-2 text-white">Click here</button>
+        <div className="absolute bottom-10 right-10 text-white p-4 rounded-lg shadow-lg flex items-center">
+          <span className="mr-2">If you’re a supplier</span>
+          <button className="px-4 py-2  text-white font-semibold rounded-lg shadow transition duration-300">
+            Click here
+          </button>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
+  
 }
 
 export default Home;

@@ -8,25 +8,25 @@ function Navigation() {
   return (
     <div>
       {/* Navigation Bar */}
-      <div className='flex justify-between items-center h-auto bg-[#D9D9D9]'>
+      <div className='flex justify-between items-center h-auto bg-[#D9D9D9] pl-40 pr-40'>
         {/* Left side: Logo */}
         <div className='flex items-center'>
-          <img src={Logo} alt="Logo" className='h-40' />
+          <img src={Logo} alt="Logo" className='h-16 m-5' />
         </div>
 
         {/* Center: Navigation Buttons */}
-        <div className='flex items-center space-x-2'>
-          <Link to ='/Adminproduct'><button>Product category</button></Link>
+        <div className='flex items-center space-x-2 text-sm'>
+          <Link to ='/Adminproduct'><button className='transition duration-300 ease-in-out transform hover:scale-105'>Product category</button></Link>
           <span>&nbsp;|&nbsp;</span>
-          <button>Inventory</button>
+          <button className='transition duration-300 ease-in-out transform hover:scale-105'>Inventory</button>
           <span>&nbsp;|&nbsp;</span>
-          <button>Supplier Products</button>
+          <button className='transition duration-300 ease-in-out transform hover:scale-105'>Supplier Products</button>
         </div>
         
         {/* Right side: User Icon */}
         <div className='flex items-center space-x-4 pr-6'>
-          <FontAwesomeIcon icon={faUser} />
-          <span>Welcom  Admin</span>
+          <FontAwesomeIcon icon={faUser} className='text-2xl' />
+          <span>Welcome  Admin</span>
         </div>
       </div>
     </div>

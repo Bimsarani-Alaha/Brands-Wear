@@ -47,21 +47,10 @@ function Supplier() {
       <Navigation />
       
       <div className="flex-grow flex items-center justify-center">
-        <div className="flex flex-col md:flex-row bg-white p-6 shadow-lg rounded-md w-full max-w-4xl">
+        <div className="bg-white p-6 shadow-lg rounded-md w-full max-w-4xl mt-14 mb-44">
+          <h2 className="text-2xl font-bold mb-6 text-center">Update Item</h2>
           
-          {/* Left - Image */}
-          <div className="w-full md:w-1/2 flex items-center justify-center">
-            <img 
-              src="/path/to/your/image.jpg" 
-              alt="Product" 
-              className="object-contain h-64 w-64"
-            />
-          </div>
-
-          {/* Right - Form */}
-          <div className="w-full md:w-1/2 p-6">
-            <h2 className="text-2xl font-bold mb-6">Update Item</h2>
-            
+          <form onSubmit={handleSubmit} className="space-y-6">
             {/* Category */}
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="Category">
@@ -71,7 +60,7 @@ function Supplier() {
                 name="Category" 
                 value={formData.Category} 
                 onChange={handleChange}
-                className="w-full p-2 border rounded"
+                className="w-40 p-2 border rounded"
               >
                 <option value="Long Frocks">Long Frocks</option>
                 <option value="Short Frocks">Short Frocks</option>
@@ -83,7 +72,7 @@ function Supplier() {
             {/* Size Options */}
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">Size</label>
-              <div className="flex space-x-2">
+              <div className="flex justify-center space-x-2">
                 {['S', 'M', 'L', 'XL'].map((size) => (
                   <button 
                     key={size} 
@@ -109,7 +98,7 @@ function Supplier() {
                 name="Prize"
                 value={formData.Prize}
                 onChange={handleChange}
-                className="w-full p-2 border rounded"
+                className="w-[20rem] p-2 border rounded"
                 disabled
               />
             </div>
@@ -117,11 +106,11 @@ function Supplier() {
             {/* Quantity */}
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">Quantity</label>
-              <div className="flex items-center space-x-2">
+              <div className="flex justify-center items-center space-x-2">
                 <button
                   type="button"
                   onClick={() => handleQuantityChange(-1)}
-                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded"
+                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded-full"
                 >
                   -
                 </button>
@@ -129,22 +118,23 @@ function Supplier() {
                 <button
                   type="button"
                   onClick={() => handleQuantityChange(1)}
-                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded"
+                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded-full"
                 >
                   +
                 </button>
               </div>
             </div>
 
-            {/* Submit Button */}
-            <button
+            <div>
+              <button
               type="submit"
-              onClick={handleSubmit}
-              className="w-full bg-purple-600 text-white p-2 rounded hover:bg-purple-700"
-            >
+              className="w-64 h-12 mt-5 mb-14 bg-purple-600 text-white text-xl font-thin p-2 rounded-xl hover:bg-purple-200 hover:text-black transition-colors duration-200"
+              >
               Update item
             </button>
-          </div>
+            </div>
+            
+          </form>
         </div>
       </div>
 
