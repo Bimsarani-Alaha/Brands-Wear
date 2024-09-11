@@ -35,9 +35,9 @@ function Home() {
         {/* Supplier Button Positioned in the Right Corner */}
         <div className="absolute bottom-10 right-10 text-white p-4 rounded-lg shadow-lg flex items-center">
           <span className="mr-2">If you’re a supplier</span>
-          <button className="px-4 py-2  text-white font-semibold rounded-lg shadow transition duration-300">
+          <Link to ='/SupplierRegForm'><button className="px-4 py-2  text-white font-semibold rounded-lg shadow transition duration-300">
             Click here
-          </button>
+          </button></Link>
         </div>
       </div>
       <Footer />
