@@ -35,44 +35,61 @@ function Login() {
   };
 
   return (
-    <div className='min-h-screen'>
+    <div className='min-h-screen bg-white'>
      <HomeNavigation/>
-      <div className="flex-grow flex justify-center items-center bg-cover bg-center" style={{ backgroundImage: `url(${bgimg})` }}>
-        <div className="bg-gray-900 bg-opacity-70 p-8 rounded-lg mt-[35rem] mb-[35rem] shadow-lg max-w-md w-full">
-          <h2 className="text-center text-white text-2xl mb-6 font-bold">GREAT TO HAVE YOU BACK</h2>
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            <div>
-              <label className="block text-white text-sm mb-2" htmlFor="email">Email Address</label>
-              <input 
-                className="w-full p-3 rounded bg-gray-200 focus:bg-gray-300" 
-                type="email" 
-                id="email" 
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required 
-              />
-            </div>
-            <div>
-              <label className="block text-white text-sm mb-2" htmlFor="password">Password</label>
-              <input 
-                className="w-full p-3 rounded bg-gray-200 focus:bg-gray-300" 
-                type="password" 
-                id="password" 
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required 
-              />
-            </div>
-            <button className="w-full bg-purple-500 hover:bg-purple-600 text-white py-3 rounded-lg text-center font-semibold" type="submit">
-              Log in
-            </button>
-          </form>
-          {errorMessage && <p className="text-red-500 text-center mt-4">{errorMessage}</p>}
-          <div className="text-center mt-4 text-gray-300">
-            <a href="#" className="underline">If you're not a customer? Click here</a>
+      <div className="flex-grow flex justify-center items-center " >
+        <div className="bg-[#D9D9D9] bg-opacity-70 p-8 rounded-lg mt-10 mb-20 shadow-lg w-[80rem] ">
+
+          <div className="flex h-screen ">
+          {/* Left Section: Background Image */}
+          <div 
+            className="w-1/2 bg-cover bg-center"
+            style={{ backgroundImage: `url(${bgimg})` }}
+          >
           </div>
+
+          {/* Right Section: Login Form */}
+          <div className="w-1/2 flex items-center justify-center">
+            <div className="p-8 bg-opacity-50">
+              <h2 className="text-center text-black text-4xl mb-20 font-thin">GREAT TO HAVE YOU BACK</h2>
+              <form className="space-y-4" onSubmit={handleSubmit}>
+              <div>
+                <label className="block text-black text-xl mb-4" htmlFor="email">Email Address</label>
+                <input 
+                  className="w-full p-3 rounded-xl bg-gray-200 focus:bg-gray-300 border border-transparent hover:border-black transition duration-300 ease-in-out transform hover:scale-105" 
+                  type="email" 
+                  id="email" 
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required 
+                />
+              </div>
+              <div>
+                <label className="block text-black text-xl mb-4" htmlFor="password">Password</label>
+                <input 
+                  className="w-full mb-5 p-3 rounded-xl bg-gray-200 focus:bg-gray-300 border border-transparent hover:border-black transition duration-300 ease-in-out transform hover:scale-105" 
+                  type="password" 
+                  id="password" 
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required 
+                />
+              </div>
+
+                <button className="w-[20rem] bg-purple-400 hover:bg-purple-700 text-black hover:text-white py-3 rounded-lg text-center font-semibold transition duration-300 ease-in-out transform hover:scale-105" type="submit">
+                  Log in
+                </button>
+              </form>
+              {errorMessage && <p className="text-red-500 text-center mt-4">{errorMessage}</p>}
+              <div className="text-center mt-4 text-gray-700">
+                <a href="#" className="underline mt-5">If you're not a customer? Click here</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
         </div>
       </div>
       <Footer/>
