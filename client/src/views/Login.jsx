@@ -15,12 +15,14 @@ function Login() {
     e.preventDefault();
     
     try {
-      console.log(password)
       const response = await axios.post('http://localhost:3001/login', { email, password });
-      console.log(password)
+      
       if (response.status === 200) {
         // Navigate to the admin page on successful login
         navigate('/AdminPage'); // Adjust the path as needed
+      } else if (response.status === 202) {
+        // Navigate to the supplier registration form page
+        navigate('/supplierProduct'); // Adjust the path as needed
       } else {
         // Handle other statuses if needed
         setErrorMessage('Login failed. Please check your email and password.');

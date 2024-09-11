@@ -12,19 +12,24 @@ function SupplierRegForm() {
   const [email, setEmail] = useState('');
   const [contact, setContact] = useState('');
   const [address, setAddress] = useState('');
+  const [password, setPassword] = useState(''); // Added password state
   const [errors, setErrors] = useState({}); // State to store validation errors
 
   const navigate = useNavigate(); // Create a navigate function
 
   const validateForm = () => {
     const newErrors = {};
+    const phoneRegex = /^\d{10}$/; // Regular expression to match exactly 10 digits
+
     if (!company) newErrors.company = 'Company name is required.';
     if (!firstname) newErrors.firstname = 'First name is required.';
     if (!lastname) newErrors.lastname = 'Last name is required.';
     if (!email) newErrors.email = 'Email is required.';
     if (!contact) newErrors.contact = 'Contact number is required.';
+    else if (!phoneRegex.test(contact)) newErrors.contact = 'Contact number must be exactly 10 digits.'; // Added validation for 10 digits
     if (!address) newErrors.address = 'Address is required.';
-    
+    if (!password) newErrors.password = 'Password is required.';
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Return true if there are no errors
   };
@@ -40,7 +45,8 @@ function SupplierRegForm() {
         lastname,
         email,
         contact,
-        address
+        address,
+        password // Include password in the POST request
       });
 
       console.log('Supplier registered:', response.data);
@@ -52,27 +58,29 @@ function SupplierRegForm() {
       setEmail('');
       setContact('');
       setAddress('');
+      setPassword(''); // Clear password field
 
       // Navigate to the supplier product page after successful submission
-      navigate('/supplierProduct');
+      navigate('/');
     } catch (error) {
       console.error('Error registering supplier:', error);
     }
   };
 
+  //run the HTML page
   return (
     <div>
       <HomeNavigation />
       <div className="min-h-screen">
         <div
-          className="flex justify-center bg-cover bg-center h-[80rem] "
+          className="flex justify-center bg-cover bg-center h-[80rem]"
           style={{
             backgroundImage: `url(${bgimg})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
         >
-          <div className="bg-white bg-opacity-70 p-8 rounded-lg shadow-lg w-[40rem] h-[60rem] mt-20 border border-white">
+          <div className="bg-white bg-opacity-70 p-8 rounded-lg shadow-lg w-[40rem] h-[70rem] mt-20 border border-white">
             <h2 className="text-center text-black text-3xl mb-6 mt-5 font-bold">
               Welcome To Supplier Registration
             </h2>
@@ -124,7 +132,7 @@ function SupplierRegForm() {
                   Email
                 </label>
                 <input
-                  className={` w-full p-3 rounded border transition-all duration-300 hover:border-black ${errors.email ? 'bg-red-100' : 'bg-gray-200'} focus:bg-gray-300 hover:border-black`}
+                  className={`w-full p-3 rounded border transition-all duration-300 hover:border-black ${errors.email ? 'bg-red-100' : 'bg-gray-200'} focus:bg-gray-300 hover:border-black`}
                   type="email"
                   id="email"
                   placeholder="Enter your email"
@@ -161,13 +169,26 @@ function SupplierRegForm() {
                 />
                 {errors.address && <p className="text-red-500 text-xs">{errors.address}</p>}
               </div>
+              <div>
+                <label className="block text-black text-xl mb-5" htmlFor="password">
+                  Password
+                </label>
+                <input
+                  className={`w-full p-3 rounded border transition-all duration-300 ${errors.password ? 'bg-red-100' : 'bg-gray-200'} focus:bg-gray-300 hover:border-black`}
+                  type="password"
+                  id="password"
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
+              </div>
               <button
                 className="w-[20rem] bg-purple-500 text-black hover:bg-purple-600 hover:text-white py-3 rounded-lg text-center font-semibold transition duration-300 ease-in-out transform hover:scale-105"
                 type="submit"
               >
                 Sign up
               </button>
-
             </form>
           </div>
         </div>
@@ -175,8 +196,6 @@ function SupplierRegForm() {
       <Footer />
     </div>
   );
-  
-  
 }
 
 export default SupplierRegForm;

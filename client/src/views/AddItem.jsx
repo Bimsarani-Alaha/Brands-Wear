@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import Navigation from './Components/Navigation';
 import Footer from './Components/Footer';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify'; // Import ToastContainer and toast
-import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
+import { ToastContainer, toast } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css'; 
 
 function Supplier() {
   const [formData, setFormData] = useState({
     Category: 'Frocks',
     Size: 'M',
     Prize: '3000',
-    Quantity: 1
+    Quantity: 1,
+    Contact: '' // Added contact field
   });
 
   const handleChange = (e) => {
@@ -31,16 +32,17 @@ function Supplier() {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:3001/AddProduct', formData);
-      toast.success('Product added successfully!'); // Show success toast
+      toast.success('Product added successfully!'); 
       setFormData({
         Category: 'Frocks',
         Size: 'M',
         Prize: '3000',
-        Quantity: 1
+        Quantity: 1,
+        Contact: '' // Reset the contact field
       });
     } catch (error) {
       console.error('Error adding product:', error);
-      toast.error('Failed to add product.'); // Show error toast
+      toast.error('Failed to add product.'); 
     }
   };
 
@@ -49,7 +51,7 @@ function Supplier() {
       <Navigation />
       
       <div className="flex-grow flex items-center justify-center">
-        <div className="bg-white p-6 shadow-lg rounded-md w-full max-w-4xl">
+        <div className="bg-white pl-52 pr-52 pb-10 shadow-lg rounded-md w-full max-w-4xl">
           <h2 className="text-2xl font-bold mb-6">Add New Item</h2>
           
           {/* Category */}
@@ -76,20 +78,18 @@ function Supplier() {
             <div className="flex justify-center space-x-2">
               {['S', 'M', 'L', 'XL'].map((size) => (
                 <button 
-            key={size} 
-            type="button"
-            name="Size" 
-            value={size}
-            onClick={handleChange}
-            className={`py-2 px-4 font-bold border rounded transition-all duration-300 ease-in-out transform ${formData.Size === size ? 'bg-purple-500 text-white' : 'bg-gray-200'}`}
-          >
-            {size}
-          </button>
-
+                  key={size} 
+                  type="button"
+                  name="Size" 
+                  value={size}
+                  onClick={handleChange}
+                  className={`py-2 px-4 font-bold border rounded transition-all duration-300 ease-in-out transform ${formData.Size === size ? 'bg-purple-500 text-white' : 'bg-gray-200'}`}
+                >
+                  {size}
+                </button>
               ))}
             </div>
           </div>
-
 
           {/* Price */}
           <div className="mb-4">
@@ -98,36 +98,36 @@ function Supplier() {
             </label>
             <input
               type="text"
-              name="Prize"
-              value={formData.Prize}
+              name="Price"
+              value={formData.Price}
               onChange={handleChange}
               className="w-[30rem] p-2 border rounded"
-              disabled
+              placeholder="Enter price" // Removed disabled attribute
             />
           </div>
 
+
           {/* Quantity */}
           <div className="mb-4">
-  <label className="block text-gray-700 text-sm font-bold mb-2 text-center">Quantity</label>
-  <div className="flex items-center justify-center space-x-2">
-    <button
-      type="button"
-      onClick={() => handleQuantityChange(-1)}
-      className="px-4 py-2 bg-gray-300 text-gray-700 rounded"
-    >
-      -
-    </button>
-    <span>{formData.Quantity}</span>
-    <button
-      type="button"
-      onClick={() => handleQuantityChange(1)}
-      className="px-4 py-2 bg-gray-300 text-gray-700 rounded"
-    >
-      +
-    </button>
-  </div>
-</div>
-
+            <label className="block text-gray-700 text-sm font-bold mb-2 text-center">Quantity</label>
+            <div className="flex items-center justify-center space-x-2">
+              <button
+                type="button"
+                onClick={() => handleQuantityChange(-1)}
+                className="px-4 py-2 bg-gray-300 text-gray-700 rounded"
+              >
+                -
+              </button>
+              <span>{formData.Quantity}</span>
+              <button
+                type="button"
+                onClick={() => handleQuantityChange(1)}
+                className="px-4 py-2 bg-gray-300 text-gray-700 rounded"
+              >
+                +
+              </button>
+            </div>
+          </div>
 
           {/* Submit Button */}
           <button
@@ -141,7 +141,7 @@ function Supplier() {
       </div>
 
       <Footer />
-      <ToastContainer /> {/* Add ToastContainer here */}
+      <ToastContainer /> 
     </div>
   );
 }

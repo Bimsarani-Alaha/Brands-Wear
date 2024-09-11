@@ -2,6 +2,7 @@ import React from 'react';
 import HomeNavigation from './Components/HomeNavigation';
 import bgimg from '../Images/homeback.png';
 import Footer from './Components/Footer';
+import { Link } from 'react-router-dom';
 
 function Home() {
   return (
@@ -23,7 +24,7 @@ function Home() {
         </div>
         {/* Supplier Button Positioned in the Right Corner */}
         <div className="absolute bottom-10 right-10 text-white p-4 rounded shadow">
-          If you’re a supplier <button className="ml-2 p-2 text-white">Click here</button>
+          If you’re a supplier <Link to ='/SupplierRegForm'> <button className="ml-2 p-2 text-white">Click here</button></Link>
         </div>
       </div>
       <Footer/>
