@@ -23,7 +23,10 @@ function SupplierProduct() {
               <div className="text-sm mb-2">Prize: LKR.4500.00</div>
               <div className="text-sm mb-4">Quantity: 10</div>
               <div className="flex space-x-4">
-                <button className="bg-purple-500 text-white px-4 py-2 rounded-md">Update</button>
+                {/* Link to UpdateItem Page */}
+                <Link to="/UpdateItem">
+                  <button className="bg-purple-500 text-white px-4 py-2 rounded-md">Update</button>
+                </Link>
                 <button className="bg-red-500 text-white px-4 py-2 rounded-md">Delete</button>
               </div>
             </div>   
@@ -38,7 +41,10 @@ function SupplierProduct() {
               <div className="text-sm mb-2">Prize: LKR.6200.00</div>
               <div className="text-sm mb-4">Quantity: 20</div>
               <div className="flex space-x-4">
-                <button className="bg-purple-500 text-white px-4 py-2 rounded-md">Update</button>
+                {/* Link to UpdateItem Page */}
+                <Link to="/UpdateItem">
+                  <button className="bg-purple-500 text-white px-4 py-2 rounded-md">Update</button>
+                </Link>
                 <button className="bg-red-500 text-white px-4 py-2 rounded-md">Delete</button>
               </div>
             </div>

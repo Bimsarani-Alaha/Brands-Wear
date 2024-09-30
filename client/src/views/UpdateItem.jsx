@@ -3,7 +3,7 @@ import Navigation from './Components/Navigation';
 import Footer from './Components/Footer';
 import axios from 'axios';
 
-function Supplier() {
+function UpdateItem() {
   const [formData, setFormData] = useState({
     Category: 'Frocks',
     Size: 'M',
@@ -29,7 +29,7 @@ function Supplier() {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:3001/AddProduct', formData);
-      alert('Product added successfully!');
+      alert('Product updated successfully!');
       setFormData({
         Category: 'Frocks',
         Size: 'M',
@@ -37,8 +37,8 @@ function Supplier() {
         Quantity: 1
       });
     } catch (error) {
-      console.error('Error adding product:', error);
-      alert('Failed to add product.');
+      console.error('Error updating product:', error);
+      alert('Failed to update product.');
     }
   };
 
@@ -143,4 +143,4 @@ function Supplier() {
   );
 }
 
-export default Supplier;
+export default UpdateItem;
