@@ -8,14 +8,12 @@ import Login from './views/Login';
 import Home from './views/Home';
 import AdminPage from './views/AdminPage';
 import AdminAdditem from './views/AdminAdditem';
-import Adminproduct from './views/Adminproduct';
-import AddItem from './views/AddItem';  
+import Adminproduct from './views/Adminproduct';  
 import UpdateItem from './views/UpdateItem';
 import GenerateReport from "./views/GenarateReport"; 
 import OrderNotification from "./views/OrderNotification"; 
 import AcceptAdminOrder from "./views/AcceptAdminOrder"; 
 import AddItem from './views/AddItem';
-import UpdateItem from './views/UpdateItem';
 import Inventory from './views/Inventory';
 import AdminPlaceOrder from './views/AdminPlaceOrder';
 import AdminBuyItem from './views/AdminBuyItem'; // Updated Route
