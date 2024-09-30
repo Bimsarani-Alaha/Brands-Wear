@@ -1,44 +1,54 @@
 import React, { useState } from 'react';
-import axios from 'axios'; // Import Axios
+import axios from 'axios';
 import AdminNavigation from './Components/AdminNavigation';
 import Footer from './Components/Footer';
-import { ToastContainer, toast } from 'react-toastify'; // Import Toast components
-import 'react-toastify/dist/ReactToastify.css'; // Import Toast CSS
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-function AdminAdditem() {
-  const [quantity, setQuantity] = useState(1);
+function AdminAddItem() {
   const [category, setCategory] = useState("Long Frocks");
-  const [size, setSize] = useState("M");
+  const [itemName, setItemName] = useState("");
   const [availability, setAvailability] = useState("Available");
-  const [price, setPrice] = useState(""); // Add state for price
+  const [price, setPrice] = useState(""); 
+  const [itemCode, setItemCode] = useState(""); 
+  const [previousCodes, setPreviousCodes] = useState(new Set());
 
-  const handleIncrease = () => {
-    setQuantity(prev => prev + 1);
-  };
+  // Individual states for sizes
+  const [small, setSmall] = useState(0);
+  const [medium, setMedium] = useState(0);
+  const [large, setLarge] = useState(0);
+  const [extraLarge, setExtraLarge] = useState(0);
 
-  const handleDecrease = () => {
-    if (quantity > 1) {
-      setQuantity(prev => prev - 1);
-    }
+  const generateItemCode = () => {
+    let code;
+    do {
+      code = Math.random().toString(36).substring(2, 8).toUpperCase();
+    } while (previousCodes.has(code));
+
+    setItemCode(code);
+    setPreviousCodes(prev => new Set(prev).add(code));
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     
-    try {
-      const response = await axios.post('http://localhost:3001/AddItem', {
-        category,
-        size,
-        price,
-        quantity,
-        availability
-      });
+    const itemData = {
+      category,
+      price,
+      availability,
+      itemCode,
+      itemName,
+      small,
+      medium,
+      large,
+      extraLarge,
+    };
 
-      // Handle success (e.g., show a success message or redirect)
+    try {
+      const response = await axios.post('http://localhost:3001/AddItem', itemData);
       toast.success('Item added successfully!');
       console.log('Item added successfully:', response.data);
     } catch (error) {
-      // Handle error (e.g., show an error message)
       toast.error('There was an error adding the item.');
       console.error('There was an error adding the item:', error);
     }
@@ -46,17 +56,45 @@ function AdminAdditem() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
-      {/* Admin Navigation */}
       <AdminNavigation />
 
-      {/* Main Content */}
       <div className="flex-grow flex justify-center items-center">
         <div className="bg-white shadow-lg rounded-lg p-8 max-w-2xl w-full mt-10 mb-20">
           <h2 className="text-3xl font-semibold text-gray-700 mb-6 text-center">Add New Item</h2>
           
-          {/* Form Section */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-4">
+              <div>
+                <label className="block text-gray-600 mb-2" htmlFor="itemCode">Item Code</label>
+                <div className="flex items-center">
+                  <input 
+                    type="text" 
+                    id="itemCode" 
+                    value={itemCode}
+                    readOnly
+                    className="w-[20rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600" 
+                  />
+                  <button 
+                    type="button"
+                    className="ml-2 bg-purple-600 text-white rounded p-2"
+                    onClick={generateItemCode}
+                  >
+                    Generate
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-gray-600 mb-2" htmlFor="itemName">Item Name</label>
+                <input 
+                  type="text" 
+                  id="itemName" 
+                  value={itemName}
+                  onChange={(e) => setItemName(e.target.value)}
+                  className="w-[20rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600" 
+                />
+              </div>
+
               <div>
                 <label className="block text-gray-600 mb-2" htmlFor="category">Category</label>
                 <select 
@@ -72,30 +110,67 @@ function AdminAdditem() {
                 </select>
               </div>
 
-              {/* Size Selection */}
+              {/* Separate Size Input Fields */}
               <div>
-                <label className="block text-gray-600 mb-2">Size</label>
-                <div className="flex space-x-2 justify-center">
-                  {["S", "M", "L", "XL"].map((sz) => (
-                    <label 
-                      key={sz} 
-                      className={`flex items-center justify-center cursor-pointer ${size === sz ? 'bg-purple-500 text-white' : 'bg-gray-200 text-gray-700'} py-2 px-4 border rounded transition-colors duration-300 ease-in-out`}
-                    >
-                      <input 
-                        type="radio" 
-                        name="size" 
-                        value={sz} 
-                        checked={size === sz}
-                        onChange={() => setSize(sz)}
-                        className="hidden"
-                      />
-                      <span>{sz}</span>
-                    </label>
-                  ))}
+                <label className="block text-gray-600 mb-2">Sizes and Quantities</label>
+                
+                <div className="mb-4">
+                  <label className="text-lg" htmlFor="quantity-S">S</label>
+                  <div className="flex items-center">
+                    <input
+                      type="number"
+                      id="quantity-S"
+                      value={small === 0 ? '' : small}
+                      onChange={(e) => setSmall(parseInt(e.target.value) || 0)}
+                      className="mx-2 w-12 text-center border border-gray-300 rounded"
+                      min="0"
+                    />
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <label className="text-lg" htmlFor="quantity-M">M</label>
+                  <div className="flex items-center">
+                    <input
+                      type="number"
+                      id="quantity-M"
+                      value={medium === 0 ? '' : medium}
+                      onChange={(e) => setMedium(parseInt(e.target.value) || 0)}
+                      className="mx-2 w-12 text-center border border-gray-300 rounded"
+                      min="0"
+                    />
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <label className="text-lg" htmlFor="quantity-L">L</label>
+                  <div className="flex items-center">
+                    <input
+                      type="number"
+                      id="quantity-L"
+                      value={large === 0 ? '' : large}
+                      onChange={(e) => setLarge(parseInt(e.target.value) || 0)}
+                      className="mx-2 w-12 text-center border border-gray-300 rounded"
+                      min="0"
+                    />
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <label className="text-lg" htmlFor="quantity-XL">XL</label>
+                  <div className="flex items-center">
+                    <input
+                      type="number"
+                      id="quantity-XL"
+                      value={extraLarge === 0 ? '' : extraLarge}
+                      onChange={(e) => setExtraLarge(parseInt(e.target.value) || 0)}
+                      className="mx-2 w-12 text-center border border-gray-300 rounded"
+                      min="0"
+                    />
+                  </div>
                 </div>
               </div>
 
-              {/* Price Input */}
               <div>
                 <label className="block text-gray-600 mb-2" htmlFor="price">Price</label>
                 <input 
@@ -106,55 +181,8 @@ function AdminAdditem() {
                   className="w-[20rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600" 
                 />
               </div>
-
-              {/* Quantity Adjuster */}
-              <div>
-                <label className="block text-gray-600 mb-2" htmlFor="quantity">Quantity</label>
-                <div className="flex items-center space-x-2 justify-center">
-                  <button 
-                    type="button"
-                    className="bg-gray-300 text-gray-700 rounded-full px-3 py-1 font-semibold hover:bg-gray-400" 
-                    onClick={handleDecrease}
-                  >
-                    -
-                  </button>
-                  <input 
-                    id="quantity" 
-                    type="text" 
-                    value={quantity} 
-                    readOnly
-                    className="w-12 text-center border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600" 
-                  />
-                  <button 
-                    type="button"
-                    className="bg-gray-300 text-gray-700 rounded-full px-3 py-1 font-semibold hover:bg-gray-400" 
-                    onClick={handleIncrease}
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-
-              {/* Availability Dropdown */}
-              <div className="relative">
-              <label className="block text-gray-600 mb-2" htmlFor="availability">Availability</label>
-              <select 
-                id="availability" 
-                value={availability} 
-                onChange={(e) => setAvailability(e.target.value)}
-                className="w-44 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600 pl-10"
-              >
-                <option>Available</option>
-                <option>Unavailable</option>
-              </select>
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <i className="fas fa-chevron-down text-gray-500"></i>
-              </span>
             </div>
 
-            </div>
-
-            {/* Add Item Button */}
             <div className="text-center">
               <button 
                 type="submit"
@@ -167,13 +195,10 @@ function AdminAdditem() {
         </div>
       </div>
 
-      {/* Footer */}
       <Footer />
-
-      {/* Toast Container */}
       <ToastContainer />
     </div>
   );
 }
 
-export default AdminAdditem;
+export default AdminAddItem;
