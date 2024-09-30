@@ -5,12 +5,18 @@ const itemSchema = new mongoose.Schema({
   category: String,
   size: String,
   price: Number,
-  quantity: Number,
+  itemName: String,
+  itemCode: String,
   availability: {
     type: String,
     default: "Available"
   },
   imageUrl: String,
+  large: Number,
+  small: Number,
+  extraLarge: Number,
+  medium: Number,
+
 }, { timestamps: true });
 
 // Create the Item model

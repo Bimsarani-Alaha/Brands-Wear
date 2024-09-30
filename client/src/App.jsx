@@ -3,20 +3,24 @@ import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SupplierRegForm from './views/SupplierRegForm';
 import SupplierProduct from './views/SupplierProduct';
-import Users from './views/Users';
 import UpdateUser from './views/UpdateUser';
 import Login from './views/Login';
 import Home from './views/Home';
-
 import AdminPage from './views/AdminPage';
 import AdminAdditem from './views/AdminAdditem';
 import Adminproduct from './views/Adminproduct';
-
 import AddItem from './views/AddItem';  
 import UpdateItem from './views/UpdateItem';
 import GenerateReport from "./views/GenarateReport"; 
 import OrderNotification from "./views/OrderNotification"; 
 import AcceptAdminOrder from "./views/AcceptAdminOrder"; 
+import AddItem from './views/AddItem';
+import UpdateItem from './views/UpdateItem';
+import Inventory from './views/Inventory';
+import AdminPlaceOrder from './views/AdminPlaceOrder';
+import AdminBuyItem from './views/AdminBuyItem'; // Updated Route
+import UpdateAdmin from './views/UpdateAdmin';
+
 
 function App() {
   return (
@@ -38,11 +42,18 @@ function App() {
         <Route path="/AdminAdditem" element={<AdminAdditem />} />
         <Route path="/Adminproduct" element={<Adminproduct />} />
         <Route path="/AdminPage" element={<AdminPage />} />
-        
         <Route path="/UpdateItem" element={<UpdateItem />} />
         <Route path="/GenerateReport" element={<GenerateReport />} />
         <Route path="/OrderNotification" element={<OrderNotification />} />
         <Route path="/AcceptAdminOrder" element={<AcceptAdminOrder />} />
+        {/* Update Item Pages */}
+        <Route path="/UpdateItem" element={<UpdateItem />} />
+      
+        {/* Inventory and Purchase Pages */}
+        <Route path="/Inventory" element={<Inventory />} />
+        <Route path="/AdminPlaceOrder" element={<AdminPlaceOrder />} />
+        <Route path="/AdminBuyItem" element={<AdminBuyItem />} />
+        <Route path="/UpdateAdmin/:itemId" element={<UpdateAdmin />} />
       </Routes>
     </Router>
   );

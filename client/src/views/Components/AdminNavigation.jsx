@@ -16,17 +16,23 @@ function Navigation() {
 
         {/* Center: Navigation Buttons */}
         <div className='flex items-center space-x-2 text-sm'>
-          <Link to ='/Adminproduct'><button className='transition duration-300 ease-in-out transform hover:scale-105'>Product category</button></Link>
+          <Link to='/Adminproduct'>
+            <button className='transition duration-300 ease-in-out transform hover:scale-105'>Product category</button>
+          </Link>
           <span>&nbsp;|&nbsp;</span>
-          <button className='transition duration-300 ease-in-out transform hover:scale-105'>Inventory</button>
+          <Link to='/Inventory'>
+            <button className='transition duration-300 ease-in-out transform hover:scale-105'>Inventory</button>
+          </Link>
           <span>&nbsp;|&nbsp;</span>
-          <button className='transition duration-300 ease-in-out transform hover:scale-105'>Supplier Products</button>
+          <Link to='/AdminBuyItem'>
+            <button className='transition duration-300 ease-in-out transform hover:scale-105'>Supplier Products</button>
+          </Link>
         </div>
         
         {/* Right side: User Icon */}
         <div className='flex items-center space-x-4 pr-6'>
           <FontAwesomeIcon icon={faUser} className='text-2xl' />
-          <span>Welcome  Admin</span>
+          <span>Welcome Admin</span>
         </div>
       </div>
     </div>
