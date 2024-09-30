@@ -3,25 +3,24 @@ import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SupplierRegForm from './views/SupplierRegForm';
 import SupplierProduct from './views/SupplierProduct';
-import Users from './views/Users';
 import UpdateUser from './views/UpdateUser';
 import Login from './views/Login';
 import Home from './views/Home';
-
 import AdminPage from './views/AdminPage';
 import AdminAdditem from './views/AdminAdditem';
 import Adminproduct from './views/Adminproduct';
-
-import AddItem from './views/AddItem';  // Make sure the AddItem component exists
+import AddItem from './views/AddItem';
 import UpdateItem from './views/UpdateItem';
-
+import Inventory from './views/Inventory';
+import AdminPlaceOrder from './views/AdminPlaceOrder';
+import AdminBuyItem from './views/AdminBuyItem'; // Updated Route
+import UpdateAdmin from './views/UpdateAdmin';
 
 function App() {
   return (
     <Router>
       <Routes>
         {/* User Management Routes */}
-        {/* <Route path="/" element={<Users />} /> */}
         <Route path="/update" element={<UpdateUser />} />
 
         {/* Supplier Management Routes */}
@@ -35,11 +34,17 @@ function App() {
         <Route path="/Login" element={<Login />} />
         <Route path="/" element={<Home />} />
         <Route path="/AdminAdditem" element={<AdminAdditem />} />
-        <Route path="/Adminproduct" element={<Adminproduct/>} />
-        <Route path="/AdminPage" element={<AdminPage/>} />
+        <Route path="/Adminproduct" element={<Adminproduct />} />
+        <Route path="/AdminPage" element={<AdminPage />} />
 
+        {/* Update Item Pages */}
         <Route path="/UpdateItem" element={<UpdateItem />} />
-
+      
+        {/* Inventory and Purchase Pages */}
+        <Route path="/Inventory" element={<Inventory />} />
+        <Route path="/AdminPlaceOrder" element={<AdminPlaceOrder />} />
+        <Route path="/AdminBuyItem" element={<AdminBuyItem />} />
+        <Route path="/UpdateAdmin/:itemId" element={<UpdateAdmin />} />
       </Routes>
     </Router>
   );
