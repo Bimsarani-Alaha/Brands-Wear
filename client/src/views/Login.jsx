@@ -23,9 +23,11 @@ function Login() {
       } else if (response.status === 202) {
         // Navigate to the supplier registration form page
         navigate('/supplierProduct'); // Adjust the path as needed
+      } else if (response.status === 203) {
+        // Navigate to user home page with the user ID
+        navigate(`/userHome/${response.data.userId}`);
       } else {
-        // Handle other statuses if needed
-        setErrorMessage('Login failed. Please check your email and password.');
+        console.log('Unexpected response status:', response.status);
       }
     } catch (error) {
       // Handle error response
@@ -33,6 +35,7 @@ function Login() {
       setErrorMessage('Login failed. Please check your email and password.');
     }
   };
+  
 
   return (
     <div className='min-h-screen bg-white'>
