@@ -45,7 +45,7 @@ function App() {
         <Route path="/AdminAdditem" element={<AdminAdditem />} />
         <Route path="/Adminproduct" element={<Adminproduct />} />
         <Route path="/AdminPage" element={<AdminPage />} />
-        <Route path="/UpdateItem" element={<UpdateItem />} />
+        <Route path="/UpdateItem/:itemId" element={<UpdateItem />} />
         <Route path="/GenerateReport" element={<GenerateReport />} />
         <Route path="/OrderNotification" element={<OrderNotification />} />
         <Route path="/AcceptAdminOrder" element={<AcceptAdminOrder />} />

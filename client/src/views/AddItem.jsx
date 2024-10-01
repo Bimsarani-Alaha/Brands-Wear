@@ -7,12 +7,28 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function Supplier() {
   const [formData, setFormData] = useState({
-    Category: 'Frocks',
-    Size: 'M',
-    Prize: '3000',
-    Quantity: 1,
-    Contact: '' // Added contact field
+    itemCode: '',
+    itemName: '',
+    Category: 'Long Frocks',
+    small: 0,
+    medium: 0,
+    large: 0,
+    extraLarge: 0,
+    Price: '',
+    imageURL: '' // New field for image URL
   });
+
+  const [previousCodes, setPreviousCodes] = useState(new Set());
+
+  const generateItemCode = () => {
+    let code;
+    do {
+      code = Math.random().toString(36).substring(2, 8).toUpperCase();
+    } while (previousCodes.has(code));
+
+    setFormData(prev => ({ ...prev, itemCode: code }));
+    setPreviousCodes(prev => new Set(prev).add(code));
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -21,11 +37,11 @@ function Supplier() {
     });
   };
 
-  const handleQuantityChange = (amount) => {
-    setFormData((prev) => ({
-      ...prev,
-      Quantity: Math.max(1, prev.Quantity + amount)
-    }));
+  const handleSizeChange = (e, size) => {
+    setFormData({
+      ...formData,
+      [size]: Number(e.target.value),
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -34,11 +50,15 @@ function Supplier() {
       const response = await axios.post('http://localhost:3001/AddProduct', formData);
       toast.success('Product added successfully!'); 
       setFormData({
-        Category: 'Frocks',
-        Size: 'M',
-        Prize: '3000',
-        Quantity: 1,
-        Contact: '' // Reset the contact field
+        itemCode: '',
+        itemName: '',
+        Category: 'Long Frocks',
+        small: 0,
+        medium: 0,
+        large: 0,
+        extraLarge: 0,
+        Price: '',
+        imageURL: '' // Reset the imageURL as well
       });
     } catch (error) {
       console.error('Error adding product:', error);
@@ -52,91 +72,125 @@ function Supplier() {
       
       <div className="flex-grow flex items-center justify-center">
         <div className="bg-white pl-52 pr-52 pb-10 shadow-lg rounded-md w-full max-w-4xl">
-          <h2 className="text-2xl font-bold mb-6">Add New Item</h2>
-          
-          {/* Category */}
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="Category">
-              Category
-            </label>
-            <select 
-              name="Category" 
-              value={formData.Category} 
-              onChange={handleChange}
-              className="w-full p-2 border rounded"
-            >
-              <option value="Long Frocks">Long Frocks</option>
-              <option value="Short Frocks">Short Frocks</option>
-              <option value="Party Frocks">Party Frocks</option>
-              <option value="Kids Frocks">Kids Frocks</option>
-            </select>
-          </div>
+          <h2 className="text-3xl font-bold text-center mb-6">Add New Item</h2>
 
-          {/* Size Options */}
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">Size</label>
-            <div className="flex justify-center space-x-2">
-              {['S', 'M', 'L', 'XL'].map((size) => (
+          <form onSubmit={handleSubmit}>
+
+            {/* Item Code */}
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="itemCode">
+                Item Code
+              </label>
+              <div className="flex items-center">
+                <input
+                  type="text"
+                  name="itemCode"
+                  value={formData.itemCode}
+                  readOnly
+                  className="w-full p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
+                />
                 <button 
-                  key={size} 
                   type="button"
-                  name="Size" 
-                  value={size}
-                  onClick={handleChange}
-                  className={`py-2 px-4 font-bold border rounded transition-all duration-300 ease-in-out transform ${formData.Size === size ? 'bg-purple-500 text-white' : 'bg-gray-200'}`}
+                  className="ml-2 bg-purple-600 text-white rounded p-2"
+                  onClick={generateItemCode}
                 >
-                  {size}
+                  Generate
                 </button>
-              ))}
+              </div>
             </div>
-          </div>
 
-          {/* Price */}
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="Prize">
-              Price
-            </label>
-            <input
-              type="text"
-              name="Price"
-              value={formData.Price}
-              onChange={handleChange}
-              className="w-[30rem] p-2 border rounded"
-              placeholder="Enter price" // Removed disabled attribute
-            />
-          </div>
-
-
-          {/* Quantity */}
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2 text-center">Quantity</label>
-            <div className="flex items-center justify-center space-x-2">
-              <button
-                type="button"
-                onClick={() => handleQuantityChange(-1)}
-                className="px-4 py-2 bg-gray-300 text-gray-700 rounded"
-              >
-                -
-              </button>
-              <span>{formData.Quantity}</span>
-              <button
-                type="button"
-                onClick={() => handleQuantityChange(1)}
-                className="px-4 py-2 bg-gray-300 text-gray-700 rounded"
-              >
-                +
-              </button>
+            {/* Item Name */}
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="itemName">
+                Item Name
+              </label>
+              <input
+                type="text"
+                name="itemName"
+                value={formData.itemName}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
+                placeholder="Enter item name"
+              />
             </div>
-          </div>
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-            onClick={handleSubmit}
-            className="w-full bg-purple-600 text-white p-2 rounded hover:bg-purple-700"
-          >
-            Add item
-          </button>
+            {/* Category */}
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="Category">
+                Category
+              </label>
+              <select 
+                name="Category" 
+                value={formData.Category} 
+                onChange={handleChange}
+                className="w-full p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
+              >
+                <option value="Long Frocks">Long Frocks</option>
+                <option value="Short Frocks">Short Frocks</option>
+                <option value="Party Frocks">Party Frocks</option>
+                <option value="Kids Frocks">Kids Frocks</option>
+              </select>
+            </div>
+
+            {/* Size and Quantity Inputs */}
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2">Sizes and Quantities</label>
+              <div className="grid grid-cols-2 gap-4">
+                {['small', 'medium', 'large', 'extraLarge'].map((size) => (
+                  <div key={size} className="flex items-center">
+                    <label className="w-1/4 capitalize">{size}</label>
+                    <input
+                      type="number"
+                      name={size}
+                      value={formData[size]}
+                      onChange={(e) => handleSizeChange(e, size)}
+                      className="w-full p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
+                      min="0"
+                      placeholder={`Qty for ${size}`}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Price */}
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="Price">
+                Price
+              </label>
+              <input
+                type="text"
+                name="Price"
+                value={formData.Price}
+                onChange={handleChange}
+                className="w-full p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
+                placeholder="Enter price"
+              />
+            </div>
+
+            {/* Image URL */}
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="imageURL">
+                Image URL
+              </label>
+              <input
+                type="text"
+                name="imageURL"
+                value={formData.imageURL}
+                onChange={handleChange}
+                className="w-full p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
+                placeholder="Enter image URL"
+              />
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              className="w-full bg-purple-600 text-white p-2 rounded hover:bg-purple-700"
+            >
+              Add Item
+            </button>
+          </form>
         </div>
       </div>
 
