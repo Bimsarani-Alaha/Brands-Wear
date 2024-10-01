@@ -34,7 +34,7 @@ function App() {
         
         {/* Supplier Management Routes */}
         <Route path="/SupplierRegForm" element={<SupplierRegForm />} />
-        <Route path="/SupplierProduct" element={<SupplierProduct />} />
+        <Route path="/SupplierProduct/:userId" element={<SupplierProduct />} />
 
         {/* Add Item Page */}
         <Route path="/AddItem" element={<AddItem />} />

@@ -22,7 +22,7 @@ function Login() {
         navigate('/AdminPage'); // Adjust the path as needed
       } else if (response.status === 202) {
         // Navigate to the supplier registration form page
-        navigate('/supplierProduct'); // Adjust the path as needed
+        navigate(`/supplierProduct/${response.data.userId}`); // Adjust the path as needed
       } else if (response.status === 203) {
         // Navigate to user home page with the user ID
         navigate(`/userHome/${response.data.userId}`);

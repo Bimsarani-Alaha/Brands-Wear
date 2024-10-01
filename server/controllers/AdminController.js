@@ -26,7 +26,7 @@ router.post("/login", async (req, res) => {
         if (supplier) {
             // Check if the supplier's password matches
             if (supplier.password === password) {
-                return res.status(202).json({ message: 'Supplier login successful' });
+                return res.status(202).json({ message: 'Supplier login successful',userId: supplier._id });
             } else {
                 return res.status(401).json({ message: 'Invalid supplier credentials' });
             }
