@@ -4,8 +4,11 @@ import Footer from './Components/Footer';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify'; 
 import 'react-toastify/dist/ReactToastify.css'; 
+import { useParams } from 'react-router-dom';
 
 function Supplier() {
+  const { userId } = useParams(); // Correctly extract userId from URL params
+
   const [formData, setFormData] = useState({
     itemCode: '',
     itemName: '',
@@ -20,6 +23,7 @@ function Supplier() {
 
   const [previousCodes, setPreviousCodes] = useState(new Set());
 
+  // Function to generate a random item code
   const generateItemCode = () => {
     let code;
     do {
@@ -30,6 +34,7 @@ function Supplier() {
     setPreviousCodes(prev => new Set(prev).add(code));
   };
 
+  // Handle form input changes
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -37,17 +42,20 @@ function Supplier() {
     });
   };
 
+  // Handle size input changes (specific for sizes)
   const handleSizeChange = (e, size) => {
     setFormData({
       ...formData,
-      [size]: Number(e.target.value),
+      [size]: Number(e.target.value), // Ensure size values are numbers
     });
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3001/AddProduct', formData);
+      const submissionData = { ...formData, userId }; // Include userId in form submission
+      const response = await axios.post('http://localhost:3001/AddProduct', submissionData);
       toast.success('Product added successfully!'); 
       setFormData({
         itemCode: '',
@@ -75,7 +83,6 @@ function Supplier() {
           <h2 className="text-3xl font-bold text-center mb-6">Add New Item</h2>
 
           <form onSubmit={handleSubmit}>
-
             {/* Item Code */}
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="itemCode">
@@ -159,12 +166,13 @@ function Supplier() {
                 Price
               </label>
               <input
-                type="text"
+                type="number" // Changed to type="number" to ensure valid pricing input
                 name="Price"
                 value={formData.Price}
                 onChange={handleChange}
                 className="w-full p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
                 placeholder="Enter price"
+                min="0" // Ensures price cannot be negative
               />
             </div>
 

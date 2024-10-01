@@ -2,8 +2,10 @@ import React from 'react';
 import Logo from '../../Images/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { Link, useParams } from 'react-router-dom';
 
 function Navigation() {
+  const { userId } = useParams(); // Fix typo here
   return (
     <div>
       {/* Navigation Bar */}
@@ -15,11 +17,11 @@ function Navigation() {
 
         {/* Center: Navigation Buttons */}
         <div className='flex items-center space-x-2 text-xl font-thin'>
-          <button>Home</button>
+          <Link to={`/SupplierProduct/${userId}`}><button>Home</button></Link>
           <span>&nbsp;|&nbsp;</span>
-          <button>Order Items</button>
+          <Link to='/OrderNotification'><button>Order Items</button></Link>
           <span>&nbsp;|&nbsp;</span>
-          <button>Sales Report</button>
+          <Link to={`/GenerateReport/${userId}`}><button>Sales Report</button></Link> {/* Use template literal */}
         </div>
         
         {/* Right side: User Icon */}

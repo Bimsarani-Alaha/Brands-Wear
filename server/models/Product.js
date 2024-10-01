@@ -3,6 +3,7 @@ const mongoose = require ('mongoose')
 const ProductSchema = new mongoose.Schema({
 
         Category: String,
+        userId: String,
         small: String,
         medium: String,
         large: String,
@@ -12,6 +13,7 @@ const ProductSchema = new mongoose.Schema({
         itemName: String,
         itemCode: String,
         imageURL: String,
+        date: { type: Date, default: Date.now }
         
 })
 

@@ -83,102 +83,105 @@ function UpdateItem() {
       
       <div className="flex-grow flex items-center justify-center">
         <div className="bg-white p-6 shadow-lg rounded-md w-full max-w-4xl mt-14 mb-44">
-          <h2 className="text-2xl font-bold mb-6 text-center">Update Item</h2>
+          <h2 className="text-3xl font-thin mb-16 text-center">Update Item</h2>
           
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Item Code */}
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="itemCode">
-                Item Code
-              </label>
-              <input
-                type="text"
-                name="itemCode"
-                value={formData.itemCode}
-                readOnly
-                className="w-full p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
-              />
-            </div>
+          {/* Item Code */}
+          <div className="mb-4">
+            <label className="block text-gray-700 text-[1.2rem] text-center mb-4" htmlFor="itemCode">
+              Item Code
+            </label>
+            <input
+              type="text"
+              name="itemCode"
+              value={formData.itemCode}
+              readOnly
+              className="w-40 text-center h-12 text-xl p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
+            />
+          </div>
 
-            {/* Item Name */}
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="itemName">
-                Item Name
-              </label>
-              <input
-                type="text"
-                name="itemName"
-                value={formData.itemName}
-                onChange={handleChange}
-                className="w-full p-2 border rounded"
-                placeholder="Enter item name"
-                required
-              />
-            </div>
+          {/* Item Name */}
+          <div className="mb-4">
+            <label className="block text-gray-700 text-[1.2rem] text-center mb-4" htmlFor="itemName">
+              Item Name
+            </label>
+            <input
+              type="text"
+              name="itemName"
+              value={formData.itemName}
+              onChange={handleChange}
+              className="w-[30rem] text-start text-xl h-12 p-2 pl-5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
+              placeholder="Enter item name"
+              required
+            />
+          </div>
 
-            {/* Category */}
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="Category">
-                Category
-              </label>
-              <select 
-                name="Category" 
-                value={formData.Category} 
-                onChange={handleChange}
-                className="w-full p-2 border rounded"
-              >
-                <option value="Long Frocks">Long Frocks</option>
-                <option value="Short Frocks">Short Frocks</option>
-                <option value="Party Frocks">Party Frocks</option>
-                <option value="Kids Frocks">Kids Frocks</option>
-              </select>
-            </div>
-
-            {/* Sizes and Quantities */}
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">Sizes and Quantities</label>
-              <div className="grid grid-cols-2 gap-4">
-                {['small', 'medium', 'large', 'extraLarge'].map((size) => (
-                  <div key={size} className="flex items-center">
-                    <label className="w-1/4 capitalize">{size}</label>
-                    <input
-                      type="number"
-                      name={size}
-                      value={formData[size]}
-                      onChange={(e) => handleSizeChange(e, size)}
-                      className="w-full p-2 border rounded"
-                      min="0"
-                      placeholder={`Qty for ${size}`}
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Price */}
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="Price">
-                Price
-              </label>
-              <input
-                type="text"
-                name="Price"
-                value={formData.Price}
-                onChange={handleChange}
-                className="w-full p-2 border rounded"
-                placeholder="Enter price"
-                required
-              />
-            </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="w-full bg-purple-600 text-white p-2 rounded hover:bg-purple-700"
+          {/* Category */}
+          <div className="mb-4">
+            <label className="block text-gray-700 text-[1.2rem] text-center mb-4" htmlFor="Category">
+              Category
+            </label>
+            <select 
+              name="Category" 
+              value={formData.Category} 
+              onChange={handleChange}
+              className="w-50 text-start h-12 p-2 text-xl border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
             >
-              Update Item
-            </button>
-          </form>
+              <option value="Long Frocks">Long Frocks</option>
+              <option value="Short Frocks">Short Frocks</option>
+              <option value="Party Frocks">Party Frocks</option>
+              <option value="Kids Frocks">Kids Frocks</option>
+            </select>
+          </div>
+
+          {/* Sizes and Quantities */}
+          <div className="mb-4">
+            <label className="block text-gray-700 text-[1.2rem] text-center mb-6">
+              Sizes and Quantities
+            </label>
+            <div className="grid grid-cols-2 gap-4">
+              {['small', 'medium', 'large', 'extraLarge'].map((size) => (
+                <div key={size} className="flex items-center">
+                  <label className="w-40 text-center capitalize">{size}</label>
+                  <input
+                    type="number"
+                    name={size}
+                    value={formData[size]}
+                    onChange={(e) => handleSizeChange(e, size)}
+                    className="w-full p-2 border rounded"
+                    min="0"
+                    placeholder={`Qty for ${size}`}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Price */}
+          <div className="mb-4">
+            <label className="block text-gray-700 text-xl text-center mb-4" htmlFor="Price">
+              Price
+            </label>
+            <input
+              type="text"
+              name="Price"
+              value={formData.Price}
+              onChange={handleChange}
+              className="w-60 h-12 p-2 pl-5 border border-gray-300 rounded-xl focus:outline-`none focus:ring-2 focus:ring-purple-600"
+              placeholder="Enter price"
+              required
+            />
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-52 h-16 text-xl bg-purple-600 text-white p-2 rounded hover:bg-white hover:text-purple-600 border hover:border-purple-600 transition duration-300 ease-in-out"
+          >
+            Update Item
+          </button>
+        </form>
+
         </div>
       </div>
 

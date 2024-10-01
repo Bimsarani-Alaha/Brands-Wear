@@ -68,7 +68,7 @@ const UserForm = () => {
                 <h2 className="text-center text-black text-4xl mb-20 font-thin">CREATE YOUR ACCOUNT</h2>
                 <form className="space-y-4" onSubmit={handleSubmit}>
                   <div>
-                    <label className="block text-black text-xl mb-4" htmlFor="username">Username</label>
+                    <label className="block text-black text-xl mb-4" htmlFor="username">Name</label>
                     <input
                       className="w-full p-3 rounded-xl bg-gray-200 focus:bg-gray-300 border border-transparent hover:border-black transition duration-300 ease-in-out transform hover:scale-105"
                       type="text"
@@ -133,7 +133,7 @@ const UserForm = () => {
                     className="w-[20rem] bg-purple-400 hover:bg-purple-700 text-black hover:text-white py-3 rounded-lg text-center font-semibold transition duration-300 ease-in-out transform hover:scale-105"
                     type="submit"
                   >
-                    Sign Up
+                    Create
                   </button>
                 </form>
               </div>
