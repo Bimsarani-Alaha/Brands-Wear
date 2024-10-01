@@ -65,18 +65,18 @@ function AdminAddItem() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-4">
               <div>
-                <label className="block text-gray-600 mb-2" htmlFor="itemCode">Item Code</label>
-                <div className="flex items-center">
+                <label className="block text-gray-600 mb-2 text-center" htmlFor="itemCode">Item Code</label>
+                <div className="flex justify-center items-center">
                   <input 
                     type="text" 
                     id="itemCode" 
                     value={itemCode}
                     readOnly
-                    className="w-[20rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600" 
+                    className="w-[10rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600 text-center" 
                   />
                   <button 
                     type="button"
-                    className="ml-2 bg-purple-600 text-white rounded p-2"
+                    className="ml-4 w-40 h-12 bg-purple-600 text-white text-xl font-thin p-2 rounded-xl hover:bg-purple-200 hover:text-black transition-colors duration-200 focus:ring-2 focus:ring-purple-600"
                     onClick={generateItemCode}
                   >
                     Generate
@@ -110,61 +110,57 @@ function AdminAddItem() {
                 </select>
               </div>
 
-              {/* Separate Size Input Fields */}
               <div>
-                <label className="block text-gray-600 mb-2">Sizes and Quantities</label>
-                
-                <div className="mb-4">
-                  <label className="text-lg" htmlFor="quantity-S">S</label>
-                  <div className="flex items-center">
+                <label className="block text-gray-600 mb-2 text-center">Size and Quantity</label>
+                <div className="flex justify-between mb-4">
+                  {/* Small Size Input */}
+                  <div className="flex flex-col items-center">
+                    <label className="text-lg text-center" htmlFor="quantity-S">S</label>
                     <input
                       type="number"
                       id="quantity-S"
                       value={small === 0 ? '' : small}
                       onChange={(e) => setSmall(parseInt(e.target.value) || 0)}
-                      className="mx-2 w-12 text-center border border-gray-300 rounded"
+                      className="w-[4rem] h-[2rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
                       min="0"
                     />
                   </div>
-                </div>
 
-                <div className="mb-4">
-                  <label className="text-lg" htmlFor="quantity-M">M</label>
-                  <div className="flex items-center">
+                  {/* Medium Size Input */}
+                  <div className="flex flex-col items-center">
+                    <label className="text-lg text-center" htmlFor="quantity-M">M</label>
                     <input
                       type="number"
                       id="quantity-M"
                       value={medium === 0 ? '' : medium}
                       onChange={(e) => setMedium(parseInt(e.target.value) || 0)}
-                      className="mx-2 w-12 text-center border border-gray-300 rounded"
+                      className="w-[4rem] h-[2rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
                       min="0"
                     />
                   </div>
-                </div>
 
-                <div className="mb-4">
-                  <label className="text-lg" htmlFor="quantity-L">L</label>
-                  <div className="flex items-center">
+                  {/* Large Size Input */}
+                  <div className="flex flex-col items-center">
+                    <label className="text-lg text-center" htmlFor="quantity-L">L</label>
                     <input
                       type="number"
                       id="quantity-L"
                       value={large === 0 ? '' : large}
                       onChange={(e) => setLarge(parseInt(e.target.value) || 0)}
-                      className="mx-2 w-12 text-center border border-gray-300 rounded"
+                      className="w-[4rem] h-[2rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
                       min="0"
                     />
                   </div>
-                </div>
 
-                <div className="mb-4">
-                  <label className="text-lg" htmlFor="quantity-XL">XL</label>
-                  <div className="flex items-center">
+                  {/* Extra Large Size Input */}
+                  <div className="flex flex-col items-center">
+                    <label className="text-lg text-center" htmlFor="quantity-XL">XL</label>
                     <input
                       type="number"
                       id="quantity-XL"
                       value={extraLarge === 0 ? '' : extraLarge}
                       onChange={(e) => setExtraLarge(parseInt(e.target.value) || 0)}
-                      className="mx-2 w-12 text-center border border-gray-300 rounded"
+                      className="w-[4rem] h-[2rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
                       min="0"
                     />
                   </div>
@@ -186,7 +182,7 @@ function AdminAddItem() {
             <div className="text-center">
               <button 
                 type="submit"
-                className="w-64 h-12 mt-5 mb-6 bg-purple-600 text-white text-xl font-thin p-2 rounded-xl hover:bg-purple-200 hover:text-black transition-colors duration-200"
+                className="w-64 h-12 mt-5 mb-6 bg-purple-600 text-white text-xl font-thin p-2 rounded-xl hover:bg-purple-200 hover:text-black transition-colors duration-200 focus:ring-2 focus:ring-purple-600"
               >
                 Add Item
               </button>

@@ -70,17 +70,19 @@ function AdminPlaceOrder() {
               <div className="text-lg font-semibold mb-2">{itemName || 'Product Name'}</div>
 
               {/* Size Selection */}
-              <div className="flex space-x-2 mb-2">
-                <div className="text-sm font-medium">Size:</div>
-                {['S', 'M', 'L', 'XL'].map((size) => (
-                  <button
-                    key={size}
-                    className={`px-3 py-1 rounded ${selectedSize === size ? 'bg-purple-400 text-white' : 'bg-gray-200'}`}
-                    onClick={() => handleSizeSelect(size)}
-                  >
-                    {size}
-                  </button>
-                ))}
+              <div className="mb-2">
+                <div className="text-sm font-medium mb-2">Size:</div>
+                <div className="flex justify-center space-x-2"> {/* Centering with flex */}
+                  {['S', 'M', 'L', 'XL'].map((size) => (
+                    <button
+                      key={size}
+                      className={`px-3 py-1 rounded ${selectedSize === size ? 'bg-purple-400 text-white' : 'bg-gray-200'}`}
+                      onClick={() => handleSizeSelect(size)}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               {/* Quantity Input */}

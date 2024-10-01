@@ -4,7 +4,7 @@ import AdminNavigation from './Components/AdminNavigation';
 import Footer from './Components/Footer';
 import deliveryIcon from "../Images/delivery-icon.png"; // Replace with actual path if needed
 
-function Inventory() {
+function AdminInventory() {
   const navigate = useNavigate(); // Initialize useNavigate hook
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -87,7 +87,7 @@ function Inventory() {
           <table className="min-w-full table-auto border-collapse border border-gray-200">
             <thead>
               <tr className="bg-gray-100">
-                <th className="border border-gray-300 px-4 py-2 text-left">Category</th>
+                <th className="border border-gray-300 px-4 py-2 text-left">Item Name</th>
                 <th className="border border-gray-300 px-4 py-2 text-left">Current Quantity</th>
                 <th className="border border-gray-300 px-4 py-2 text-left">Max Quantity</th>
                 <th className="border border-gray-300 px-4 py-2 text-left">Quantity Status</th>
@@ -176,4 +176,4 @@ function Inventory() {
   );
 }
 
-export default Inventory;
+export default AdminInventory;
