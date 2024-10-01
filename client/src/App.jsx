@@ -54,7 +54,7 @@ function App() {
       
         {/* Inventory and Purchase Pages */}
         <Route path="/Inventory" element={<Inventory />} />
-        <Route path="/AdminPlaceOrder" element={<AdminPlaceOrder />} />
+        <Route path="/AdminPlaceOrder/:itemId" element={<AdminPlaceOrder />} />
         <Route path="/AdminBuyItem" element={<AdminBuyItem />} />
         <Route path="/UpdateAdmin/:itemId" element={<UpdateAdmin />} />
         <Route path="/AdminInventory" element={<AdminInventory/>} />

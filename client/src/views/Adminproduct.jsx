@@ -5,8 +5,6 @@ import Footer from './Components/Footer';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit, faPlus, faSearch } from '@fortawesome/free-solid-svg-icons';
-import bgimg from '../Images/itemn-remove.png';  // Placeholder Image 1
-import bgimg2 from '../Images/item-remove.png';  // Placeholder Image 2
 
 function AdminProduct() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -90,9 +88,10 @@ function AdminProduct() {
               {/* Map through products and display them */}
               {filteredProducts.map((product, index) => (
                 <div key={index} className="bg-white p-10 rounded-xl shadow flex items-center space-x-4 mt-10 w-[50rem] transition duration-300 ease-in-out transform hover:scale-105">
-                  <img src={index % 2 === 0 ? bgimg : bgimg2} alt="Product" className="h-40 w-auto rounded-xl mr-24" />
+                  {/* Use imageUrl from product data to display the correct image */}
+                  <img src={product.imgUrl} alt="Product" className="h-40 w-auto rounded-xl mr-24" />
                   <div className="flex-grow space-y-2 text-start">
-                    <p className="text-gray-600">Item Name: <span className="font-bold">{product.itemName + "-" + product.itemCode}</span></p>
+                    <p className="text-gray-600">Item Name: <span className="font-bold">{product.itemName + " - " + product.itemCode}</span></p>
                     <p className="text-gray-600">Price: <span className="font-bold">LKR {product.price}</span></p>
                   </div>
                   <div className="flex flex-col space-y-2">

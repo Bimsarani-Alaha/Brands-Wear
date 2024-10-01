@@ -1,148 +1,187 @@
-import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 import AdminNavigation from './Components/AdminNavigation';
 import Footer from './Components/Footer';
+const UpdateItemForm = () => {
+  const { itemId } = useParams();
+  const [itemData, setItemData] = useState({
+    category: "",
+    price: "",
+    itemName: "",
+    itemCode: "",
+    availability: "",
+    large: 0,
+    small: 0,
+    extraLarge: 0,
+    medium: 0,
+    imgUrl: "",
+  });
 
-function AdminPlaceOrder() {
-  const location = useLocation(); // Get the item name from navigation state
-  const { itemName } = location.state || {};
-
-  // State management for form inputs
-  const [selectedSize, setSelectedSize] = useState('');
-  const [quantity, setQuantity] = useState('');
-  const [neededDate, setNeededDate] = useState('');
-  const [supplier, setSupplier] = useState('');
-
-  // Handle size selection
-  const handleSizeSelect = (size) => {
-    setSelectedSize(size);
-  };
-
-  // Handle place order logic
-  const handlePlaceOrder = () => {
-    // Validation: check if all required fields are filled
-    if (!selectedSize || !quantity || !neededDate || !supplier) {
-      alert("Please fill in all the required fields.");
-      return;
-    }
-
-    // Here, you would typically send this data to your backend
-    const orderDetails = {
-      itemName,
-      size: selectedSize,
-      quantity,
-      neededDate,
-      supplier,
+  // Fetch data for the item
+  useEffect(() => {
+    const fetchItem = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/showCustomerById/${itemId}`);
+        setItemData(response.data);
+      } catch (error) {
+        console.error("Error fetching item data:", error);
+        alert("Failed to fetch item data. Please try again.");
+      }
     };
+    fetchItem();
+  }, [itemId]);
 
-    console.log('Placing order:', orderDetails);
-
-    // Reset form after placing order
-    alert('Order placed successfully!');
-    setSelectedSize('');
-    setQuantity('');
-    setNeededDate('');
-    setSupplier('');
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const orderData = { ...itemData, quantity: itemData.small + itemData.medium + itemData.large + itemData.extraLarge }; // Example of calculating total quantity
+    try {
+      const response = await axios.post(`http://localhost:3001/CreateOrder`, orderData);
+      if (response.status === 200) {
+        alert("Order placed successfully!");
+      } else {
+        alert("Failed to place order. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error placing order:", error);
+      alert("An error occurred while placing the order.");
+    }
   };
+  
 
-  // Handle delete logic
-  const handleDelete = () => {
-    // Reset all fields
-    setSelectedSize('');
-    setQuantity('');
-    setNeededDate('');
-    setSupplier('');
-    alert('Order has been cleared.');
+  // Handle form input changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setItemData({ ...itemData, [name]: value });
   };
 
   return (
-    <div className='min-h-screen flex flex-col'>
+    <div className="min-h-screen flex flex-col bg-gray-100">
       <AdminNavigation />
-      
-      <div className="flex-grow flex justify-center items-center p-8">
-        <div className="max-w-5xl w-full">
-          {/* Display the Item Name */}
-          <div className="text-2xl font-bold mb-4">Place Order for: {itemName || 'N/A'}</div>
-
-          {/* Product Card */}
-          <div className="bg-gray-100 p-6 rounded-lg shadow-md mb-6">
-            <div className="mb-4">
-              <div className="text-lg font-semibold mb-2">{itemName || 'Product Name'}</div>
-
-              {/* Size Selection */}
-              <div className="mb-2">
-                <div className="text-sm font-medium mb-2">Size:</div>
-                <div className="flex justify-center space-x-2"> {/* Centering with flex */}
-                  {['S', 'M', 'L', 'XL'].map((size) => (
-                    <button
-                      key={size}
-                      className={`px-3 py-1 rounded ${selectedSize === size ? 'bg-purple-400 text-white' : 'bg-gray-200'}`}
-                      onClick={() => handleSizeSelect(size)}
-                    >
-                      {size}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Quantity Input */}
-              <div className="mb-2">
-                <label className="block text-sm font-medium">Quantity:</label>
-                <input
-                  className="bg-gray-200 p-2 rounded w-full"
-                  type="number"
-                  value={quantity}
-                  onChange={(e) => setQuantity(e.target.value)}
-                  placeholder="Enter Quantity"
-                />
-              </div>
-
-              {/* Needed Date Input */}
-              <div className="mb-2">
-                <label className="block text-sm font-medium">Needed Date:</label>
-                <input
-                  className="bg-gray-200 p-2 rounded w-full"
-                  type="date"
-                  value={neededDate}
-                  onChange={(e) => setNeededDate(e.target.value)}
-                />
-              </div>
-
-              {/* Supplier Input */}
-              <div className="mb-2">
-                <label className="block text-sm font-medium">Supplier:</label>
-                <input
-                  className="bg-gray-200 p-2 rounded w-full"
-                  type="text"
-                  value={supplier}
-                  onChange={(e) => setSupplier(e.target.value)}
-                  placeholder="Supplier Name"
-                />
-              </div>
-            </div>
-
-            {/* Buttons */}
-            <div className="flex justify-between">
-              <button
-                className="bg-purple-500 text-white px-4 py-2 rounded-md"
-                onClick={handlePlaceOrder}
-              >
-                +Place Order
-              </button>
-              <button
-                className="bg-red-500 text-white px-4 py-2 rounded-md"
-                onClick={handleDelete}
-              >
-                Delete
-              </button>
-            </div>
+      <div className="flex-grow flex justify-center items-center">
+        <div className="bg-white shadow-lg rounded-lg p-8 max-w-2xl w-full mt-10 mb-20">
+      <h2 className="text-2xl font-bold text-center mb-4">Place Order</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-4">
+          <label className="block text-gray-700 font-semibold mb-2">Item Name:</label>
+          <input
+            type="text"
+            name="itemName"
+            value={itemData.itemName}
+            onChange={handleInputChange}
+            className="w-[20rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600" 
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 font-semibold mb-2">Category:</label>
+          <input
+            type="text"
+            name="category"
+            value={itemData.category}
+            onChange={handleInputChange}
+            className="w-[20rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600" 
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 font-semibold mb-2">Price:</label>
+          <input
+            type="number"
+            name="price"
+            value={itemData.price}
+            onChange={handleInputChange}
+            className="w-[20rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600" 
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 font-semibold mb-2">Item Code:</label>
+          <input
+            type="text"
+            name="itemCode"
+            value={itemData.itemCode}
+            onChange={handleInputChange}
+            className="w-[20rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600" 
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 font-semibold mb-2">Availability:</label>
+          <input
+            type="text"
+            name="availability"
+            value={itemData.availability}
+            onChange={handleInputChange}
+            className="w-[20rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600" 
+            required
+          />
+        </div>
+        <div className="mb-4 grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-gray-700 font-semibold mb-2">Small:</label>
+            <input
+              type="number"
+              name="small"
+              value={itemData.small}
+              onChange={handleInputChange}
+              className="w-[10rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600" 
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 font-semibold mb-2">Medium:</label>
+            <input
+              type="number"
+              name="medium"
+              value={itemData.medium}
+              onChange={handleInputChange}
+              className="w-[10rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600" 
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 font-semibold mb-2">Large:</label>
+            <input
+              type="number"
+              name="large"
+              value={itemData.large}
+              onChange={handleInputChange}
+              className="w-[10rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600" 
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 font-semibold mb-2">Extra Large:</label>
+            <input
+              type="number"
+              name="extraLarge"
+              value={itemData.extraLarge}
+              onChange={handleInputChange}
+              className="w-[10rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600" 
+            />
           </div>
         </div>
-      </div>
-
-      <Footer />
+        <div className="mb-4">
+          <label className="block text-gray-700 font-semibold mb-2">Image URL:</label>
+          <input
+            type="text"
+            name="imgUrl"
+            value={itemData.imgUrl}
+            onChange={handleInputChange}
+            className="w-[20rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600" 
+          />
+        </div>
+        <button
+          type="submit"
+          className="w-64 h-12 mt-5 mb-6 bg-purple-600 text-white text-xl font-thin p-2 rounded-xl hover:bg-purple-200 hover:text-black transition-colors duration-200 focus:ring-2 focus:ring-purple-600"
+        >
+          + Place Order
+        </button>
+      </form>
     </div>
+    <footer/>
+    </div>
+  </div>
   );
-}
+};
 
-export default AdminPlaceOrder;
+export default UpdateItemForm;

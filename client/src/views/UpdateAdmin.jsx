@@ -11,11 +11,11 @@ function UpdateAdmin() {
     itemName: '',
     category: '',
     price: 0,
-    availability: '',
     small: 0,
     medium: 0,
     large: 0,
     extraLarge: 0,
+    imgUrl: '', // Add imgUrl to the state
   });
 
   // Fetch item data by ID when the component mounts
@@ -58,7 +58,7 @@ function UpdateAdmin() {
           <h1 className="text-2xl font-bold text-center mb-6">Update Item</h1>
           <div className="flex">
             <div className="mr-8">
-              <img className="w-40 h-60 object-cover rounded-md" src={dressImage} alt="Product" />
+              <img className="w-40 h-60 object-cover rounded-md" src={itemData.imgUrl || dressImage} alt="Product" /> {/* Use the uploaded image URL */}
             </div>
             <div className="flex-1">
               {/* Item Name */}
@@ -92,6 +92,18 @@ function UpdateAdmin() {
                   value={itemData.price}
                   onChange={handleInputChange}
                   className="w-[20rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
+                />
+              </div>
+              {/* Image URL */}
+              <div className="mb-4">
+                <label className="block text-gray-700 mb-2 font-medium">Image URL</label>
+                <input
+                  type="text"
+                  name="imgUrl"
+                  value={itemData.imgUrl}
+                  onChange={handleInputChange}
+                  className="w-[20rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
+                  placeholder="Enter image URL"
                 />
               </div>
               {/* Sizes */}
