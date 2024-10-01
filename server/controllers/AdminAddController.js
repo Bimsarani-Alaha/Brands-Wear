@@ -30,4 +30,36 @@ router.get("/showCustomerById/:itemId", (req, res) => {
     .catch(err => res.status(500).json(err));
 });
 
+// Checkout route
+router.post('/checkout', async (req, res) => {
+  const { cartItems } = req.body;
+
+  try {
+    for (const cartItem of cartItems) {
+      // Find the item in the item database
+      const item = await Item.findById(cartItem.itemId);
+
+      // Deduct the quantity for the correct size
+      if (cartItem.size === 'large') {
+        item.large -= cartItem.quantity;
+      } else if (cartItem.size === 'small') {
+        item.small -= cartItem.quantity;
+      } else if (cartItem.size === 'medium') {
+        item.medium -= cartItem.quantity;
+      } else if (cartItem.size === 'extraLarge') {
+        item.extraLarge -= cartItem.quantity;
+      }
+
+      // Save the updated item to the database
+      await item.save();
+    }
+
+    res.status(200).json({ message: 'Checkout successful!' });
+  } catch (error) {
+    console.error('Error processing checkout:', error);
+    res.status(500).json({ error: 'Checkout failed, please try again.' });
+  }
+});
+
 module.exports = router;
+
