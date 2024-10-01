@@ -1,12 +1,46 @@
-import React from 'react';
-import bgimg from '../Images/background-image.png'; // If needed
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Navigation from './Components/Navigation';
 import Footer from './Components/Footer';
-import sampleImage1 from '../Images/sample-image1.jpeg'; // Replace with the actual image path
-import sampleImage2 from '../Images/sample-image2.png'; // Replace with the actual image path
 import { Link } from 'react-router-dom';
 
 function SupplierProduct() {
+  const [products, setProducts] = useState([]); // State to hold the product data
+  const [loading, setLoading] = useState(true); // State to show loading state
+
+  useEffect(() => {
+    // Fetch products from the backend
+    axios.get('http://localhost:3001/showSupplierProducts')
+      .then(response => {
+        setProducts(response.data); // Set fetched products into state
+        setLoading(false); // Turn off loading once data is fetched
+      })
+      .catch(error => {
+        console.error("There was an error fetching the products!", error);
+        setLoading(false); // Turn off loading even if there's an error
+      });
+  }, []); // Empty dependency array means this runs once when the component mounts
+
+  // Handle delete product
+  const handleDelete = (productId) => {
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      axios.delete(`http://localhost:3001/deleteProduct/${productId}`)
+        .then(response => {
+          alert("Product deleted successfully!");
+          // Remove the deleted product from the local state
+          setProducts(products.filter(product => product._id !== productId));
+        })
+        .catch(error => {
+          console.error("There was an error deleting the product!", error);
+          alert("Failed to delete the product.");
+        });
+    }
+  };
+
+  if (loading) {
+    return <div>Loading products...</div>; // Simple loading message
+  }
+
   return (
     <div className='min-h-screen flex flex-col'>
       <Navigation />
@@ -14,41 +48,32 @@ function SupplierProduct() {
       {/* Main Content */}
       <div className="flex-grow flex justify-center items-center p-8">
         <div className="max-w-5xl w-full">
-          {/* Product Card 1 */}
-          <div className="bg-gray-100 p-4 rounded-lg shadow-md flex mb-6">
-            <img className="w-32 h-32 rounded-md object-cover mr-4" src={sampleImage1} alt="short frock" />
-            <div className="flex-1">
-              <div className="text-lg font-semibold mb-2">Category: short frock</div>
-              <div className="text-sm mb-2">Size: S</div>
-              <div className="text-sm mb-2">Prize: LKR.4500.00</div>
-              <div className="text-sm mb-4">Quantity: 10</div>
-              <div className="flex space-x-4">
-                {/* Link to UpdateItem Page */}
-                <Link to="/UpdateItem">
-                  <button className="bg-purple-500 text-white px-4 py-2 rounded-md">Update</button>
-                </Link>
-                <button className="bg-red-500 text-white px-4 py-2 rounded-md">Delete</button>
-              </div>
-            </div>   
-          </div>
-
-          {/* Product Card 2 */}
-          <div className="bg-gray-100 p-4 rounded-lg shadow-md flex mb-6">
-            <img className="w-32 h-32 rounded-md object-cover mr-4" src={sampleImage2} alt="Long Frocks" />
-            <div className="flex-1">
-              <div className="text-lg font-semibold mb-2">Category: Long Frocks</div>
-              <div className="text-sm mb-2">Size: L</div>
-              <div className="text-sm mb-2">Prize: LKR.6200.00</div>
-              <div className="text-sm mb-4">Quantity: 20</div>
-              <div className="flex space-x-4">
-                {/* Link to UpdateItem Page */}
-                <Link to="/UpdateItem">
-                  <button className="bg-purple-500 text-white px-4 py-2 rounded-md">Update</button>
-                </Link>
-                <button className="bg-red-500 text-white px-4 py-2 rounded-md">Delete</button>
+          {products.map(product => (
+            <div key={product._id} className="bg-gray-100 p-4 rounded-lg shadow-md flex mb-6">
+              <img className="w-32 h-32 rounded-md object-cover mr-4" src={product.imageURL || 'placeholder.jpg'} alt={product.itemName} />
+              <div className="flex-1">
+                <div className="text-lg font-semibold mb-2">Category: {product.Category}</div>
+                <div className="text-sm mb-2">Small: {product.small}</div>
+                <div className="text-sm mb-2">Medium: {product.medium}</div>
+                <div className="text-sm mb-2">Large: {product.large}</div>
+                <div className="text-sm mb-2">Extra Large: {product.extraLarge}</div>
+                <div className="text-sm mb-2">Price: LKR {product.Price}</div>
+                <div className="text-sm mb-4">Item Code: {product.itemCode}</div>
+                <div className="flex space-x-4">
+                  {/* Link to UpdateItem Page */}
+                  <Link to={`/UpdateItem/${product._id}`}>
+                    <button className="bg-purple-500 text-white px-4 py-2 rounded-md">Update</button>
+                  </Link>
+                  <button
+                    className="bg-red-500 text-white px-4 py-2 rounded-md"
+                    onClick={() => handleDelete(product._id)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
+          ))}
 
           {/* Add Item Button */}
           <div className="flex justify-center mt-8">
