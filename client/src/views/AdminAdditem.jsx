@@ -11,6 +11,7 @@ function AdminAddItem() {
   const [availability, setAvailability] = useState("Available");
   const [price, setPrice] = useState(""); 
   const [itemCode, setItemCode] = useState(""); 
+  const [imgUrl, setImageUrl] = useState(""); // State for image URL
   const [previousCodes, setPreviousCodes] = useState(new Set());
 
   // Individual states for sizes
@@ -38,6 +39,7 @@ function AdminAddItem() {
       availability,
       itemCode,
       itemName,
+      imgUrl, // Include imageUrl in itemData
       small,
       medium,
       large,
@@ -64,8 +66,9 @@ function AdminAddItem() {
           
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-4">
+
               <div>
-                <label className="block text-gray-600 mb-2 text-center" htmlFor="itemCode">Item Code</label>
+                <label className="block text-gray-600 mb-2" htmlFor="itemCode">Item Code</label>
                 <div className="flex justify-center items-center">
                   <input 
                     type="text" 
@@ -115,7 +118,7 @@ function AdminAddItem() {
                 <div className="flex justify-between mb-4">
                   {/* Small Size Input */}
                   <div className="flex flex-col items-center">
-                    <label className="text-lg text-center" htmlFor="quantity-S">S</label>
+                    <label className="block text-gray-600 mb-1" htmlFor="quantity-S">Small</label>
                     <input
                       type="number"
                       id="quantity-S"
@@ -128,7 +131,7 @@ function AdminAddItem() {
 
                   {/* Medium Size Input */}
                   <div className="flex flex-col items-center">
-                    <label className="text-lg text-center" htmlFor="quantity-M">M</label>
+                    <label className="block text-gray-600 mb-1" htmlFor="quantity-M">Medium</label>
                     <input
                       type="number"
                       id="quantity-M"
@@ -141,7 +144,7 @@ function AdminAddItem() {
 
                   {/* Large Size Input */}
                   <div className="flex flex-col items-center">
-                    <label className="text-lg text-center" htmlFor="quantity-L">L</label>
+                    <label className="block text-gray-600 mb-1" htmlFor="quantity-L">Large</label>
                     <input
                       type="number"
                       id="quantity-L"
@@ -154,7 +157,7 @@ function AdminAddItem() {
 
                   {/* Extra Large Size Input */}
                   <div className="flex flex-col items-center">
-                    <label className="text-lg text-center" htmlFor="quantity-XL">XL</label>
+                    <label className="block text-gray-600 mb-1" htmlFor="quantity-XL">Extra Large</label>
                     <input
                       type="number"
                       id="quantity-XL"
@@ -177,15 +180,26 @@ function AdminAddItem() {
                   className="w-[20rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600" 
                 />
               </div>
-            </div>
 
-            <div className="text-center">
-              <button 
-                type="submit"
-                className="w-64 h-12 mt-5 mb-6 bg-purple-600 text-white text-xl font-thin p-2 rounded-xl hover:bg-purple-200 hover:text-black transition-colors duration-200 focus:ring-2 focus:ring-purple-600"
-              >
-                Add Item
-              </button>
+              <div>
+                <label className="block text-gray-600 mb-2" htmlFor="imageUrl">Image URL</label>
+                <input 
+                  type="text" 
+                  id="imageUrl" 
+                  value={imgUrl}
+                  onChange={(e) => setImageUrl(e.target.value)} // Handle image URL change
+                  className="w-[20rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600" 
+                />
+              </div>
+
+              <div className="text-center">
+                <button 
+                  type="submit"
+                  className="w-64 h-12 mt-5 mb-6 bg-purple-600 text-white text-xl font-thin p-2 rounded-xl hover:bg-purple-200 hover:text-black transition-colors duration-200 focus:ring-2 focus:ring-purple-600"
+                >
+                  Add Item
+                </button>
+              </div>
             </div>
           </form>
         </div>

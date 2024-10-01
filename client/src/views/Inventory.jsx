@@ -1,175 +1,183 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom'; 
+import axios from 'axios';
+import jsPDF from 'jspdf';
 import AdminNavigation from './Components/AdminNavigation';
 import Footer from './Components/Footer';
-import deliveryIcon from "../Images/delivery-icon.png"; // Replace with actual path if needed
+import deliveryIcon from "../Images/delivery-icon.png"; 
+import logo from "../Images/logo.png"; // Import your logo image
 
 function Inventory() {
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const navigate = useNavigate(); 
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [currentQuantity, setCurrentQuantity] = useState('');
-  const [maxQuantity, setMaxQuantity] = useState('');
-  const [selectedReportCategory, setSelectedReportCategory] = useState('All Categories'); // State for the dropdown
+  const [inventoryData, setInventoryData] = useState([]);
+  const [selectedReportCategory, setSelectedReportCategory] = useState('All Categories'); 
 
-  // Sample inventory data
-  const inventoryData = [
-    { id: 1, name: 'Long Frocks', currentQuantity: 100, maxQuantity: 100 },
-    { id: 2, name: 'Short Frocks', currentQuantity: 60, maxQuantity: 100 },
-    { id: 3, name: 'Party Frocks', currentQuantity: 30, maxQuantity: 100 },
-    { id: 4, name: 'Kids Frocks', currentQuantity: 10, maxQuantity: 100 },
-  ];
+  useEffect(() => {
+    // Fetch inventory data from the API
+    axios.get('http://localhost:3001/showCustomer')
+      .then(response => {
+        setInventoryData(response.data);
+      })
+      .catch(error => console.error('Error fetching data:', error));
+  }, []);
 
-  // Event handler for placing an order
+  // Filter inventory based on selected category
+  const filteredInventory = selectedReportCategory === 'All Categories' 
+    ? inventoryData 
+    : inventoryData.filter(item => item.category === selectedReportCategory);
+
   const handlePlaceOrder = (itemName) => {
-    // Navigate to the AdminPlaceOrder page and pass the item name as state
     navigate('/AdminPlaceOrder', { state: { itemName } });
   };
 
-  // Event handler for opening the update modal
-  const handleOpenUpdateModal = (item) => {
-    setSelectedItem(item);
-    setCurrentQuantity(item.currentQuantity);
-    setMaxQuantity(item.maxQuantity);
-    setModalOpen(true);
+  const handleDeleteItem = (itemId) => {
+    axios.delete(`http://localhost:3001/deleteItem/${itemId}`)
+      .then(response => {
+        // Update state to remove the deleted item
+        setInventoryData(inventoryData.filter(item => item._id !== itemId));
+      })
+      .catch(error => console.error('Error deleting item:', error));
   };
 
-  // Event handler for updating quantities
-  const handleUpdateQuantity = () => {
-    // Update logic can be added here (e.g., API call to update the item in the database)
-    console.log('Updated item:', selectedItem.name, {
-      currentQuantity,
-      maxQuantity,
-    });
-    // Close modal after updating
-    setModalOpen(false);
-  };
+  const handleGenerateReport = (item) => {
+    const doc = new jsPDF();
 
-  // Event handler for generating reports
-  const handleGenerateReport = () => {
-    console.log(`Generating report for: ${selectedReportCategory}`);
-    // Logic for generating the report can be added here
+    // Set overall styling
+    doc.setFillColor(255, 255, 255); // Background color
+    doc.rect(0, 0, 210, 297, 'F'); // Fill the whole page
+
+    // Add a border to the tag
+    doc.setLineWidth(2);
+    doc.rect(10, 10, 190, 277); // Border for the clothing tag
+
+    // Add the logo
+    doc.addImage(logo, 'PNG', 150, 20, 40, 40); // Adjust position and size as needed
+
+    // Add item details
+    doc.setFontSize(22);
+    doc.setFont("Helvetica", "bold");
+    doc.text('Premium Clothing Tag', 15, 30); // Title
+
+    doc.setFontSize(14);
+    doc.setFont("Helvetica", "normal");
+    doc.text(`Item Name: ${item.itemName}`, 15, 50);
+    doc.text(`Item Code: ${item.itemCode}`, 15, 70);
+    doc.text(`Price: LKR ${item.price}`, 15, 90); // Updated price display
+    doc.text(`Date: ${new Date(item.createdAt).toLocaleDateString()}`, 15, 110);
+
+    // Add barcode (visual representation)
+    doc.setFontSize(18);
+    doc.text("| | | | | | | | | |", 15, 235); // Simple barcode placeholder
+
+    // Save the PDF
+    doc.save(`${item.itemName}_Report.pdf`);
   };
 
   return (
-    <div className='min-h-screen flex flex-col'>
+    <div className="min-h-screen flex flex-col bg-gray-50">
       <AdminNavigation />
       
-      {/* Main Content */}
       <div className="flex-grow flex justify-center items-center p-8">
-        <div className="max-w-5xl w-full bg-white p-6 rounded-lg shadow-lg">
+        <div className="w-full max-w-7xl bg-white p-8 rounded-xl shadow-lg">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold">All Categories</h2>
+            <h2 className="text-3xl font-semibold text-gray-800">All Categories</h2>
             
-            {/* Dropdown for report selection */}
-            <select
-              value={selectedReportCategory}
-              onChange={(e) => setSelectedReportCategory(e.target.value)}
-              className="border border-gray-300 rounded-md p-2 mr-2"
-            >
-              <option value="Long Frocks">All Category</option>
-              <option value="Long Frocks">Long Frocks</option>
-              <option value="Short Frocks">Short Frocks</option>
-              <option value="Party Frocks">Party Frocks</option>
-              <option value="Kids Frocks">Kids Frocks</option>
-            </select>
-
-            <button 
-              className="bg-gray-300 px-4 py-2 rounded-md text-black"
-              onClick={handleGenerateReport} // Add click handler for generating report
-            >
-              Generate Report
-            </button>
+            <div className="flex space-x-4">
+              <select
+                value={selectedReportCategory}
+                onChange={(e) => setSelectedReportCategory(e.target.value)}
+                className="border border-gray-300 rounded-md p-2 focus:ring focus:ring-purple-300"
+              >
+                <option value="All Categories">All Categories</option>
+                <option value="Long Frocks">Long Frocks</option>
+                <option value="Short Frocks">Short Frocks</option>
+                <option value="Party Frocks">Party Frocks</option>
+                <option value="Kids Frocks">Kids Frocks</option>
+              </select>
+            </div>
           </div>
           
-          {/* Inventory Table */}
-          <table className="min-w-full table-auto border-collapse border border-gray-200">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="border border-gray-300 px-4 py-2 text-left">Category</th>
-                <th className="border border-gray-300 px-4 py-2 text-left">Current Quantity</th>
-                <th className="border border-gray-300 px-4 py-2 text-left">Max Quantity</th>
-                <th className="border border-gray-300 px-4 py-2 text-left">Quantity Status</th>
-                <th className="border border-gray-300 px-4 py-2 text-left">Place Order</th>
-                <th className="border border-gray-300 px-4 py-2 text-left">Update</th>
-              </tr>
-            </thead>
-            <tbody>
-              {inventoryData.map(item => (
-                <tr key={item.id}>
-                  <td className="border border-gray-300 px-4 py-2">{item.name}</td>
-                  <td className="border border-gray-300 px-4 py-2">{item.currentQuantity}</td>
-                  <td className="border border-gray-300 px-4 py-2">{item.maxQuantity}</td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    <span className={item.currentQuantity < 20 ? "bg-red-500 text-white px-2 py-1 rounded-md" : "bg-green-500 text-white px-2 py-1 rounded-md"}>
-                      {item.currentQuantity < 20 ? 'Low' : 'Fine'}
-                    </span>
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    <button
-                      className="flex items-center bg-gray-300 px-3 py-2 rounded-md"
-                      onClick={() => handlePlaceOrder(item.name)}
-                    >
-                      <img src={deliveryIcon} alt="Order Icon" className="w-5 h-5 mr-2" />
-                      Place Order
-                    </button>
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    <button
-                      className="flex items-center bg-purple-300 px-3 py-2 rounded-md"
-                      onClick={() => handleOpenUpdateModal(item)}
-                    >
-                      Update
-                    </button>
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="min-w-full table-auto border-collapse border border-gray-300">
+              <thead>
+                <tr className="bg-purple-100">
+                  <th className="border border-gray-300 px-6 py-3 text-left">Image</th>
+                  <th className="border border-gray-300 px-6 py-3 text-left">Category</th>
+                  <th className="border border-gray-300 px-6 py-3 text-left">Price</th>
+                  <th className="border border-gray-300 px-6 py-3 text-left">Item Name</th>
+                  <th className="border border-gray-300 px-6 py-3 text-left">Status</th>
+                  <th className="border border-gray-300 px-6 py-3 text-left">Small</th>
+                  <th className="border border-gray-300 px-6 py-3 text-left">Medium</th>
+                  <th className="border border-gray-300 px-6 py-3 text-left">Large</th>
+                  <th className="border border-gray-300 px-6 py-3 text-left">Extra Large</th>
+                  <th className="border border-gray-300 px-6 py-3 text-left">Generate Report</th>
+                  <th className="border border-gray-300 px-6 py-3 text-left">Place Order</th>
+                  <th className="border border-gray-300 px-6 py-3 text-left">Delete</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Update Modal */}
-      {modalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-xl font-bold mb-4">Update {selectedItem.name}</h2>
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-1">Current Quantity:</label>
-              <input
-                type="number"
-                value={currentQuantity}
-                onChange={(e) => setCurrentQuantity(e.target.value)}
-                className="w-[4rem] h-[2rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-1">Max Quantity:</label>
-              <input
-                type="number"
-                value={maxQuantity}
-                onChange={(e) => setMaxQuantity(e.target.value)}
-                className="w-[4rem] h-[2rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
-              />
-            </div>
-            <div className="flex justify-end">
-              <button
-                className="bg-purple-500 text-white px-4 py-2 rounded-md mr-2"
-                onClick={handleUpdateQuantity}
-              >
-                Update
-              </button>
-              <button
-                className="bg-gray-300 text-black px-4 py-2 rounded-md"
-                onClick={() => setModalOpen(false)}
-              >
-                Cancel
-              </button>
-            </div>
+              </thead>
+              <tbody>
+                {Array.isArray(filteredInventory) && filteredInventory.length > 0 ? (
+                  filteredInventory.map(item => (
+                    <tr key={item._id} className="hover:bg-gray-50">
+                      <td className="border border-gray-300 px-6 py-3">
+                        <img src={item.imgUrl} alt={item.itemName} className="w-16 h-16 object-cover rounded-md" />
+                      </td>
+                      <td className="border border-gray-300 px-6 py-3">{item.category}</td>
+                      <td className="border border-gray-300 px-6 py-3">LKR {item.price}</td> {/* Updated price display */}
+                      <td className="border border-gray-300 px-6 py-3">{item.itemName}</td>
+                      <td className="border border-gray-300 px-6 py-3">{item.availability}</td>
+                      <td className="border border-gray-300 px-6 py-3">
+                        {item.small} {item.small < 10 && <span className="text-red-500 ml-2">Low</span>}
+                      </td>
+                      <td className="border border-gray-300 px-6 py-3">
+                        {item.medium} {item.medium < 10 && <span className="text-red-500 ml-2">Low</span>}
+                      </td>
+                      <td className="border border-gray-300 px-6 py-3">
+                        {item.large} {item.large < 10 && <span className="text-red-500 ml-2">Low</span>}
+                      </td>
+                      <td className="border border-gray-300 px-6 py-3">
+                        {item.extraLarge} {item.extraLarge < 10 && <span className="text-red-500 ml-2">Low</span>}
+                      </td>
+                      <td className="border border-gray-300 px-6 py-3">
+                        <button
+                          className="bg-purple-500 text-white px-4 py-2 rounded-md shadow hover:bg-purple-600 transition duration-300"
+                          onClick={() => handleGenerateReport(item)}
+                        >
+                          Generate Report
+                        </button>
+                      </td>
+                      <td className="border border-gray-300 px-6 py-3">
+                        <Link to={`/AdminPlaceOrder/${item._id}`}>
+                          <button
+                            className="flex items-center bg-gray-300 text-black px-4 py-2 rounded-md shadow hover:bg-gray-400 transition duration-300"
+                            onClick={() => handlePlaceOrder(item.itemName)}
+                          >
+                            <img src={deliveryIcon} alt="Order Icon" className="w-5 h-5 mr-2" />
+                            Order
+                          </button>
+                        </Link>
+                      </td>
+                      <td className="border border-gray-300 px-6 py-3">
+                        <button
+                          className="bg-red-500 text-white px-4 py-2 rounded-md shadow hover:bg-red-600 transition duration-300"
+                          onClick={() => handleDeleteItem(item._id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="12" className="text-center py-4">No items found</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
-      )}
+      </div>
 
       <Footer />
     </div>

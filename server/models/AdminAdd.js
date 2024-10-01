@@ -11,7 +11,7 @@ const itemSchema = new mongoose.Schema({
     type: String,
     default: "Available"
   },
-  imageUrl: String,
+  imgUrl: String,
   large: Number,
   small: Number,
   extraLarge: Number,
