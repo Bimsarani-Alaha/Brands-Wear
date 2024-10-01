@@ -37,7 +37,7 @@ function App() {
         <Route path="/SupplierProduct/:userId" element={<SupplierProduct />} />
 
         {/* Add Item Page */}
-        <Route path="/AddItem" element={<AddItem />} />
+        <Route path="/AddItem/:userId" element={<AddItem />} />
 
         {/* Other Routes */}
         <Route path="/Login" element={<Login />} />
@@ -46,7 +46,7 @@ function App() {
         <Route path="/Adminproduct" element={<Adminproduct />} />
         <Route path="/AdminPage" element={<AdminPage />} />
         <Route path="/UpdateItem/:itemId" element={<UpdateItem />} />
-        <Route path="/GenerateReport" element={<GenerateReport />} />
+        <Route path="/GenerateReport/:userId" element={<GenerateReport />} />
         <Route path="/OrderNotification" element={<OrderNotification />} />
         <Route path="/AcceptAdminOrder" element={<AcceptAdminOrder />} />
         {/* Update Item Pages */}
