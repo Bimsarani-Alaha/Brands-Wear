@@ -123,6 +123,26 @@ router.get("/ShowCart/:userId", async (req, res) => {
       res.status(500).json({ message: 'Failed to delete cart item' });
     }
   });
+
+  router.delete('/checkout', async (req, res) => {
+    const { cartItemIds } = req.body; // Array of cart item ObjectIds
+  
+    try {
+      // Delete all cart items by their ObjectId
+      const deletedItems = await Cart.deleteMany({
+        _id: { $in: cartItemIds }
+      });
+  
+      if (deletedItems.deletedCount > 0) {
+        res.status(200).json({ message: 'Checkout successful. Selected items deleted from cart.' });
+      } else {
+        res.status(404).json({ message: 'No items found to delete.' });
+      }
+    } catch (err) {
+      console.error('Error during checkout:', err);
+      res.status(500).json({ message: 'Failed to complete checkout. Please try again later.' });
+    }
+  });
   
 router.get("ShowCart/:userId")
 module.exports = router;

@@ -58,7 +58,7 @@ const UserHome = () => {
           <select
             value={selectedCategory}
             onChange={handleCategoryChange}
-            className="w-full md:w-1/3 p-2 border border-purple-800 rounded-lg focus:outline-none focus:border-purple-400"
+            className="w-full md:w-1/3 p-2 border border-purple-800 rounded-lg focus:outline-none focus:border-purple-800"
           >
             <option value="All">All Categories</option>
             <option value="Long Frocks">Long Frocks</option>
