@@ -26,10 +26,25 @@ function AdminProduct() {
     product.category?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     product.itemCode?.toLowerCase().includes(searchQuery.toLowerCase())
   );
-  
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
+  };
+
+  // Function to handle delete action
+  const handleDelete = (productId) => {
+    if (window.confirm("Are you sure you want to delete this item?")) {
+      axios.delete(`http://localhost:3001/deleteItem/${productId}`)
+        .then(response => {
+          alert('Item deleted successfully!');
+          // Update the products state to remove the deleted item
+          setProducts(prevProducts => prevProducts.filter(product => product._id !== productId));
+        })
+        .catch(error => {
+          console.error('Error deleting item:', error);
+          alert('Failed to delete item.');
+        });
+    }
   };
 
   return (
@@ -61,6 +76,16 @@ function AdminProduct() {
           <div className="flex flex-col items-center space-x-4 bg-[#D9D9D9] ml-52 mr-52 mt-10 rounded-xl py-10 mb-20">
             <h1 className="text-4xl font-thin text-gray-700 mb-6">Add Your Product Here</h1>
 
+            {/* Add Item Button */}
+            <div className="text-center mb-6">
+              <Link to='/AdminAddItem'>
+                <button className="bg-purple-700 mt-5 text-white text-xl font-thin px-6 py-2 w-40 h-14 rounded-lg hover:bg-white hover:text-black transition duration-300 ease-in-out flex items-center justify-center">
+                  <FontAwesomeIcon icon={faPlus} className="mr-2" />
+                  Add Item
+                </button>
+              </Link>
+            </div>
+
             <div className="w-full flex flex-col items-center space-y-6">
               {/* Map through products and display them */}
               {filteredProducts.map((product, index) => (
@@ -78,23 +103,15 @@ function AdminProduct() {
                       </button>
                     </Link>
                     
-                    <button className="bg-red-600 border border-red-700 px-4 py-2 rounded-md hover:bg-white hover:text-black text-white font-semibold transition-all duration-300 ease-in-out shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                    <button 
+                      onClick={() => handleDelete(product._id)} // Call handleDelete on click
+                      className="bg-red-600 border border-red-700 px-4 py-2 rounded-md hover:bg-white hover:text-black text-white font-semibold transition-all duration-300 ease-in-out shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
                       <FontAwesomeIcon icon={faTrash} className="mr-2" />
                       Delete
                     </button>
                   </div>
                 </div>
               ))}
-
-              {/* Add Item Button */}
-              <div className="text-center mt-10">
-                <Link to='/AdminAddItem'>
-                  <button className="bg-purple-700 mt-5 text-white text-xl font-thin px-6 py-2 w-40 h-14 rounded-lg hover:bg-white hover:text-black transition duration-300 ease-in-out flex items-center justify-center">
-                    <FontAwesomeIcon icon={faPlus} className="mr-2" />
-                    Add Item
-                  </button>
-                </Link>
-              </div>
             </div>
 
           </div>

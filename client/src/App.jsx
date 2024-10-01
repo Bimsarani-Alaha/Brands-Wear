@@ -18,7 +18,7 @@ import Inventory from './views/Inventory';
 import AdminPlaceOrder from './views/AdminPlaceOrder';
 import AdminBuyItem from './views/AdminBuyItem'; // Updated Route
 import UpdateAdmin from './views/UpdateAdmin';
-
+import AdminInventory from './views/AdminInventory';
 
 function App() {
   return (
@@ -52,6 +52,7 @@ function App() {
         <Route path="/AdminPlaceOrder" element={<AdminPlaceOrder />} />
         <Route path="/AdminBuyItem" element={<AdminBuyItem />} />
         <Route path="/UpdateAdmin/:itemId" element={<UpdateAdmin />} />
+        <Route path="/AdminInventory" element={<AdminInventory/>} />
       </Routes>
     </Router>
   );
