@@ -19,6 +19,11 @@ import AdminPlaceOrder from './views/AdminPlaceOrder';
 import AdminBuyItem from './views/AdminBuyItem'; // Updated Route
 import UpdateAdmin from './views/UpdateAdmin';
 import AdminInventory from './views/AdminInventory';
+import CustomerSignUp from './views/CustomerSignUp';
+import UserHome from './views/UserHome';
+import UserProfile from './views/UserProfile';
+import ItemPage from './views/ItemPage';
+import MyCart from './views/MyCart';
 
 function App() {
   return (
@@ -40,7 +45,7 @@ function App() {
         <Route path="/AdminAdditem" element={<AdminAdditem />} />
         <Route path="/Adminproduct" element={<Adminproduct />} />
         <Route path="/AdminPage" element={<AdminPage />} />
-        <Route path="/UpdateItem" element={<UpdateItem />} />
+        <Route path="/UpdateItem/:itemId" element={<UpdateItem />} />
         <Route path="/GenerateReport" element={<GenerateReport />} />
         <Route path="/OrderNotification" element={<OrderNotification />} />
         <Route path="/AcceptAdminOrder" element={<AcceptAdminOrder />} />
@@ -53,6 +58,11 @@ function App() {
         <Route path="/AdminBuyItem" element={<AdminBuyItem />} />
         <Route path="/UpdateAdmin/:itemId" element={<UpdateAdmin />} />
         <Route path="/AdminInventory" element={<AdminInventory/>} />
+        <Route path="/CustomerSignUp" element={<CustomerSignUp />} />
+        <Route path="/UserHome/:userId" element={<UserHome />} />
+        <Route path="/UserProfile/:userId" element={<UserProfile />} />
+        <Route path="/ItemPage/:itemId/:userId" element={<ItemPage />} />
+        <Route path="/MyCart/:userId" element={<MyCart />} />
       </Routes>
     </Router>
   );

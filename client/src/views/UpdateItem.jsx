@@ -1,15 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import Navigation from './Components/Navigation';
 import Footer from './Components/Footer';
-import axios from 'axios';
 
 function UpdateItem() {
+  const { itemId } = useParams(); // Get the itemId from URL
+
   const [formData, setFormData] = useState({
-    Category: 'Frocks',
-    Size: 'M',
-    Prize: '3000',
-    Quantity: 1
+    itemCode: '',
+    itemName: '',
+    Category: 'Long Frocks',
+    small: 0,
+    medium: 0,
+    large: 0,
+    extraLarge: 0,
+    Price: ''
   });
+
+  const [previousCodes, setPreviousCodes] = useState(new Set());
+
+  // Fetch product details when the component mounts
+  useEffect(() => {
+    axios.get(`http://localhost:3001/showSupplierProductsById/${itemId}`)
+      .then(response => {
+        const product = response.data;
+        setFormData({
+          itemCode: product.itemCode,
+          itemName: product.itemName,
+          Category: product.Category,
+          small: product.small,
+          medium: product.medium,
+          large: product.large,
+          extraLarge: product.extraLarge,
+          Price: product.Price
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching product:', error);
+        alert('Failed to fetch product.');
+      });
+  }, [itemId]);
+
+  const generateItemCode = () => {
+    let code;
+    do {
+      code = Math.random().toString(36).substring(2, 8).toUpperCase();
+    } while (previousCodes.has(code));
+
+    setFormData(prev => ({ ...prev, itemCode: code }));
+    setPreviousCodes(prev => new Set(prev).add(code));
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -18,24 +59,18 @@ function UpdateItem() {
     });
   };
 
-  const handleQuantityChange = (amount) => {
-    setFormData((prev) => ({
-      ...prev,
-      Quantity: Math.max(1, prev.Quantity + amount)
-    }));
+  const handleSizeChange = (e, size) => {
+    setFormData({
+      ...formData,
+      [size]: Number(e.target.value),
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3001/AddProduct', formData);
+      await axios.put(`http://localhost:3001/UpdateProduct/${formData.itemCode}`, formData);
       alert('Product updated successfully!');
-      setFormData({
-        Category: 'Frocks',
-        Size: 'M',
-        Prize: '3000',
-        Quantity: 1
-      });
     } catch (error) {
       console.error('Error updating product:', error);
       alert('Failed to update product.');
@@ -51,6 +86,36 @@ function UpdateItem() {
           <h2 className="text-2xl font-bold mb-6 text-center">Update Item</h2>
           
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Item Code */}
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="itemCode">
+                Item Code
+              </label>
+              <input
+                type="text"
+                name="itemCode"
+                value={formData.itemCode}
+                readOnly
+                className="w-full p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
+              />
+            </div>
+
+            {/* Item Name */}
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="itemName">
+                Item Name
+              </label>
+              <input
+                type="text"
+                name="itemName"
+                value={formData.itemName}
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
+                placeholder="Enter item name"
+                required
+              />
+            </div>
+
             {/* Category */}
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="Category">
@@ -60,7 +125,7 @@ function UpdateItem() {
                 name="Category" 
                 value={formData.Category} 
                 onChange={handleChange}
-                className="w-40 p-2 border rounded"
+                className="w-full p-2 border rounded"
               >
                 <option value="Long Frocks">Long Frocks</option>
                 <option value="Short Frocks">Short Frocks</option>
@@ -69,71 +134,50 @@ function UpdateItem() {
               </select>
             </div>
 
-            {/* Size Options */}
+            {/* Sizes and Quantities */}
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">Size</label>
-              <div className="flex justify-center space-x-2">
-                {['S', 'M', 'L', 'XL'].map((size) => (
-                  <button 
-                    key={size} 
-                    type="button"
-                    name="Size" 
-                    value={size}
-                    onClick={handleChange}
-                    className={`py-2 px-4 border rounded ${formData.Size === size ? 'bg-purple-500 text-white' : 'bg-gray-200'}`}
-                  >
-                    {size}
-                  </button>
+              <label className="block text-gray-700 text-sm font-bold mb-2">Sizes and Quantities</label>
+              <div className="grid grid-cols-2 gap-4">
+                {['small', 'medium', 'large', 'extraLarge'].map((size) => (
+                  <div key={size} className="flex items-center">
+                    <label className="w-1/4 capitalize">{size}</label>
+                    <input
+                      type="number"
+                      name={size}
+                      value={formData[size]}
+                      onChange={(e) => handleSizeChange(e, size)}
+                      className="w-full p-2 border rounded"
+                      min="0"
+                      placeholder={`Qty for ${size}`}
+                    />
+                  </div>
                 ))}
               </div>
             </div>
 
             {/* Price */}
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="Prize">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="Price">
                 Price
               </label>
               <input
                 type="text"
-                name="Prize"
-                value={formData.Prize}
+                name="Price"
+                value={formData.Price}
                 onChange={handleChange}
-                className="w-[20rem] p-2 border rounded"
-                disabled
+                className="w-full p-2 border rounded"
+                placeholder="Enter price"
+                required
               />
             </div>
 
-            {/* Quantity */}
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">Quantity</label>
-              <div className="flex justify-center items-center space-x-2">
-                <button
-                  type="button"
-                  onClick={() => handleQuantityChange(-1)}
-                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded-full"
-                >
-                  -
-                </button>
-                <span>{formData.Quantity}</span>
-                <button
-                  type="button"
-                  onClick={() => handleQuantityChange(1)}
-                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded-full"
-                >
-                  +
-                </button>
-              </div>
-            </div>
-
-            <div>
-              <button
+            {/* Submit Button */}
+            <button
               type="submit"
-              className="w-64 h-12 mt-5 mb-14 bg-purple-600 text-white text-xl font-thin p-2 rounded-xl hover:bg-purple-200 hover:text-black transition-colors duration-200"
-              >
-              Update item
+              className="w-full bg-purple-600 text-white p-2 rounded hover:bg-purple-700"
+            >
+              Update Item
             </button>
-            </div>
-            
           </form>
         </div>
       </div>

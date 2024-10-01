@@ -26,9 +26,10 @@ function SupplierRegForm() {
     if (!lastname) newErrors.lastname = 'Last name is required.';
     if (!email) newErrors.email = 'Email is required.';
     if (!contact) newErrors.contact = 'Contact number is required.';
-    else if (!phoneRegex.test(contact)) newErrors.contact = 'Contact number must be exactly 10 digits.'; // Added validation for 10 digits
+    else if (!phoneRegex.test(contact)) newErrors.contact = 'Contact number must be exactly 10 digits.';
     if (!address) newErrors.address = 'Address is required.';
     if (!password) newErrors.password = 'Password is required.';
+    else if (password.length > 8) newErrors.password = 'Password cannot be more than 8 characters.'; // Added validation for max 8 characters
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Return true if there are no errors
@@ -67,7 +68,6 @@ function SupplierRegForm() {
     }
   };
 
-  //run the HTML page
   return (
     <div>
       <HomeNavigation />

@@ -19,6 +19,7 @@ function Navigation() {
         <div className='flex items-center space-x-4 pr-6'>
           <FontAwesomeIcon icon={faUser} className='text-xl' />
           <Link to='/Login'><button className='text-xl'>Login</button></Link>
+          <Link to='/CustomerSignUp'><button className='text-xl'>Sign Up</button></Link>
         </div>
       </div>
     </div>

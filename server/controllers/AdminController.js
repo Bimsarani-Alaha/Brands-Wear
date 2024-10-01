@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Admin = require('../models/Admin');
 const Supplier = require('../models/Supplier');
+const User = require('../models/User');
 
 router.post("/login", async (req, res) => {
     const { email, password } = req.body;
@@ -31,7 +32,19 @@ router.post("/login", async (req, res) => {
             }
         }
 
-        // If neither admin nor supplier is found
+        // Check if the email is associated with a user
+        const user = await User.findOne({ email });
+
+        if (user) {
+            // Check if the user's password matches
+            if (user.password === password) {
+                return res.status(203).json({ message: 'User login successful', userId: user._id });
+            } else {
+                return res.status(401).json({ message: 'Invalid user credentials' });
+            }
+        }
+
+        // If neither admin, supplier, nor user is found
         return res.status(404).json({ message: 'User not found' });
 
     } catch (error) {
@@ -39,5 +52,6 @@ router.post("/login", async (req, res) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 });
+
 
 module.exports = router;
