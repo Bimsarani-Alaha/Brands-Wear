@@ -1,53 +1,74 @@
-import React from 'react';
-import Navigation from './Components/Navigation'; // Ensure you have this component
-import Footer from './Components/Footer'; // Ensure you have this component
-import sampleImage from '../Images/sample-image1.jpeg'; // Replace with the actual image path
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import React, { useState, useEffect } from 'react';
+import Navigation from './Components/Navigation';
+import Footer from './Components/Footer';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
-function OrderNotification() {
-  const navigate = useNavigate(); // Initialize useNavigate
+const ShowOrders = () => {
+    const [orders, setOrders] = useState([]);
 
-  // Function to handle accepting the order
-  const handleAcceptOrder = () => {
-    navigate('/AcceptAdminOrder'); // Navigate to the AcceptAdminOrder page
-  };
+    useEffect(() => {
+        axios.get('http://localhost:3001/showOrders')
+            .then(response => {
+                setOrders(response.data);
+            })
+            .catch(error => {
+                console.error("Error fetching orders:", error);
+            });
+    }, []);
 
-  return (
-    <div className='min-h-screen flex flex-col'>
-      <Navigation />
+    if (orders.length === 0) return <div>Loading...</div>;
 
-      {/* Main Content */}
-      <div className="flex-grow flex justify-center items-center p-8">
-        <div className="max-w-3xl w-full bg-white rounded-lg shadow-lg p-6">
-          <h2 className="text-2xl font-bold mb-4">Order Items</h2>
-          
-          {/* Order Details */}
-          <div className="flex mb-6">
-            <img className="w-32 h-32 rounded-md object-cover mr-4" src={sampleImage} alt="Ordered Item" />
-            <div className="flex-1">
-              <div className="text-lg font-semibold mb-2">Category: Party frocks</div>
-              <div className="text-sm mb-2">Quantity: 30</div>
-              <div className="text-sm mb-2">Size: S</div>
-              <div className="text-sm mb-2">Date Needed: 2024.08.25</div>
-            </div>
-          </div>
+    const handleAccept = (orderId) => {
+        // Add your accept logic here (e.g., make an API call)
+        console.log(`Accepted order ID: ${orderId}`);
+    };
 
-          {/* Action Buttons */}
-          <div className="flex justify-around mt-6">
-            <button 
-              className="bg-purple-500 text-white px-4 py-2 rounded-md"
-              onClick={handleAcceptOrder} // Set the click handler
-            >
-              Accept Order
-            </button>
-            <button className="bg-red-500 text-white px-4 py-2 rounded-md">Reject Order</button>
-          </div>
+    const handleReject = (orderId) => {
+        // Add your reject logic here (e.g., make an API call)
+        console.log(`Rejected order ID: ${orderId}`);
+    };
+
+    return (
+        <div className="flex flex-col min-h-screen">
+            <Navigation />
+            <main className="flex-grow container mx-auto p-4">
+                <h2 className="text-2xl font-bold mb-4">Order Details</h2>
+                {orders.map((order) => (
+                    <div key={order._id} className="border border-gray-300 p-4 mb-4 rounded shadow-md">
+                        <p><strong>Item Name:</strong> {order.itemName}</p>
+                        <p><strong>Item Code:</strong> {order.itemCode}</p>
+                        <p><strong>Category:</strong> {order.category}</p>
+                        <p><strong>Small:</strong> {order.small}</p>
+                        <p><strong>Medium:</strong> {order.medium}</p>
+                        <p><strong>Large:</strong> {order.large}</p>
+                        <p><strong>Extra Large:</strong> {order.extraLarge}</p>
+                        <p><strong>Total Quantity:</strong> {order.quantity}</p>
+                        <p><strong>Created At:</strong> {new Date(order.createdAt).toLocaleString()}</p>
+                        <p><strong>Updated At:</strong> {new Date(order.updatedAt).toLocaleString()}</p>
+                        <p><strong>Needeed At:</strong> {new Date(order.neededDate).toLocaleString()}</p>
+                        <div className="flex justify-end mt-4">
+                            <Link to={`/AcceptAdminOrder/${order._id}`}>
+                                <button
+                                    onClick={() => handleAccept(order._id)}
+                                    className="bg-green-500 text-white px-4 py-2 rounded mr-2 hover:bg-green-600 transition"
+                                >
+                                    Accept
+                                </button>
+                            </Link>
+                            <button
+                                onClick={() => handleReject(order._id)}
+                                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
+                            >
+                                Reject
+                            </button>
+                        </div>
+                    </div>
+                ))}
+            </main>
+            <Footer />
         </div>
-      </div>
+    );
+};
 
-      <Footer />
-    </div>
-  );
-}
-
-export default OrderNotification;
+export default ShowOrders;
