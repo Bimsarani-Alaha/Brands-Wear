@@ -76,7 +76,7 @@ function AcceptAdminOrder() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.itemName || !formData.price || !formData.neededDate) {
+    if (!formData.itemName || !formData.price) {
       toast.error('Please fill all required fields.');
       return;
     }
@@ -145,7 +145,7 @@ function AcceptAdminOrder() {
                 onChange={handleChange}
                 className="w-full p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
                 placeholder="Enter item name"
-                required // Required validation
+                required // Still keep this required if needed
               />
             </div>
 
@@ -200,11 +200,12 @@ function AcceptAdminOrder() {
                 onChange={handleChange}
                 className="w-full p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
                 placeholder="Enter price"
-                required // Required validation
+                required // Still keep this required if needed
               />
             </div>
 
-            {/* Needed Date
+            {/* Needed Date */}
+            {/* Uncomment if needed
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="neededDate">
                 Needed Date
@@ -215,7 +216,6 @@ function AcceptAdminOrder() {
                 value={formData.neededDate}
                 onChange={handleChange}
                 className="w-full p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
-                required // Required validation
               />
             </div> */}
 

@@ -25,7 +25,8 @@ const ShowOrders = () => {
     };
 
     const handleReject = (orderId) => {
-        // Add your reject logic here (e.g., make an API call)
+        // Remove the order from the state (without API call)
+        setOrders(orders.filter(order => order._id !== orderId));
         console.log(`Rejected order ID: ${orderId}`);
     };
 
@@ -33,41 +34,89 @@ const ShowOrders = () => {
         <div className="flex flex-col min-h-screen">
             <Navigation />
             <main className="flex-grow container mx-auto p-4">
-                <h2 className="text-2xl font-bold mb-4">Order Details</h2>
-                {orders.map((order) => (
-                    <div key={order._id} className="border border-gray-300 p-4 mb-4 rounded shadow-md">
-                        <p><strong>Item Name:</strong> {order.itemName}</p>
-                        <p><strong>Item Code:</strong> {order.itemCode}</p>
-                        <p><strong>Category:</strong> {order.category}</p>
-                        <p><strong>Small:</strong> {order.small}</p>
-                        <p><strong>Medium:</strong> {order.medium}</p>
-                        <p><strong>Large:</strong> {order.large}</p>
-                        <p><strong>Extra Large:</strong> {order.extraLarge}</p>
-                        <p><strong>Total Quantity:</strong> {order.quantity}</p>
-                        <p><strong>Created At:</strong> {new Date(order.createdAt).toLocaleString()}</p>
-                        <p><strong>Updated At:</strong> {new Date(order.updatedAt).toLocaleString()}</p>
-                        <p><strong>Needeed At:</strong> {new Date(order.neededDate).toLocaleString()}</p>
-                        <div className="flex justify-end mt-4">
-                            <Link to={`/AcceptAdminOrder/${order._id}`}>
+                <h2 className="text-4xl font-thin mt-10 mb-10">Order Details</h2>
+                <div className="flex flex-col items-center"> 
+                    {orders.map((order) => (
+                        <div
+                            key={order._id}
+                            className="border border-purple-400 w-[70rem] p-10 mb-4 rounded shadow-md"
+                        >
+                            <div className="flex flex-col text-start">
+                                <div className="flex flex-row">
+                                    <div className="flex flex-col ml-10">                            
+                                        <div>
+                                            <span className="text-xl font-thin">Item Name:</span>
+                                            <p className="text-2xl">{order.itemName}</p>
+                                        </div>
+                                        <div className="mt-5">
+                                            <span className="text-xl font-thin mt-10">Item Code:</span>
+                                            <p className="text-2xl">{order.itemCode}</p>
+                                        </div>
+                                        <div className="mt-5">
+                                            <span className="text-xl font-thin mt-10">Category:</span>
+                                            <p className="text-2xl">{order.category}</p>
+                                        </div>
+                                        <div className="mt-5">
+                                            <span className="text-xl font-thin">Small:</span>
+                                            <p className="text-2xl">{order.small}</p>
+                                        </div>
+                                        <div className="mt-5">
+                                            <span className="text-xl font-thin">Medium:</span>
+                                            <p className="text-2xl">{order.medium}</p>
+                                        </div>
+                                        <div className="mt-5">
+                                            <span className="text-xl font-thin">Large:</span>
+                                            <p className="text-2xl">{order.large}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-col ml-[20rem]">
+                                        <div>
+                                            <span className="text-xl font-thin">Extra Large:</span>
+                                            <p className="text-2xl">{order.extraLarge}</p>
+                                        </div>
+                                        <div className="mt-5">
+                                            <span className="text-xl font-thin">Total Quantity:</span>
+                                            <p className="text-2xl">{order.quantity}</p>
+                                        </div>
+                                        <div className="mt-5">
+                                            <span className="text-xl font-thin">Created At:</span>
+                                            <p className="text-2xl">{new Date(order.createdAt).toLocaleString()}</p>
+                                        </div>
+                                        <div className="mt-5">
+                                            <span className="text-xl font-thin">Updated At:</span>
+                                            <p className="text-2xl">{new Date(order.updatedAt).toLocaleString()}</p>
+                                        </div>
+                                        <div className="mt-5 mb-10">
+                                            <span className="text-xl font-thin ">Needed At:</span>
+                                            <p className="text-2xl">{new Date(order.neededDate).toLocaleString()}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex justify-center mt-4">
+                                <Link to={`/AcceptAdminOrder/${order._id}`}>
+                                    <button
+                                        onClick={() => handleAccept(order._id)}
+                                        className="bg-green-500 text-white px-4 py-2 w-40 h-16 text-xl rounded mr-2 hover:bg-white border hover:border-green-500 hover:text-green-500 transition"
+                                    >
+                                        Accept
+                                    </button>
+                                </Link>
                                 <button
-                                    onClick={() => handleAccept(order._id)}
-                                    className="bg-green-500 text-white px-4 py-2 rounded mr-2 hover:bg-green-600 transition"
+                                    onClick={() => handleReject(order._id)}
+                                    className="bg-red-500 text-white px-4 py-2 w-40 h-16 text-xl rounded mr-2 hover:bg-white border hover:border-red-500 hover:text-red-500 transition"
                                 >
-                                    Accept
+                                    Reject
                                 </button>
-                            </Link>
-                            <button
-                                onClick={() => handleReject(order._id)}
-                                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
-                            >
-                                Reject
-                            </button>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
             </main>
             <Footer />
         </div>
+
     );
 };
 
