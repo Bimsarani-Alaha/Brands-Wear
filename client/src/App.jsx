@@ -25,6 +25,11 @@ import UserProfile from './views/UserProfile';
 import ItemPage from './views/ItemPage';
 import MyCart from './views/MyCart';
 import AdminOrderStatus from './views/AdminOrderStatus';
+import Checkout from "./views/CheckoutForm/CheckoutForm";
+import PaymentPage from "./views/PaymentPage/PaymentPage";
+import CardDetails from "./views/CardDetails/CardDetails";
+import Orders from "./views/Orders/Order";
+
 
 function App() {
   return (
@@ -65,6 +70,13 @@ function App() {
         <Route path="/ItemPage/:itemId/:userId" element={<ItemPage />} />
         <Route path="/MyCart/:userId" element={<MyCart />} />
         <Route path="/AdminOrderStatus" element={<AdminOrderStatus />} />
+
+
+        
+				<Route path="/Carddetails" element={<CardDetails />} />
+				<Route path="/checkout" element={<Checkout />} />
+				<Route path="/payment" element={<PaymentPage />} />
+				<Route path="/order" element={<Orders />} />
       </Routes>
     </Router>
   );
