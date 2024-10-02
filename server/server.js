@@ -12,6 +12,8 @@ const ITEM = require('./controllers/AdminAddController');
 const USER = require('./controllers/UserController');
 const CART = require('./controllers/CartController');
 const ORDER = require('./controllers/AdminOrder');
+const ACCEPT = require('./controllers/SupAcceptOrder');
+
 // Middleware
 const app = express();
 app.use(cors());
@@ -25,6 +27,7 @@ app.use('/', ITEM);
 app.use('/', USER);
 app.use('/', CART);
 app.use('/', ORDER);
+app.use('/', ACCEPT);
 
 // Connect to the database
 conDatabase()
