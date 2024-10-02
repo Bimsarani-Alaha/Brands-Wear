@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom'; 
+import { Link, useNavigate } from 'react-router-dom'; 
 import axios from 'axios';
 import jsPDF from 'jspdf';
 import AdminNavigation from './Components/AdminNavigation';
 import Footer from './Components/Footer';
 import deliveryIcon from "../Images/delivery-icon.png"; 
-import logo from "../Images/logo.png"; // Import your logo image
+import logo from "../Images/logo.png";
 
 function Inventory() {
   const navigate = useNavigate(); 
@@ -29,15 +29,6 @@ function Inventory() {
 
   const handlePlaceOrder = (itemName) => {
     navigate('/AdminPlaceOrder', { state: { itemName } });
-  };
-
-  const handleDeleteItem = (itemId) => {
-    axios.delete(`http://localhost:3001/deleteItem/${itemId}`)
-      .then(response => {
-        // Update state to remove the deleted item
-        setInventoryData(inventoryData.filter(item => item._id !== itemId));
-      })
-      .catch(error => console.error('Error deleting item:', error));
   };
 
   const handleGenerateReport = (item) => {
@@ -82,6 +73,11 @@ function Inventory() {
         <div className="w-full max-w-7xl bg-white p-8 rounded-xl shadow-lg">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-3xl font-semibold text-gray-800">All Categories</h2>
+            <Link to={`/AdminOrderStatus`}>
+              <button className="bg-purple-500 text-white px-4 ml-[40rem] py-2 rounded-md shadow hover:bg-purple-600 transition duration-300">
+                Order Status
+              </button>
+            </Link>
             
             <div className="flex space-x-4">
               <select
@@ -106,14 +102,12 @@ function Inventory() {
                   <th className="border border-gray-300 px-6 py-3 text-left">Category</th>
                   <th className="border border-gray-300 px-6 py-3 text-left">Price</th>
                   <th className="border border-gray-300 px-6 py-3 text-left">Item Name</th>
-                  <th className="border border-gray-300 px-6 py-3 text-left">Status</th>
                   <th className="border border-gray-300 px-6 py-3 text-left">Small</th>
                   <th className="border border-gray-300 px-6 py-3 text-left">Medium</th>
                   <th className="border border-gray-300 px-6 py-3 text-left">Large</th>
                   <th className="border border-gray-300 px-6 py-3 text-left">Extra Large</th>
                   <th className="border border-gray-300 px-6 py-3 text-left">Generate Report</th>
                   <th className="border border-gray-300 px-6 py-3 text-left">Place Order</th>
-                  <th className="border border-gray-300 px-6 py-3 text-left">Delete</th>
                 </tr>
               </thead>
               <tbody>
@@ -126,7 +120,6 @@ function Inventory() {
                       <td className="border border-gray-300 px-6 py-3">{item.category}</td>
                       <td className="border border-gray-300 px-6 py-3">LKR {item.price}</td> {/* Updated price display */}
                       <td className="border border-gray-300 px-6 py-3">{item.itemName}</td>
-                      <td className="border border-gray-300 px-6 py-3">{item.availability}</td>
                       <td className="border border-gray-300 px-6 py-3">
                         {item.small} {item.small < 10 && <span className="text-red-500 ml-2">Low</span>}
                       </td>
@@ -141,7 +134,7 @@ function Inventory() {
                       </td>
                       <td className="border border-gray-300 px-6 py-3">
                         <button
-                          className="bg-purple-500 text-white px-4 py-2 rounded-md shadow hover:bg-purple-600 transition duration-300"
+                          className="bg-blue-400 text-white px-3 py-2 rounded-md shadow hover:bg-blue-500 transition duration-300"
                           onClick={() => handleGenerateReport(item)}
                         >
                           Generate Report
@@ -158,19 +151,13 @@ function Inventory() {
                           </button>
                         </Link>
                       </td>
-                      <td className="border border-gray-300 px-6 py-3">
-                        <button
-                          className="bg-red-500 text-white px-4 py-2 rounded-md shadow hover:bg-red-600 transition duration-300"
-                          onClick={() => handleDeleteItem(item._id)}
-                        >
-                          Delete
-                        </button>
-                      </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="12" className="text-center py-4">No items found</td>
+                    <td colSpan="10" className="text-center py-6 text-gray-500">
+                      No items found for the selected category.
+                    </td>
                   </tr>
                 )}
               </tbody>

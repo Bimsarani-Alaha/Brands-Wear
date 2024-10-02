@@ -15,7 +15,7 @@ import OrderNotification from "./views/OrderNotification";
 import AcceptAdminOrder from "./views/AcceptAdminOrder"; 
 import AddItem from './views/AddItem';
 import Inventory from './views/Inventory';
-import AdminPlaceOrder from './views/AdminPlaceOrder';
+import AdminPlaceOrder from './views/AdminPlaceOrder'; // Added Route
 import AdminBuyItem from './views/AdminBuyItem'; // Updated Route
 import UpdateAdmin from './views/UpdateAdmin';
 import AdminInventory from './views/AdminInventory';
@@ -24,6 +24,7 @@ import UserHome from './views/UserHome';
 import UserProfile from './views/UserProfile';
 import ItemPage from './views/ItemPage';
 import MyCart from './views/MyCart';
+import AdminOrderStatus from './views/AdminOrderStatus';
 
 function App() {
   return (
@@ -54,7 +55,7 @@ function App() {
       
         {/* Inventory and Purchase Pages */}
         <Route path="/Inventory" element={<Inventory />} />
-        <Route path="/AdminPlaceOrder/:itemId" element={<AdminPlaceOrder />} />
+        <Route path="/AdminPlaceOrder/:itemId" element={<AdminPlaceOrder />} /> {/* Added Route */}
         <Route path="/AdminBuyItem" element={<AdminBuyItem />} />
         <Route path="/UpdateAdmin/:itemId" element={<UpdateAdmin />} />
         <Route path="/AdminInventory" element={<AdminInventory/>} />
@@ -63,6 +64,7 @@ function App() {
         <Route path="/UserProfile/:userId" element={<UserProfile />} />
         <Route path="/ItemPage/:itemId/:userId" element={<ItemPage />} />
         <Route path="/MyCart/:userId" element={<MyCart />} />
+        <Route path="/AdminOrderStatus" element={<AdminOrderStatus />} />
       </Routes>
     </Router>
   );
