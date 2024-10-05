@@ -195,7 +195,7 @@ router.post("/save-checkout", async (req, res) => {
 		});
 	}
 });
-
+//save the card details
 router.get("/get-saved-cards", async (req, res) => {
 	const userId = req.session.userId;
 	console.log("Session User ID:", userId); // Log the session user ID
