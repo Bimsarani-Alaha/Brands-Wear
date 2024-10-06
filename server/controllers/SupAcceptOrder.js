@@ -12,4 +12,13 @@ router.post("/AcceptOrders", (req, res) => {
         });
 });
 
+router.get("/showAcceptOrders", (req, res) => {
+    Accept.find() // Fetch all accepted orders from the database
+        .then(orders => res.json(orders))
+        .catch(err => {
+            console.error("Failed to fetch orders:", err);
+            res.status(500).json({ error: 'Failed to fetch orders', details: err });
+        });
+});
+
 module.exports = router;
