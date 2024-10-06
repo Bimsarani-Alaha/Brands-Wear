@@ -5,7 +5,7 @@ const Supplier = require("../models/Supplier");
 const User = require("../models/User");
 
 // Login route
-router.post("/login", async (req, res) => {
+router.post("/loginc", async (req, res) => {
 	const { email, password } = req.body;
 
 	try {

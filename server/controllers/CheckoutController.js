@@ -49,40 +49,40 @@ router.post("/register", async (req, res) => {
 });
 
 // Login a user
-router.post("/login", async (req, res) => {
-	const { email, password } = req.body;
+// router.post("/login", async (req, res) => {
+// 	const { email, password } = req.body;
 
-	try {
-		// Find user by email
-		const user = await User.findOne({ email });
-		if (!user) {
-			return res.status(404).json({ message: "User not found" });
-		}
+// 	try {
+// 		// Find user by email
+// 		const user = await User.findOne({ email });
+// 		if (!user) {
+// 			return res.status(404).json({ message: "User not found" });
+// 		}
 
-		// Compare the entered password with the stored hashed password
-		const isMatch = await user.comparePassword(password); // Assuming comparePassword function exists in your model
-		if (!isMatch) {
-			return res.status(401).json({ message: "Invalid credentials" });
-		}
+// 		// Compare the entered password with the stored hashed password
+// 		const isMatch = await user.comparePassword(password); // Assuming comparePassword function exists in your model
+// 		if (!isMatch) {
+// 			return res.status(401).json({ message: "Invalid credentials" });
+// 		}
 
-		// Store the userId in the session
-		req.session.userId = user._id;
+// 		// Store the userId in the session
+// 		req.session.userId = user._id;
 
-		// Return the user data (optional)
-		res.status(200).json({
-			message: "Login successful",
-			userId: user._id,
-			user: {
-				email: user.email,
-				firstName: user.firstName,
-				lastName: user.lastName,
-			},
-		});
-	} catch (err) {
-		console.error("Login error:", err); // Log the error for debugging
-		res.status(500).json({ message: "Server error", error: err.message });
-	}
-});
+// 		// Return the user data (optional)
+// 		res.status(200).json({
+// 			message: "Login successful",
+// 			userId: user._id,
+// 			user: {
+// 				email: user.email,
+// 				firstName: user.firstName,
+// 				lastName: user.lastName,
+// 			},
+// 		});
+// 	} catch (err) {
+// 		console.error("Login error:", err); // Log the error for debugging
+// 		res.status(500).json({ message: "Server error", error: err.message });
+// 	}
+// });
 
 // Route to fetch user details by userId
 router.get("/user-details/:userId", async (req, res) => {

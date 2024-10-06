@@ -16,7 +16,7 @@ function Login() {
 
 		try {
 			const response = await axios.post(
-				"http://localhost:3001/login",
+				"http://localhost:3001/loginc",
 				{
 					email,
 					password,
