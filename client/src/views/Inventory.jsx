@@ -4,7 +4,8 @@ import axios from 'axios';
 import jsPDF from 'jspdf';
 import AdminNavigation from './Components/AdminNavigation';
 import Footer from './Components/Footer';
-import deliveryIcon from "../Images/delivery-icon.png"; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'; // Import the desired icon
 import logo from "../Images/logo.png";
 
 function Inventory() {
@@ -142,13 +143,13 @@ function Inventory() {
                       </td>
                       <td className="border border-gray-300 px-6 py-3">
                         <Link to={`/AdminPlaceOrder/${item._id}`}>
-                          <button
-                            className="flex items-center bg-gray-300 text-black px-4 py-2 rounded-md shadow hover:bg-gray-400 transition duration-300"
-                            onClick={() => handlePlaceOrder(item.itemName)}
-                          >
-                            <img src={deliveryIcon} alt="Order Icon" className="w-5 h-5 mr-2" />
-                            Order
-                          </button>
+                        <button
+  className="flex items-center bg-gray-300 text-black px-4 py-2 rounded-md shadow hover:bg-gray-400 transition duration-300"
+  onClick={() => handlePlaceOrder(item.itemName)}
+>
+  <FontAwesomeIcon icon={faShoppingCart} className="mr-2" /> {/* Add the icon here */}
+  Order
+</button>
                         </Link>
                       </td>
                     </tr>
