@@ -207,20 +207,7 @@ function AcceptAdminOrder() {
               />
             </div>
 
-            {/* Needed Date */}
-            {/* Uncomment if needed
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="neededDate">
-                Needed Date
-              </label>
-              <input
-                type="date"
-                name="neededDate"
-                value={formData.neededDate}
-                onChange={handleChange}
-                className="w-full p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
-              />
-            </div> */}
+          
 
             {/* Image URL */}
             <div className="mb-4">

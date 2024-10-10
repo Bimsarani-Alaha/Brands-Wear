@@ -16,16 +16,16 @@ function AdminBuyItem() {
       })
       .catch(error => {
         toast.error("Failed to load products. Please try again later.", {
-          position: "top-center", // Changed to string format
+          position: "top-center",
         });
       });
-  }, []);
+  }, []);                                                                                                                                                                 
 
   // Function to handle buying an item
   const handleBuyItem = (product) => { 
     axios.post('http://localhost:3001/AddItem', {
       itemName: product.itemName,
-      category: product.category,
+      category: product.Category,
       price: product.Price,
       size: "L", // Adjust size based on user selection if applicable
       itemCode: product.itemCode,
@@ -37,19 +37,19 @@ function AdminBuyItem() {
     })
     .then(() => {
       toast.success(`${product.itemName} purchased successfully!`, {
-        position: "top-center", // Changed to string format
+        position: "top-center",
       });
     })
     .catch(() => {
       toast.error(`Failed to purchase ${product.itemName}. Please try again.`, {
-        position: "top-center", // Changed to string format
-      });
-    });
-  };
+        position: "top-center",
+      });                
+    });       
+  }; // Removed the extra closing brace here
 
   // Function to handle deleting an item
   const handleDeleteItem = (productId) => {
-    axios.delete(`http://localhost:3001/deleteProduct/${productId}`)
+    axios.delete(`http://localhost:3001/deleteProduct/${productId}`) // Added backticks for template literal
       .then(() => {
         setProducts(products.filter(product => product._id !== productId));
         toast.success('Product deleted successfully.', {
@@ -75,12 +75,16 @@ function AdminBuyItem() {
               <div key={product._id} className="relative bg-white p-10 rounded-xl shadow flex items-center space-x-4 mt-10 w-[50rem] transition duration-300 ease-in-out transform hover:scale-105">
                 <img className="w-32 h-32 rounded-md object-cover mr-4" src={product.imageURL} alt={product.itemName} />
                 <div className="flex-1">
-                  <div className="text-lg font-semibold mb-2">Category: {product.category}</div>
+                  <div className="text-lg font-semibold mb-2">Name: {product.itemName}</div>
+                  <div className="text-lg font-semibold mb-2">Category: {product.Category}</div>
+                  <div className="text-lg font-semibold mb-2">Company Name: {product.companyName}</div>
                   <div className="text-sm mb-2">Price: LKR. {product.Price}</div>
                   <div className="text-sm mb-4">Small: {product.small}</div>
                   <div className="text-sm mb-4">Medium: {product.medium}</div>
                   <div className="text-sm mb-4">Large: {product.large}</div>
                   <div className="text-sm mb-4">Extra Large: {product.extraLarge}</div>
+                  {/* Format delivery date to only show the date */}
+                  <div className="text-sm mb-4">Delivery Date: {new Date(product.deliveryDate).toLocaleDateString()}</div>
                   <button 
                     onClick={() => handleBuyItem(product)} 
                     className="w-64 h-12 mt-5 mb-6 bg-purple-500 text-white text-xl font-thin p-2 rounded-xl hover:bg-purple-200 hover:text-black transition-colors duration-200 focus:ring-2 focus:ring-purple-600"
@@ -96,7 +100,7 @@ function AdminBuyItem() {
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                   </svg>
-                </button>
+                </button>     
               </div>
             ))
           ) : (
