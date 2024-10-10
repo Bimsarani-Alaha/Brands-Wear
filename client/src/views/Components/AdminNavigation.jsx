@@ -10,9 +10,9 @@ function Navigation() {
       {/* Navigation Bar */}
       <div className='flex justify-between items-center h-auto bg-[#D9D9D9] pl-40 pr-40'>
         {/* Left side: Logo */}
-        <Link to='/'><div className='flex items-center'>
+       <div className='flex items-center'>
           <img src={Logo} alt="Logo" className='h-16 m-5' />
-        </div></Link>
+        </div>
 
         {/* Center: Navigation Buttons */}
         <div className='flex items-center space-x-2 text-sm'>
@@ -31,7 +31,9 @@ function Navigation() {
         
         {/* Right side: User Icon */}
         <div className='flex items-center space-x-4 pr-6'>
+          <Link to='/'>
           <FontAwesomeIcon icon={faUser} className='text-2xl' />
+          </Link>
           <span>Welcome Admin</span>
         </div>
       </div>
