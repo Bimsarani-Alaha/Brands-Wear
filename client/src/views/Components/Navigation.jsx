@@ -19,9 +19,9 @@ function Navigation() {
         <div className='flex items-center space-x-2 text-xl font-thin'>
           <Link to={`/SupplierProduct/${userId}`}><button>Home</button></Link>
           <span>&nbsp;|&nbsp;</span>
-          <Link to='/OrderNotification'><button>Order Items</button></Link>
+          <Link to={`/OrderNotification/${userId}`}><button>Order Items</button></Link>
           <span>&nbsp;|&nbsp;</span>
-          <Link to={`/GenerateReport/${userId}`}><button>Sales Report</button></Link> {/* Use template literal */}
+          <Link to={`/GenerateReport/${userId}`}><button>Accepted Order</button></Link> {/* Use template literal */}
         </div>
         
         {/* Right side: User Icon */}

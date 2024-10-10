@@ -21,4 +21,17 @@ router.get("/showAcceptOrders", (req, res) => {
         });
 });
 
+
+router.get('/showOrdersbyuserId/:userId', async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const orders = await Accept.find({ userId });
+      res.json(orders);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
 module.exports = router;
+
+
