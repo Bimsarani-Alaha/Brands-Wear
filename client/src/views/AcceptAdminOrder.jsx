@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useParams } from 'react-router-dom';
 
 function AcceptAdminOrder() {
-  const { orderId } = useParams();
+  const { orderId, userId } = useParams(); // Extract userId in one go
 
   const [formData, setFormData] = useState({
     itemCode: '',
@@ -19,7 +19,8 @@ function AcceptAdminOrder() {
     extraLarge: 0,
     price: '',
     neededDate: '',
-    imageURL: ''
+    imageURL: '',
+    userId: '', // Initially set to empty string
   });
 
   const [previousCodes, setPreviousCodes] = useState(new Set());
@@ -38,8 +39,9 @@ function AcceptAdminOrder() {
           large: orderData.large,
           extraLarge: orderData.extraLarge,
           price: orderData.price,
-          neededDate: orderData.neededDate || '', // Set from order data
-          imageURL: ''
+          neededDate: orderData.neededDate || '',
+          imageURL: '',
+          userId: userId, // Set userId from URL parameters
         });
       } catch (error) {
         console.error('Error fetching order details:', error);
@@ -48,7 +50,7 @@ function AcceptAdminOrder() {
     };
 
     fetchOrder();
-  }, [orderId]);
+  }, [orderId, userId]); // Add userId as a dependency
 
   const generateItemCode = () => {
     let code;
@@ -94,7 +96,8 @@ function AcceptAdminOrder() {
         extraLarge: 0,
         price: '',
         neededDate: '',
-        imageURL: ''
+        imageURL: '',
+        userId: userId, // Retain the userId when resetting form data
       });
     } catch (error) {
       console.error('Error accepting order:', error);
@@ -238,7 +241,7 @@ function AcceptAdminOrder() {
             <div className="mb-4">
               <button
                 type="submit"
-                className="bg-purple-600 text-white font-bold py-2 px-4 rounded-xl focus:outline-none hover:bg-purple-700"
+                className="bg-purple-600 text-white font-bold py-2 px-4 rounded-xl hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
               >
                 Accept Order
               </button>
@@ -246,6 +249,7 @@ function AcceptAdminOrder() {
           </form>
         </div>
       </div>
+
       <Footer />
       <ToastContainer />
     </div>

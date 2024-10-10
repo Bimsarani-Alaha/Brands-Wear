@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navigation from './Components/Navigation';
 import Footer from './Components/Footer';
 import axios from 'axios';
@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useParams } from 'react-router-dom';
 
 function Supplier() {
-  const { userId } = useParams(); // Correctly extract userId from URL params
+  const { userId } = useParams(); // Extract userId from URL params
 
   const [formData, setFormData] = useState({
     itemCode: '',
@@ -18,10 +18,28 @@ function Supplier() {
     large: 0,
     extraLarge: 0,
     Price: '',
-    imageURL: '' // New field for image URL
+    imageURL: '', // Field for image URL
+    deliveryDate: '', // New field for delivery date
+    companyName: '' // Field for company name
   });
 
   const [previousCodes, setPreviousCodes] = useState(new Set());
+
+  // Fetch supplier data when the component mounts
+  useEffect(() => {
+    // Fetch supplier information based on userId
+    axios.get(`http://localhost:3001/ShowSupplier/${userId}`)
+      .then(response => {
+        setFormData(prevFormData => ({
+          ...prevFormData,
+          companyName: response.data.company // Set companyName
+        }));
+      })
+      .catch(error => {
+        console.error("Error fetching supplier data", error);
+        toast.error('Failed to fetch supplier data.');
+      });
+  }, [userId]);
 
   // Function to generate a random item code
   const generateItemCode = () => {
@@ -66,7 +84,9 @@ function Supplier() {
         large: 0,
         extraLarge: 0,
         Price: '',
-        imageURL: '' // Reset the imageURL as well
+        imageURL: '',
+        deliveryDate: '', // Reset the deliveryDate
+        companyName: '' // Reset company name
       });
     } catch (error) {
       console.error('Error adding product:', error);
@@ -139,6 +159,20 @@ function Supplier() {
               </select>
             </div>
 
+            {/* Delivery Date */}
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="deliveryDate">
+                Delivery Date
+              </label>
+              <input
+                type="date"
+                name="deliveryDate"
+                value={formData.deliveryDate}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
+              />
+            </div>
+
             {/* Size and Quantity Inputs */}
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">Sizes and Quantities</label>
@@ -166,13 +200,13 @@ function Supplier() {
                 Price
               </label>
               <input
-                type="number" // Changed to type="number" to ensure valid pricing input
+                type="number"
                 name="Price"
                 value={formData.Price}
                 onChange={handleChange}
                 className="w-full p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
                 placeholder="Enter price"
-                min="0" // Ensures price cannot be negative
+                min="0"
               />
             </div>
 
@@ -194,7 +228,7 @@ function Supplier() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-purple-600 text-white p-2 rounded hover:bg-purple-700"
+              className="w-full bg-purple-600 text-white p-3 rounded-xl hover:bg-purple-700"
             >
               Add Item
             </button>
@@ -202,8 +236,8 @@ function Supplier() {
         </div>
       </div>
 
-      <Footer />
       <ToastContainer /> 
+      <Footer />
     </div>
   );
 }

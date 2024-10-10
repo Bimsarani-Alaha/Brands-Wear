@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import Navigation from './Components/Navigation';
 import Footer from './Components/Footer';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 const ShowOrders = () => {
     const [orders, setOrders] = useState([]);
+    const {userId} = useParams();
 
     useEffect(() => {
         axios.get('http://localhost:3001/showOrders')
@@ -95,7 +96,7 @@ const ShowOrders = () => {
                             </div>
 
                             <div className="flex justify-center mt-4">
-                                <Link to={`/AcceptAdminOrder/${order._id}`}>
+                                <Link to={`/AcceptAdminOrder/${order._id}/${userId}`}>
                                     <button
                                         onClick={() => handleAccept(order._id)}
                                         className="bg-green-500 text-white px-4 py-2 w-40 h-16 text-xl rounded mr-2 hover:bg-white border hover:border-green-500 hover:text-green-500 transition"
