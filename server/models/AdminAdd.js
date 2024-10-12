@@ -19,6 +19,7 @@ const itemSchema = new mongoose.Schema({
   small: Number,
   extraLarge: Number,
   medium: Number,
+  CompanyName: String ,
 }, { timestamps: true });
 
 // Create the Item model
