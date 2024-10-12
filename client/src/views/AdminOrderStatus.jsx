@@ -5,14 +5,16 @@ import Footer from './Components/Footer';
 import axios from 'axios';
 
 function AdminOrderStatus() {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
 
   // Fetching orders on component mount
   useEffect(() => {
     axios.get('http://localhost:3001/showAcceptOrders')
       .then(response => {
-        setOrders(response.data); // Store orders in state
+        // Sort orders by createdAt in descending order to show the most recent first
+        const sortedOrders = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setOrders(sortedOrders); // Store sorted orders in state
       })
       .catch(error => {
         console.error("Error fetching orders:", error);
@@ -45,30 +47,40 @@ function AdminOrderStatus() {
       <div className="flex-grow container mx-auto p-6">
         <div className="flex flex-col items-center space-x-4 bg-[#D9D9D9] ml-52 mr-52 mt-10 rounded-xl py-10 mb-20">
           <h1 className="text-4xl font-thin text-gray-700 mb-6">Supplier Order Status</h1>
-          <div className="flex items-center  mt-10 ">
-            
+          {/* Main Content */}
+          <div className="flex-grow container mx-auto p-6">
+            <div className="flex flex-col items-center space-x-4 bg-[#D9D9D9] ml-52 mr-52 mt-10 rounded-xl py-10 mb-20">
+              {orders.length > 0 ? (
+                orders.map((order) => (
+                  <div key={order._id} className="relative bg-white p-10 rounded-xl shadow flex items-center space-x-4 mt-10 w-[50rem] transition duration-300 ease-in-out transform hover:scale-105">
+                    <img className="w-32 h-32 rounded-md object-cover mr-4" src={order.imageURL} alt={order.itemName} />
+                    <div className="flex-1">
+                      <div className="text-lg font-semibold mb-2">Name: {order.itemName}</div>
+                      <div className="text-lg font-semibold mb-2">Category: {order.category}</div>
+                      <div className="text-lg font-semibold mb-2">Item Code: {order.itemCode}</div>
+                      <div className="text-lg font-semibold mb-2">Company Name: {order.companyName}</div>
+                      <div className="text-sm mb-2">Price:  {order.price}</div>
+                      <div className="text-sm mb-4">Small: {order.small}</div>
+                      <div className="text-sm mb-4">Medium: {order.medium}</div>
+                      <div className="text-sm mb-4">Large: {order.large}</div>
+                      <div className="text-sm mb-4">Extra Large: {order.extraLarge}</div>
+                      <button
+                        onClick={() => handleAcceptOrder(order._id)}
+                        className="bg-purple-600 border text-white px-4 py-2 rounded-md hover:bg-white hover:border-black hover:text-black transition duration-300 ease-in-out"
+                      >
+                        + Add Inventory
+                      </button>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div>No orders available.</div>
+              )}
+            </div>
           </div>
-          <div className="mt-6 mb-10   w-[50rem] ">
-            {orders.map(order => (
-              <div key={order._id} className="shadow bg-white p-10 flex justify-between items-center  rounded-xl mb-5 transition duration-300 ease-in-out transform hover:scale-105 space-x-4">
-                <div>
-                  <h2 className="text-xl">{order.itemName}</h2>
-                  <p>Price: LKR {order.price}</p>
-                  <p>Needed by: {new Date(order.neededDate).toLocaleDateString()}</p>
-                  {/* <p>Status: {order.status || 'Pending'}</p> */}
-                </div>
-                <button
-                  onClick={() => handleAcceptOrder(order._id)}
-                  className="bg-purple-600 border text-white px-4 py-2 rounded-md hover:bg-white hover:border-black hover:text-black transition duration-300 ease-in-out"
-                >
-                  +Add Inventory
-                </button>
-              </div>
-            ))}
-          </div>
+          <Footer />
         </div>
       </div>
-      <Footer />
     </div>
   );
 }
