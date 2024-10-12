@@ -12,6 +12,8 @@ router.post("/AcceptOrders", (req, res) => {
         });
 });
 
+
+
 router.get("/showAcceptOrders", (req, res) => {
     Accept.find() // Fetch all accepted orders from the database
         .then(orders => res.json(orders))

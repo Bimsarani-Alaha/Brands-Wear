@@ -7,6 +7,7 @@ router.post("/AddItem", (req, res) => {
   Item.create(req.body)
     .then(item => res.json(item))
     .catch(err => res.status(500).json(err));
+    
 });
 
 // Route to show all products (items)
