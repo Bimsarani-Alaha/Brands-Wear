@@ -23,6 +23,7 @@ function Supplier() {
     companyName: '' // Field for company name
   });
 
+  const [totalPrice, setTotalPrice] = useState(0); // New state for total price
   const [previousCodes, setPreviousCodes] = useState(new Set());
 
   // Fetch supplier data when the component mounts
@@ -54,18 +55,35 @@ function Supplier() {
 
   // Handle form input changes
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
+
+    // If the price changes, recalculate the total price
+    if (name === "Price") {
+      calculateTotalPrice(value);
+    }
   };
 
   // Handle size input changes (specific for sizes)
   const handleSizeChange = (e, size) => {
+    const value = Number(e.target.value); // Ensure size values are numbers
     setFormData({
       ...formData,
-      [size]: Number(e.target.value), // Ensure size values are numbers
+      [size]: value,
     });
+
+    // Recalculate total price whenever a size quantity changes
+    calculateTotalPrice(formData.Price, { ...formData, [size]: value });
+  };
+
+  // Function to calculate total price based on quantities and price
+  const calculateTotalPrice = (price, updatedFormData = formData) => {
+    const totalQuantity = updatedFormData.small + updatedFormData.medium + updatedFormData.large + updatedFormData.extraLarge;
+    const total = totalQuantity * (parseFloat(price) || 0);
+    setTotalPrice(total); // Set the calculated total price
   };
 
   // Handle form submission
@@ -88,6 +106,7 @@ function Supplier() {
         deliveryDate: '', // Reset the deliveryDate
         companyName: '' // Reset company name
       });
+      setTotalPrice(0); // Reset total price
     } catch (error) {
       console.error('Error adding product:', error);
       toast.error('Failed to add product.'); 
@@ -197,7 +216,7 @@ function Supplier() {
             {/* Price */}
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="Price">
-                Price
+                Price (per dress)
               </label>
               <input
                 type="number"
@@ -207,6 +226,19 @@ function Supplier() {
                 className="w-full p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
                 placeholder="Enter price"
                 min="0"
+              />
+            </div>
+
+            {/* Total Price Display */}
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2">
+                Total Price
+              </label>
+              <input
+                type="text"
+                value={`Rs. ${totalPrice.toFixed(2)}`}
+                readOnly
+                className="w-full p-2 border rounded-xl bg-gray-100"
               />
             </div>
 
@@ -226,18 +258,20 @@ function Supplier() {
             </div>
 
             {/* Submit Button */}
-            <button
-              type="submit"
-              className="w-full bg-purple-600 text-white p-3 rounded-xl hover:bg-purple-700"
-            >
-              Add Item
-            </button>
+            <div className="text-center">
+              <button
+                type="submit"
+                className="bg-purple-600 text-white font-bold py-2 px-4 rounded hover:bg-purple-700"
+              >
+                Add Product
+              </button>
+            </div>
           </form>
         </div>
       </div>
 
-      <ToastContainer /> 
       <Footer />
+      <ToastContainer />
     </div>
   );
 }
