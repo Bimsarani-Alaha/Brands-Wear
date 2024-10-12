@@ -43,16 +43,31 @@ const GenerateReport = () => {
 
   const generatePDF = () => {
     const pdf = new jsPDF();
+
+    // Adding styles and content to the PDF
+    pdf.setFont("Helvetica", "normal");
+    pdf.setFontSize(16);
     pdf.text(`Orders for User ID: ${userId}`, 10, 10);
+
+    pdf.setFontSize(14);
     pdf.text(`Total Price: ${totalPrice} LKR`, 10, 20);
     pdf.text(`Category: ${selectedCategory}`, 10, 30);
 
     let y = 40; // Starting Y position for orders
     searchedOrders.forEach(order => {
+      pdf.setFontSize(12);
       pdf.text(`Item Name: ${order.itemName}`, 10, y);
       pdf.text(`Price: ${order.price} LKR`, 10, y + 10);
       pdf.text(`Category: ${order.category}`, 10, y + 20);
-      y += 30; // Space between orders
+      
+      // Adding size details
+      pdf.text(`Sizes Available:`, 10, y + 30);
+      pdf.text(`Small: ${order.small}`, 20, y + 40);
+      pdf.text(`Medium: ${order.medium}`, 20, y + 50);
+      pdf.text(`Large: ${order.large}`, 20, y + 60);
+      pdf.text(`Extra Large: ${order.extraLarge}`, 20, y + 70);
+
+      y += 90; // Space between orders
     });
 
     pdf.save('report.pdf');
@@ -90,17 +105,17 @@ const GenerateReport = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {searchedOrders.map(order => (
-            <div key={order._id} className="border rounded-lg p-4 shadow-md">
-              <h2 className="text-lg font-semibold">{order.itemName}</h2>
-              <img src={order.imageURL} alt={order.itemName} className="h-40 w-full object-cover mb-2" />
+            <div key={order._id} className="border rounded-lg p-4 shadow-md flex flex-col items-center">
+              <h2 className="text-lg font-semibold mb-2">{order.itemName}</h2>
+              <img src={order.imageURL} alt={order.itemName} className="h-48 w-auto object-cover rounded-lg mb-2" />
               <p>Category: {order.category}</p>
               <p>Price: {order.price} LKR</p>
               <p>
                 Sizes Available: 
-                <div>Small:{order.small}</div>
-                <div>Medium:{order.medium}</div> 
-                <div>Large:{order.large}</div>
-                <div>Extra Large:{order.extraLarge}</div>
+                <div>Small: {order.small}</div>
+                <div>Medium: {order.medium}</div> 
+                <div>Large: {order.large}</div>
+                <div>Extra Large: {order.extraLarge}</div>
               </p>
             </div>
           ))}
@@ -111,7 +126,7 @@ const GenerateReport = () => {
         <h3 className="text-lg font-semibold">Total Price: {totalPrice} LKR</h3>
         <button
           onClick={generatePDF}
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="mt-4 px-6 py-2 bg-blue-600 text-white font-semibold rounded shadow-lg hover:bg-blue-700 transition duration-200 ease-in-out"
         >
           Generate PDF
         </button>

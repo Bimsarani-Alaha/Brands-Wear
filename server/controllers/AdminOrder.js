@@ -33,6 +33,23 @@ router.get("/showOrders", (req, res) => {
       .catch(err => res.status(500).json({ error: 'Server error' }));
   });
   
+ // Delete order by itemCode (DELETE)
+router.delete("/deleteByItemCode/:itemCode", (req, res) => {
+  const { itemCode } = req.params;
+
+  Order.deleteOne({ itemCode: itemCode })  // Delete order matching the itemCode
+    .then(result => {
+      if (result.deletedCount === 0) {
+        return res.status(404).json({ message: 'Order not found' });
+      }
+      res.json({ message: 'Order deleted successfully' });
+    })
+    .catch(err => {
+      console.error("Failed to delete order:", err);
+      res.status(500).json({ error: 'Failed to delete order', details: err });
+    });
+});
+  
   
 
 module.exports = router;

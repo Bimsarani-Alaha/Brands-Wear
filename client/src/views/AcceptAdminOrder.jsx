@@ -99,12 +99,18 @@ function AcceptAdminOrder() {
         imageURL: '',
         userId: userId, // Retain the userId when resetting form data
       });
+  
+      // Delete the order by itemCode after submission
+      await axios.delete(`http://localhost:3001/deleteByItemCode/${formData.itemCode}`);
+      toast.success('Item deleted successfully!');
     } catch (error) {
       console.error('Error accepting order:', error);
       toast.error('Failed to accept order.');
     }
   };
+  
 
+  
   return (
     <div className='min-h-screen flex flex-col'>
       <Navigation />
@@ -126,13 +132,7 @@ function AcceptAdminOrder() {
                   readOnly
                   className="w-full p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
                 />
-                <button
-                  type="button"
-                  className="ml-2 bg-purple-600 text-white rounded p-2"
-                  onClick={generateItemCode}
-                >
-                  Generate
-                </button>
+                
               </div>
             </div>
 

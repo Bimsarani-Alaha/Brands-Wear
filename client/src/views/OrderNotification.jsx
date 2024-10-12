@@ -6,12 +6,14 @@ import { Link, useParams } from 'react-router-dom';
 
 const ShowOrders = () => {
     const [orders, setOrders] = useState([]);
-    const {userId} = useParams();
+    const { userId } = useParams();
 
     useEffect(() => {
         axios.get('http://localhost:3001/showOrders')
             .then(response => {
-                setOrders(response.data);
+                // Sort orders by createdAt in descending order
+                const sortedOrders = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                setOrders(sortedOrders);
             })
             .catch(error => {
                 console.error("Error fetching orders:", error);
@@ -21,12 +23,10 @@ const ShowOrders = () => {
     if (orders.length === 0) return <div>Loading...</div>;
 
     const handleAccept = (orderId) => {
-        // Add your accept logic here (e.g., make an API call)
         console.log(`Accepted order ID: ${orderId}`);
     };
 
     const handleReject = (orderId) => {
-        // Remove the order from the state (without API call)
         setOrders(orders.filter(order => order._id !== orderId));
         console.log(`Rejected order ID: ${orderId}`);
     };
@@ -117,7 +117,6 @@ const ShowOrders = () => {
             </main>
             <Footer />
         </div>
-
     );
 };
 
