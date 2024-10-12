@@ -44,7 +44,7 @@ function AdminBuyItem() {
       });
     })
     .catch(() => {
-      toast.error(`Failed to purchase ${product.itemName}. Please try again.`, {
+      toast.error(`Failed to purchase ${product.itemName}. Already Buy It.`, {
         position: "top-center",
       });                
     });       
