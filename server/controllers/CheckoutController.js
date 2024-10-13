@@ -122,7 +122,9 @@ router.get("/user-details", async (req, res) => {
 			return res.status(401).json({ message: "Unauthorized" });
 		}
 
-		const user = await User.findById(userId).select("email"); // Fetch only the email field
+		const user = await User.findById(userId).select(
+			"email firstName lastName address postalCode phoneNumber"
+		);
 
 		if (!user) {
 			return res.status(404).json({ message: "User not found" });
@@ -131,6 +133,7 @@ router.get("/user-details", async (req, res) => {
 		// Send only the email to auto-fill the form
 		res.json({
 			email: user.email,
+			address: user.address,
 		});
 	} catch (err) {
 		res.status(500).json({
@@ -149,13 +152,15 @@ router.post("/save-checkout", async (req, res) => {
 			return res.status(401).json({ message: "Unauthorized" });
 		}
 
-		const { firstName, lastName, address, postalCode, phoneNumber } = req.body;
+		const { email, firstName, lastName, address, postalCode, phoneNumber } =
+			req.body;
 
 		// Check if a checkout already exists for this user
 		const existingCheckout = await Checkout.findOne({ userId });
 
 		if (existingCheckout) {
 			// Update existing checkout without changing the email
+			existingCheckout.email = email;
 			existingCheckout.firstName = firstName;
 			existingCheckout.lastName = lastName;
 			existingCheckout.address = address;
@@ -172,7 +177,7 @@ router.post("/save-checkout", async (req, res) => {
 			// Create a new checkout document with the fixed email
 			const newCheckout = new Checkout({
 				userId,
-				email: existingCheckout.email, // Use existing email
+				email, // Use existing email
 				firstName,
 				lastName,
 				address,
