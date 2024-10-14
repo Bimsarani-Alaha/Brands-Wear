@@ -9,7 +9,7 @@ const ShowOrders = () => {
     const { userId } = useParams();
 
     useEffect(() => {
-        axios.get(`http://localhost:3001/showOrders/${userId}`)
+        axios.get('http://localhost:3001/showOrders')
             .then(response => {
                 // Sort orders by createdAt in descending order
                 const sortedOrders = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -18,8 +18,7 @@ const ShowOrders = () => {
             .catch(error => {
                 console.error("Error fetching orders:", error);
             });
-    }, [userId]);
-    
+    }, []);
 
     if (orders.length === 0) return <div>Loading...</div>;
 
