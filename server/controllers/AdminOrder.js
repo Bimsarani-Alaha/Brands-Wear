@@ -13,12 +13,20 @@ router.post("/createOrder", (req, res) => {
         });
 });
 
-// Get all orders (GET)
-router.get("/showOrders", (req, res) => {
-    Order.find()  // Fetch all items from the database
-      .then(Order => res.json(Order))
-      .catch(err => res.status(500).json(err));
-  });
+router.get("/showOrders/:userId", (req, res) => {
+  const userId = req.params.userId;
+  const specificOrderId = "66d6f55706a37523909d2c06"; // The specific order ID you want to include
+
+  // Fetch orders that match either the userId or the specific order ID
+  Order.find({
+      $or: [
+          { companyId: userId },  // Orders belonging to the user
+          { companyId: specificOrderId }  // Specific order with the provided order ID
+      ]
+  })
+  .then(orders => res.json(orders))
+  .catch(err => res.status(500).json({ error: err.message }));
+});
 
   router.get("/showOrdersById/:orderId", (req, res) => {
     const { orderId } = req.params;
