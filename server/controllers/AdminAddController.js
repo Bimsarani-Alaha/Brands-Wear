@@ -69,32 +69,6 @@ router.put("/updateInventory/:itemId", async (req, res) => {
   }
 });
 
-router.post('/UpdateInventoryByOrders', async (req, res) => {
-  try {
-    const { itemCode, small, medium, large, extraLarge } = req.body;
-
-    // Find the inventory item by itemCode
-    const inventoryItem = await Item.findOne({ itemCode });
-
-    if (!inventoryItem) {
-      return res.status(404).json({ message: 'Inventory item not found' });
-    }
-
-    // Update the sizes by adding the new quantities from the order
-    inventoryItem.small += small || 0;
-    inventoryItem.medium += medium || 0;
-    inventoryItem.large += large || 0;
-    inventoryItem.extraLarge += extraLarge || 0;
-
-    // Save the updated inventory item
-    await inventoryItem.save();
-
-    res.status(200).json({ message: 'Inventory updated successfully', inventoryItem });
-  } catch (error) {
-    console.error('Error updating inventory:', error);
-    res.status(500).json({ message: 'Server error' });
-  }
-});
 
 // Route to delete an item
 router.delete("/deleteItem/:itemId", (req, res) => {

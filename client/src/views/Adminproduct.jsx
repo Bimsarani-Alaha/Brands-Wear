@@ -2,13 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AdminNavigation from './Components/AdminNavigation';
 import Footer from './Components/Footer';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit, faPlus, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 function AdminProduct() {
-
-  const {userId} = useParams();
   const [searchQuery, setSearchQuery] = useState('');
   const [products, setProducts] = useState([]);
 
@@ -78,7 +76,7 @@ function AdminProduct() {
 
             {/* Add Item Button */}
             <div className="text-center mb-6">
-            <Link to={`/AdminAddItem/${userId}`}>
+              <Link to='/AdminAddItem'>
                 <button className="bg-purple-700 mt-5 text-white text-xl font-thin px-6 py-2 w-40 h-14 rounded-lg hover:bg-white hover:text-black transition duration-300 ease-in-out flex items-center justify-center">
                   <FontAwesomeIcon icon={faPlus} className="mr-2" />
                   Add Item

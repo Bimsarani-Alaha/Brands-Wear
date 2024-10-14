@@ -26,14 +26,15 @@ function Login() {
 
 			if (response.status === 200) {
 				// Navigate to the admin page on successful login
-				navigate(`/AdminPage/${response.data.userId}`); // Adjust the path as needed
+				navigate("/AdminPage"); // Adjust the path as needed
 			} else if (response.status === 202) {
 				// Navigate to the supplier registration form page
 				navigate(`/supplierProduct/${response.data.userId}`); // Adjust the path as needed
 			} else if (response.status === 203) {
 				sessionStorage.setItem("userId", response.data.userId);
 				sessionStorage.setItem("username", response.data.username);
-				console.log("Retrieved username:", response.data.userId);
+				sessionStorage.setItem("email", response.data.email);
+				console.log("Retrieved username:", response.data.email);
 				// Navigate to user home page with the user ID
 				navigate(`/userHome/${response.data.userId}`);
 			} else {

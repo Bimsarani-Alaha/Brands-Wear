@@ -48,9 +48,9 @@ function App() {
         {/* Other Routes */}
         <Route path="/Login" element={<Login />} />
         <Route path="/" element={<Home />} />
-        <Route path="/AdminAdditem/:userId" element={<AdminAdditem />} />
-        <Route path="/Adminproduct/:userId" element={<Adminproduct />} />
-        <Route path="/AdminPage/:userId" element={<AdminPage />} />
+        <Route path="/AdminAdditem" element={<AdminAdditem />} />
+        <Route path="/Adminproduct" element={<Adminproduct />} />
+        <Route path="/AdminPage" element={<AdminPage />} />
         <Route path="/UpdateItem/:itemId" element={<UpdateItem />} />
         <Route path="/GenerateReport/:userId" element={<GenerateReport />} />
         <Route path="/OrderNotification/:userId" element={<OrderNotification />} />

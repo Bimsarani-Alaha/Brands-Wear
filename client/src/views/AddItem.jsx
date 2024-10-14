@@ -20,7 +20,7 @@ function Supplier() {
     Price: '',
     imageURL: '', // Field for image URL
     deliveryDate: '', // New field for delivery date
-    companyId: userId // Field for company name
+    companyName: '' // Field for company name
   });
 
   const [totalPrice, setTotalPrice] = useState(0); // New state for total price
