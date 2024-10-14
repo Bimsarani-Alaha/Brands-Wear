@@ -16,6 +16,7 @@ const UpdateItemForm = () => {
     medium: 0,
     imgUrl: "",
     neededDate: "", // New needed date field
+    companyId: ""
   });
 
   // Fetch data for the item
@@ -35,9 +36,18 @@ const UpdateItemForm = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const orderData = { ...itemData, quantity: itemData.small + itemData.medium + itemData.large + itemData.extraLarge }; // Calculate total quantity
+
+    // Prepare the data for order creation
+    const orderData = { 
+      ...itemData, 
+      quantity: itemData.small + itemData.medium + itemData.large + itemData.extraLarge 
+    };
+
+    // Remove _id to avoid duplicate key error
+    delete orderData._id;
+
     try {
-      const response = await axios.post(`http://localhost:3001/CreateOrder`, orderData);
+      const response = await axios.post(`http://localhost:3001/createOrder`, orderData);
       if (response.status === 200) {
         alert("Order placed successfully!");
       } else {
@@ -52,7 +62,8 @@ const UpdateItemForm = () => {
   // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setItemData({ ...itemData, [name]: value });
+    const newValue = e.target.type === 'number' ? parseInt(value) || 0 : value; // Handle numbers correctly
+    setItemData({ ...itemData, [name]: newValue });
   };
 
   return (

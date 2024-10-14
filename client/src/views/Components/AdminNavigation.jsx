@@ -2,9 +2,12 @@ import React from 'react';
 import Logo from '../../Images/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 function Navigation() {
+
+  const {userId} = useParams();
+  
   return (
     <div>
       {/* Navigation Bar */}
@@ -16,7 +19,7 @@ function Navigation() {
 
         {/* Center: Navigation Buttons */}
         <div className='flex items-center space-x-2 text-sm'>
-          <Link to='/Adminproduct'>
+          <Link to={`/Adminproduct/${userId}`}>
             <button className='transition duration-300 ease-in-out transform hover:scale-105'>Product category</button>
           </Link>
           <span>&nbsp;|&nbsp;</span>

@@ -26,7 +26,7 @@ function Login() {
 
 			if (response.status === 200) {
 				// Navigate to the admin page on successful login
-				navigate("/AdminPage"); // Adjust the path as needed
+				navigate(`/AdminPage/${response.data.userId}`); // Adjust the path as needed
 			} else if (response.status === 202) {
 				// Navigate to the supplier registration form page
 				navigate(`/supplierProduct/${response.data.userId}`); // Adjust the path as needed

@@ -25,16 +25,29 @@ function AdminOrderStatus() {
     navigate('/Inventory'); // Navigates to the Inventory page
   };
 
-  const handleAcceptOrder = (orderId) => {
-    axios.put(`http://localhost:3001/AcceptAdminOrder/${orderId}`)
+  const handleAcceptOrder = (itemCode, sizes) => {
+    // First, update the inventory with the order sizes
+    axios.post('http://localhost:3001/UpdateInventoryByOrders', {
+      itemCode,
+      ...sizes, // Sending sizes as part of the request body
+    })
       .then(response => {
-        console.log("Order accepted:", response.data);
-        // Refresh orders after accepting an order
-        setOrders(prevOrders => 
-          prevOrders.map(order => 
-            order._id === orderId ? { ...order, status: 'Accepted' } : order
-          )
-        );
+        console.log('Inventory updated successfully:', response.data);
+
+        // Now update the order status to "Yes"
+        axios.put(`http://localhost:3001/statusToYes/${itemCode}`)
+          .then(response => {
+            console.log('Order status updated to "Yes":', response.data);
+            // Optionally, refresh the orders after the update or show a success message
+            setOrders((prevOrders) =>
+              prevOrders.map((order) =>
+                order.itemCode === itemCode ? { ...order, status: 'Yes' } : order
+              )
+            );
+          })
+          .catch(error => {
+            console.error("Error updating order status:", error);
+          });
       })
       .catch(error => {
         console.error("Error accepting order:", error);
@@ -42,7 +55,7 @@ function AdminOrderStatus() {
   };
 
   return (
-    <div className='min-h-screen flex flex-col'>
+    <div className="min-h-screen flex flex-col">
       <AdminNavigation />
       <div className="flex-grow container mx-auto p-6">
         <div className="flex flex-col items-center space-x-4 bg-[#D9D9D9] ml-52 mr-52 mt-10 rounded-xl py-10 mb-20">
@@ -59,16 +72,25 @@ function AdminOrderStatus() {
                       <div className="text-lg font-semibold mb-2">Category: {order.category}</div>
                       <div className="text-lg font-semibold mb-2">Item Code: {order.itemCode}</div>
                       <div className="text-lg font-semibold mb-2">Company Name: {order.companyName}</div>
-                      <div className="text-sm mb-2">Price:  {order.price}</div>
+                      <div className="text-sm mb-2">Price: {order.price}</div>
                       <div className="text-sm mb-4">Small: {order.small}</div>
                       <div className="text-sm mb-4">Medium: {order.medium}</div>
                       <div className="text-sm mb-4">Large: {order.large}</div>
                       <div className="text-sm mb-4">Extra Large: {order.extraLarge}</div>
+                      <div className="text-sm mb-4">Status: {order.status}</div>
                       <button
-                        onClick={() => handleAcceptOrder(order._id)}
-                        className="bg-purple-600 border text-white px-4 py-2 rounded-md hover:bg-white hover:border-black hover:text-black transition duration-300 ease-in-out"
+                        onClick={() => handleAcceptOrder(order.itemCode, {
+                          small: order.small,
+                          medium: order.medium,
+                          large: order.large,
+                          extraLarge: order.extraLarge
+                        })} // Passing sizes along with itemCode
+                        className={`${
+                          order.status === 'Yes' ? 'bg-gray-400 cursor-not-allowed' : 'bg-purple-600 hover:bg-white hover:border-black hover:text-black'
+                        } border text-white px-4 py-2 rounded-md transition duration-300 ease-in-out`}
+                        disabled={order.status === 'Yes'} // Disable if status is Yes
                       >
-                        + Add Inventory
+                        {order.status === 'Yes' ? 'Inventory Added' : '+ Add Inventory'}
                       </button>
                     </div>
                   </div>
@@ -78,8 +100,8 @@ function AdminOrderStatus() {
               )}
             </div>
           </div>
-          <Footer />
         </div>
+        <Footer />
       </div>
     </div>
   );

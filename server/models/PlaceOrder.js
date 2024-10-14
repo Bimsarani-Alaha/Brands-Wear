@@ -36,7 +36,7 @@ const OrderSchema = new mongoose.Schema({
       trim: true,
     
     },
-    imageURL: {
+    imgUrl: {
       type: String,
       trim: true,
     },
@@ -50,6 +50,9 @@ const OrderSchema = new mongoose.Schema({
         type: Date,
         required: true,  // Ensure that the needed date is provided
     },
+    companyId: {
+      type: String, // Ensure that the needed date is provided
+  },
 }, { timestamps: true });
 
   
