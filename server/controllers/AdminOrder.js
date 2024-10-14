@@ -3,11 +3,12 @@ const router = express.Router();
 const Order = require('../models/PlaceOrder'); // Adjust as necessary
 
 // Create an order (POST)
-router.post("/CreateOrder", (req, res) => {
+router.post("/createOrder", (req, res) => {
     Order.create(req.body)
         .then(order => res.json(order))
         .catch(err => {
             console.error("Failed to create order:", err);
+            console.log(req.body);
             res.status(500).json({ error: 'Failed to add order', details: err });
         });
 });

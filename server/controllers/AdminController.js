@@ -19,7 +19,7 @@ router.post("/loginc", async (req, res) => {
 				console.log(
 					`Admin login successful. UserID stored in session: ${req.session.userId}`
 				);
-				return res.status(200).json({ message: "Admin login successful" });
+				return res.status(200).json({ message: "Admin login successful",userId: admin._id });
 			} else {
 				return res.status(401).json({ message: "Invalid admin credentials" });
 			}

@@ -4,6 +4,7 @@ import AdminNavigation from './Components/AdminNavigation';
 import Footer from './Components/Footer';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useParams } from 'react-router-dom';
 
 function AdminAddItem() {
   const [category, setCategory] = useState("Long Frocks");
@@ -13,6 +14,7 @@ function AdminAddItem() {
   const [itemCode, setItemCode] = useState(""); 
   const [imgUrl, setImageUrl] = useState(""); 
   const [previousCodes, setPreviousCodes] = useState(new Set());
+  const {userId} = useParams();
 
   // Individual states for sizes
   const [small, setSmall] = useState(0);
@@ -59,6 +61,7 @@ function AdminAddItem() {
       medium,
       large,
       extraLarge,
+      companyId:userId,
     };
 
     try {

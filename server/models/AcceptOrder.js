@@ -40,6 +40,10 @@ const acceptOrderSchema = new mongoose.Schema({
   userId: {
     type: String, // Optional image URL
   },
+  status:{
+    type:String,
+    default:'No'
+  }
 }, { timestamps: true }); // Automatically adds createdAt and updatedAt fields
 
 // Create the model for accepting orders

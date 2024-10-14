@@ -36,6 +36,7 @@ function AdminBuyItem() {
       small: product.small,
       medium: product.medium,
       extraLarge: product.extraLarge,
+      companyId:product.companyId,
     })
     .then(() => {
      
