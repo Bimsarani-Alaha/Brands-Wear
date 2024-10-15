@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import AdminNavigation from './Components/AdminNavigation';
 import Footer from './Components/Footer';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function AdminOrderStatus() {
   const navigate = useNavigate();
@@ -66,18 +67,24 @@ function AdminOrderStatus() {
               {orders.length > 0 ? (
                 orders.map((order) => (
                   <div key={order._id} className="relative bg-white p-10 rounded-xl shadow flex items-center space-x-4 mt-10 w-[50rem] transition duration-300 ease-in-out transform hover:scale-105">
-                    <img className="w-32 h-32 rounded-md object-cover mr-4" src={order.imageURL} alt={order.itemName} />
-                    <div className="flex-1">
+                    <img className="w-32 h-32 rounded-md object-cover mr-4" src={order.imgUrl} alt={order.itemName} />
+                    <div className="flex-1 justify-center">
                       <div className="text-lg font-semibold mb-2">Name: {order.itemName}</div>
-                      <div className="text-lg font-semibold mb-2">Category: {order.category}</div>
-                      <div className="text-lg font-semibold mb-2">Item Code: {order.itemCode}</div>
-                      <div className="text-lg font-semibold mb-2">Company Name: {order.companyName}</div>
+                      <div className="text-lg mb-2">Category: {order.category}</div>
+                      <div className="text-lg  mb-2">Item Code: {order.itemCode}</div>
+                      <div className="text-lg mb-2">Company Name: {order.companyName}</div>
+
+                      <div className='flex justify-center gap-5'>
+                        <div className="text-sm mb-4"> <strong>S</strong> : {order.small}</div>
+                        <div className="text-sm mb-4"> <strong>M</strong> : {order.medium}</div>
+                        <div className="text-sm mb-4"><strong>L</strong> :  {order.large}</div>
+                        <div className="text-sm mb-4"><strong>XL</strong> :  {order.extraLarge}</div>  
+                      </div>
+
                       <div className="text-sm mb-2">Price: {order.price}</div>
-                      <div className="text-sm mb-4">Small: {order.small}</div>
-                      <div className="text-sm mb-4">Medium: {order.medium}</div>
-                      <div className="text-sm mb-4">Large: {order.large}</div>
-                      <div className="text-sm mb-4">Extra Large: {order.extraLarge}</div>
-                      <div className="text-sm mb-4">Status: {order.status}</div>
+                      <div className="text-sm mb-2">Total Price: {order.totalPrice}</div>
+
+                      <div className="text-sm mb-4 p-5">Status: {order.status}</div>
                       <button
                         onClick={() => handleAcceptOrder(order.itemCode, {
                           small: order.small,

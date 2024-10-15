@@ -5,7 +5,8 @@ import AdminNavigation from './Components/AdminNavigation';
 import Footer from './Components/Footer';
 
 const UpdateItemForm = () => {
-  const { itemId } = useParams();
+  const { itemId ,userId} = useParams();
+  
   const [itemData, setItemData] = useState({
     category: "",
     itemName: "",

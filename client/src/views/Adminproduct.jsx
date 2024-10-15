@@ -97,7 +97,7 @@ function AdminProduct() {
                     <p className="text-gray-600">Price: <span className="font-bold">LKR {product.price}</span></p>
                   </div>
                   <div className="flex flex-col space-y-2">
-                    <Link to={`/UpdateAdmin/${product._id}`}>
+                    <Link to={`/UpdateAdmin/${product._id}/${userId}`}>
                       <button className="bg-purple-600 border text-white px-4 py-2 rounded-md hover:bg-white hover:border-black hover:text-black transition duration-300 ease-in-out">
                         <FontAwesomeIcon icon={faEdit} className="mr-2" />
                         Update
