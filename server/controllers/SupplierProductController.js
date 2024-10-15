@@ -80,7 +80,31 @@ router.get("/showSupplierProductsbyuserId/:userId", async (req, res) => {
     }
 });
 
-
-
+// Route to update product status to 'Yes'
+router.put('/itemStatusToYes/:itemCode', async (req, res) => {
+    try {
+      const { itemCode } = req.params;
+  
+      // Find the product using itemCode and update its status to 'Yes'
+      const updatedProduct = await Product.findOneAndUpdate(
+        { itemCode: itemCode }, // Correctly searching by itemCode
+        { Status: 'Yes' },
+        { new: true } // Return the updated product
+      );
+  
+      if (!updatedProduct) {
+        return res.status(404).json({ message: 'Product not found.' });
+      }
+  
+      res.status(200).json({
+        message: 'Product status updated to Yes.',
+        product: updatedProduct,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Failed to update product status.' });
+    }
+  });
+  
 
 module.exports = router;

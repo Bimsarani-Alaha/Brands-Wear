@@ -16,7 +16,8 @@ const UpdateItemForm = () => {
     medium: 0,
     imgUrl: "",
     neededDate: "", // New needed date field
-    companyId: ""
+    companyId: "",
+    companyName:"",
   });
 
   // Fetch data for the item
@@ -38,9 +39,13 @@ const UpdateItemForm = () => {
     e.preventDefault();
 
     // Prepare the data for order creation
-    const orderData = { 
-      ...itemData, 
-      quantity: itemData.small + itemData.medium + itemData.large + itemData.extraLarge 
+    const orderData = {
+      ...itemData,
+      quantity: 
+        (50 - itemData.small) + 
+        (50 - itemData.medium) + 
+        (50 - itemData.large) + 
+        (50 - itemData.extraLarge)
     };
 
     // Remove _id to avoid duplicate key error
@@ -85,6 +90,7 @@ const UpdateItemForm = () => {
                 required
               />
             </div>
+            {/* <div>hi{itemData.companyId}</div> */}
             <div className="mb-4">
               <label className="block text-gray-700 font-semibold mb-2">Category:</label>
               <input
@@ -115,7 +121,7 @@ const UpdateItemForm = () => {
                 <input
                   type="number"
                   name="small"
-                  value={itemData.small}
+                  value={50-itemData.small}
                   onChange={handleInputChange}
                   className="w-[10rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
                 />
@@ -125,7 +131,7 @@ const UpdateItemForm = () => {
                 <input
                   type="number"
                   name="medium"
-                  value={itemData.medium}
+                  value={50-itemData.medium}
                   onChange={handleInputChange}
                   className="w-[10rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
                 />
@@ -135,7 +141,7 @@ const UpdateItemForm = () => {
                 <input
                   type="number"
                   name="large"
-                  value={itemData.large}
+                  value={50-itemData.large}
                   onChange={handleInputChange}
                   className="w-[10rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
                 />
@@ -145,7 +151,7 @@ const UpdateItemForm = () => {
                 <input
                   type="number"
                   name="extraLarge"
-                  value={itemData.extraLarge}
+                  value={50-itemData.extraLarge}
                   onChange={handleInputChange}
                   className="w-[10rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
                 />

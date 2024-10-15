@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
 import axios from 'axios';
 
+
 function AdminBuyItem() {
   const [products, setProducts] = useState([]);
 
@@ -20,12 +21,14 @@ function AdminBuyItem() {
           position: "top-center",
         });
       });
-  }, []);                                                                                                                                                                  
-
+  }, []);                                                                                                                                                                 
 
   // Function to handle buying an item
-  const handleBuyItem = (product) => { 
-    axios.post('http://localhost:3001/AddItem', {
+  // Function to handle buying an item
+const handleBuyItem = async (product) => { 
+  try {
+    // Post the item data to add it
+    await axios.post('http://localhost:3001/AddItem', {
       itemName: product.itemName,
       category: product.Category,
       price: product.Price,
@@ -36,20 +39,33 @@ function AdminBuyItem() {
       small: product.small,
       medium: product.medium,
       extraLarge: product.extraLarge,
-      companyId:product.companyId,
-    })
-    .then(() => {
-     
-      toast.success(`${product.itemName} purchased successfully!`, {
-        position: "top-center",
-      });
-    })
-    .catch(() => {
-      toast.error(`Failed to purchase ${product.itemName}. Already Buy It.`, {
-        position: "top-center",
-      });                
-    });       
-  };
+      companyName: product.companyName, // Include companyName here
+      totalPrice: product.totalPrice,
+      companyId: product.companyId
+    });
+
+    // Update the item's status to 'Yes'
+    await axios.put(`http://localhost:3001/itemStatusToYes/${product.itemCode}`);
+  
+    // Add the new item to the beginning of the products list
+    setProducts([{
+      ...product,
+      Status: 'Yes', // Set the status to 'Yes' for the newly purchased item
+    }, ...products]);
+
+    // Show success message
+    toast.success(`${product.itemName} purchased successfully!`, {
+      position: "top-center",
+    });
+  } catch (error) {
+    // Show error message if purchase fails
+    toast.error(`Failed to purchase ${product.itemName}. Already bought it.`, {
+      position: "top-center",
+    });                
+  }
+};
+
+  
 
   // Function to handle deleting an item
   const handleDeleteItem = (productId) => {
@@ -87,6 +103,7 @@ function AdminBuyItem() {
                   <div className="text-lg font-semibold mb-2">Item code: {product.itemCode}</div>
                   <div className="text-lg font-semibold mb-2">Company Name: {product.companyName}</div>
                   <div className="text-sm mb-2">Price: LKR. {product.Price}</div>
+                  <div className="text-sm mb-2">TotalPrice: LKR. {product.totalPrice}</div>
                   <div className="text-sm mb-4">Small: {product.small}</div>
                   <div className="text-sm mb-4">Medium: {product.medium}</div>
                   <div className="text-sm mb-4">Large: {product.large}</div>
@@ -94,11 +111,14 @@ function AdminBuyItem() {
                   <div className="text-sm mb-4">Delivery Date: {new Date(product.deliveryDate).toLocaleDateString()}</div>
                   <button 
                     onClick={() => handleBuyItem(product)} 
-                    className={`w-64 h-12 mt-5 mb-6 bg-purple-500 text-white text-xl font-thin p-2 rounded-xl hover:bg-purple-200 hover:text-black transition-colors duration-200 focus:ring-2 focus:ring-purple-600 ${product.purchased ? 'opacity-50 cursor-not-allowed' : ''}`}
-                    disabled={product.purchased} // Disable if purchased
+                    className={`w-64 h-12 mt-5 mb-6 bg-purple-500 text-white text-xl font-thin p-2 rounded-xl hover:bg-purple-200 hover:text-black transition-colors duration-200 focus:ring-2 focus:ring-purple-600 ${
+                      product.Status === 'Yes' ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
+                    disabled={product.Status === 'Yes'} // Disable if Status is 'Yes'
                   >
-                    {product.purchased ? 'Purchased' : 'Buy Now'}
+                    {product.Status === 'Yes' ? 'Purchased' : 'Buy Now'}
                   </button>
+
                 </div>
                 <button 
                   onClick={() => handleDeleteItem(product._id)}
