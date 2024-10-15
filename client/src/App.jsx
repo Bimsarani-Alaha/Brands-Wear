@@ -51,7 +51,7 @@ function App() {
         <Route path="/AdminAdditem/:userId" element={<AdminAdditem />} />
         <Route path="/Adminproduct/:userId" element={<Adminproduct />} />
         <Route path="/AdminPage/:userId" element={<AdminPage />} />
-        <Route path="/UpdateItem/:itemId" element={<UpdateItem />} />
+        <Route path="/UpdateItem/:itemId/:userId" element={<UpdateItem />} />
         <Route path="/GenerateReport/:userId" element={<GenerateReport />} />
         <Route path="/OrderNotification/:userId" element={<OrderNotification />} />
         <Route path="/AcceptAdminOrder/:orderId/:userId" element={<AcceptAdminOrder />} />

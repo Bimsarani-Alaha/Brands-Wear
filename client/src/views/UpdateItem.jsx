@@ -15,7 +15,8 @@ function UpdateItem() {
     medium: 0,
     large: 0,
     extraLarge: 0,
-    Price: ''
+    Price: '',
+    totalPrice: 0 // Added totalPrice field
   });
 
   const [previousCodes, setPreviousCodes] = useState(new Set());
@@ -33,7 +34,8 @@ function UpdateItem() {
           medium: product.medium,
           large: product.large,
           extraLarge: product.extraLarge,
-          Price: product.Price
+          Price: product.Price,
+          totalPrice: calculateTotalPrice(product.small, product.medium, product.large, product.extraLarge, product.Price) // Calculate total price on fetch
         });
       })
       .catch(error => {
@@ -41,6 +43,11 @@ function UpdateItem() {
         alert('Failed to fetch product.');
       });
   }, [itemId]);
+
+  const calculateTotalPrice = (small, medium, large, extraLarge, price) => {
+    const totalQuantity = Number(small) + Number(medium) + Number(large) + Number(extraLarge);
+    return totalQuantity * Number(price); // Total price calculation based on all quantities and price
+  };
 
   const generateItemCode = () => {
     let code;
@@ -53,16 +60,37 @@ function UpdateItem() {
   };
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
+    const { name, value } = e.target;
+    setFormData((prev) => {
+      const updatedData = { ...prev, [name]: value };
+
+      if (['small', 'medium', 'large', 'extraLarge', 'Price'].includes(name)) {
+        const totalPrice = calculateTotalPrice(
+          Number(updatedData.small),
+          Number(updatedData.medium),
+          Number(updatedData.large),
+          Number(updatedData.extraLarge),
+          Number(updatedData.Price)
+        );
+        return { ...updatedData, totalPrice };
+      }
+
+      return updatedData;
     });
   };
 
   const handleSizeChange = (e, size) => {
-    setFormData({
-      ...formData,
-      [size]: Number(e.target.value),
+    const value = Number(e.target.value);
+    setFormData((prev) => {
+      const updatedData = { ...prev, [size]: value };
+      const totalPrice = calculateTotalPrice(
+        updatedData.small,
+        updatedData.medium,
+        updatedData.large,
+        updatedData.extraLarge,
+        updatedData.Price
+      );
+      return { ...updatedData, totalPrice };
     });
   };
 
@@ -167,9 +195,23 @@ function UpdateItem() {
               name="Price"
               value={formData.Price}
               onChange={handleChange}
-              className="w-60 h-12 p-2 pl-5 border border-gray-300 rounded-xl focus:outline-`none focus:ring-2 focus:ring-purple-600"
+              className="w-60 h-12 p-2 pl-5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
               placeholder="Enter price"
               required
+            />
+          </div>
+
+          {/* Total Price */}
+          <div className="mb-4">
+            <label className="block text-gray-700 text-xl text-center mb-4">
+              Total Price
+            </label>
+            <input
+              type="text"
+              name="totalPrice"
+              value={formData.totalPrice}
+              readOnly
+              className="w-60 h-12 p-2 pl-5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
             />
           </div>
 
@@ -184,7 +226,7 @@ function UpdateItem() {
 
         </div>
       </div>
-
+      
       <Footer />
     </div>
   );

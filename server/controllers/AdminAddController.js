@@ -111,33 +111,30 @@ router.delete("/deleteItem/:itemId", (req, res) => {
 
 
 // Checkout route
-router.post('/checkout', async (req, res) => {
-  const { cartItems } = req.body;
-
+router.post('/checkoutInventoryByOrders', async (req, res) => {
   try {
-    for (const cartItem of cartItems) {
-      // Find the item in the item database
-      const item = await Item.findById(cartItem.itemId);
+    const { itemCode, small, medium, large, extraLarge } = req.body;
 
-      // Deduct the quantity for the correct size
-      if (cartItem.size === 'large') {
-        item.large -= cartItem.quantity;
-      } else if (cartItem.size === 'small') {
-        item.small -= cartItem.quantity;
-      } else if (cartItem.size === 'medium') {
-        item.medium -= cartItem.quantity;
-      } else if (cartItem.size === 'extraLarge') {
-        item.extraLarge -= cartItem.quantity;
-      }
+    // Find the inventory item by itemCode
+    const inventoryItem = await Item.findOne({ itemCode });
 
-      // Save the updated item to the database
-      await item.save();
+    if (!inventoryItem) {
+      return res.status(404).json({ message: 'Inventory item not found' });
     }
 
-    res.status(200).json({ message: 'Checkout successful!' });
+    // Update the sizes by adding the new quantities from the order
+    inventoryItem.small -= small || 0;
+    inventoryItem.medium -= medium || 0;
+    inventoryItem.large -= large || 0;
+    inventoryItem.extraLarge -= extraLarge || 0;
+
+    // Save the updated inventory item
+    await inventoryItem.save();
+
+    res.status(200).json({ message: 'Inventory updated successfully', inventoryItem });
   } catch (error) {
-    console.error('Error processing checkout:', error);
-    res.status(500).json({ error: 'Checkout failed, please try again.' });
+    console.error('Error updating inventory:', error);
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
