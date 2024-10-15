@@ -55,20 +55,24 @@ function SupplierProduct() {
       product.extraLarge,
       product.Price,
     ]);
-
+  
     // Define columns
     const columns = ["Item Code", "Item Name", "Small", "Medium", "Large", "Extra Large", "Price"];
     
-    // Add autoTable
+    // Add autoTable with header color
     doc.autoTable({
       head: [columns],
       body: tableData,
       startY: 20,
+      headStyles: {
+        fillColor: [208, 191, 255]  // Light purple color (Hex: #D0BFFF)
+      }
     });
-
+  
     // Save the PDF
     doc.save('Supplier_Products_Report.pdf');
   };
+  
 
   if (loading) {
     return <div>Loading products...</div>; // Simple loading message
@@ -108,7 +112,7 @@ function SupplierProduct() {
                   <div className="text-sm mb-2">Price: LKR {product.Price}</div>
                   <div className="flex space-x-4">
                     {/* Link to UpdateItem Page */}
-                    <Link to={`/UpdateItem/${product._id}`}>
+                    <Link to={`/UpdateItem/${product._id}/${userId}`}>
                       <button className="bg-purple-500 text-white px-4 py-2 rounded-md">Update</button>
                     </Link>
                     <button

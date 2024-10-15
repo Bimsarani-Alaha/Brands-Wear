@@ -21,8 +21,10 @@ function AcceptAdminOrder() {
     neededDate: '',
     imgUrl: '',
     userId: '', // Initially set to empty string
+    totalPrice: 0, // Added totalPrice to formData
   });
 
+  const [totalPrice, setTotalPrice] = useState(0); // New state for total price
   const [previousCodes, setPreviousCodes] = useState(new Set());
 
   useEffect(() => {
@@ -43,31 +45,23 @@ function AcceptAdminOrder() {
           imgUrl: orderData.imgUrl || '', // Ensure this is set correctly
           userId: userId,
           companyName: orderData.companyName,
+          totalPrice: 0, // Reset total price when fetching new order
         });
       } catch (error) {
         console.error('Error fetching order details:', error);
         toast.error('Failed to fetch order details.');
       }
     };
-  
+
     fetchOrder();
   }, [orderId, userId]);
-
-  const generateItemCode = () => {
-    let code;
-    do {
-      code = Math.random().toString(36).substring(2, 8).toUpperCase();
-    } while (previousCodes.has(code));
-
-    setFormData(prev => ({ ...prev, itemCode: code }));
-    setPreviousCodes(prev => new Set(prev).add(code));
-  };
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+    calculateTotalPrice({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSizeChange = (e, size) => {
@@ -75,6 +69,15 @@ function AcceptAdminOrder() {
       ...formData,
       [size]: Number(e.target.value),
     });
+    calculateTotalPrice({ ...formData, [size]: Number(e.target.value) });
+  };
+
+  const calculateTotalPrice = (data) => {
+    const { small, medium, large, extraLarge, price } = data;
+    const quantity = small + medium + large + extraLarge;
+    const calculatedTotal = quantity * Number(price);
+    setTotalPrice(calculatedTotal);
+    setFormData((prev) => ({ ...prev, totalPrice: calculatedTotal })); // Update formData with totalPrice
   };
 
   const handleSubmit = async (e) => {
@@ -97,10 +100,11 @@ function AcceptAdminOrder() {
         extraLarge: 0,
         price: '',
         neededDate: '',
-        imageURL: '',
+        imgUrl: '',
         userId: userId, // Retain the userId when resetting form data
+        totalPrice: 0, // Reset total price
       });
-  
+
       // Delete the order by itemCode after submission
       await axios.delete(`http://localhost:3001/deleteByItemCode/${formData.itemCode}`);
       toast.success('Item deleted successfully!');
@@ -109,9 +113,7 @@ function AcceptAdminOrder() {
       toast.error('Failed to accept order.');
     }
   };
-  
 
-  
   return (
     <div className='min-h-screen flex flex-col'>
       <Navigation />
@@ -134,7 +136,6 @@ function AcceptAdminOrder() {
                   readOnly
                   className="w-full p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
                 />
-                
               </div>
             </div>
 
@@ -184,9 +185,8 @@ function AcceptAdminOrder() {
                       name={size}
                       value={formData[size]}
                       onChange={(e) => handleSizeChange(e, size)}
-                      className="w-full p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
+                      className="w-full p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
                       min="0"
-                      placeholder={`Qty for ${size}`}
                     />
                   </div>
                 ))}
@@ -203,17 +203,42 @@ function AcceptAdminOrder() {
                 name="price"
                 value={formData.price}
                 onChange={handleChange}
-                className="w-full p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
+                className="w-full p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
                 placeholder="Enter price"
-                required // Still keep this required if needed
+                required
+              />
+            </div>
+
+            {/* Needed Date */}
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="neededDate">
+                Needed Date
+              </label>
+              <input
+                type="date"
+                name="neededDate"
+                value={formData.neededDate}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
+              />
+            </div>
+
+            {/* Total Price Display */}
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2">Total Price</label>
+              <input
+                type="text"
+                value={`LKR ${totalPrice}`}
+                readOnly
+                className="w-full p-2 border border-gray-300 rounded-xl bg-gray-200"
               />
             </div>
 
             {/* Submit Button */}
-            <div className="mb-4">
+            <div className="flex justify-center">
               <button
                 type="submit"
-                className="bg-purple-600 text-white font-bold py-2 px-4 rounded-xl hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
+                className="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600"
               >
                 Accept Order
               </button>
@@ -221,7 +246,6 @@ function AcceptAdminOrder() {
           </form>
         </div>
       </div>
-
       <Footer />
       <ToastContainer />
     </div>

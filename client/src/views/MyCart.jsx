@@ -126,63 +126,66 @@ const ShowCart = () => {
 	};
 
 	const handleCheckout = async () => {
-		try {
-			const orderDetails = cartItems.map((item) => ({
-				productId: item._id,
-				itemName: item.itemName,
-				category: item.category,
-				price: item.unitPrice * quantity[item._id],
-				quantity: quantity[item._id],
-				imgUrl: item.imgUrl,
-				unitPrice: item.unitPrice,
-			}));
+	try {
+		const orderDetails = cartItems.map((item) => ({
+			productId: item._id,
+			itemName: item.itemName,
+			category: item.category,
+			price: item.unitPrice * quantity[item._id],
+			quantity: quantity[item._id],
+			imgUrl: item.imgUrl,
+			unitPrice: item.unitPrice,
+			itemCode: item.itemCode, // Ensure to include itemCode
+			size: item.size, // Include the size information
+		}));
 
-			// Log complete order details
-			console.log(
-				"Complete Order Details:",
-				JSON.stringify(orderDetails, null, 2)
+		// Log complete order details
+		console.log("Complete Order Details:", JSON.stringify(orderDetails, null, 2));
+
+		const totalPrice = parseFloat(calculateTotalPrice(cartItems, quantity));
+		const response = await axios.post(
+			"http://localhost:3001/api/checkout/order",
+			{ userId, products: orderDetails, totalPrice }
+		);
+
+		if (response.status === 201) {
+			alert("Order created successfully!");
+
+			// Update inventory based on order details
+			const inventoryUpdates = orderDetails.reduce((acc, item) => {
+				if (!acc[item.itemCode]) {
+					acc[item.itemCode] = { itemCode: item.itemCode, small: 0, medium: 0, large: 0, extraLarge: 0 };
+				}
+				// Assuming `size` is a string representing size
+				acc[item.itemCode][item.size] += item.quantity;
+				return acc;
+			}, {});
+
+			// Send inventory update requests
+			await Promise.all(
+				Object.values(inventoryUpdates).map(async (update) => {
+					await axios.post("http://localhost:3001/checkoutInventoryByOrders", update);
+				})
 			);
 
-			// Validate each order detail for itemCode
-			// for (const product of orderDetails) {
-			// 	if (!product.itemCode) {
-			// 		console.error("Invalid product detected:", product);
-			// 		return alert("All products must have a valid item code.");
-			// 	}
-			// }
+			navigate("/checkout");
 
-			const totalPrice = parseFloat(calculateTotalPrice(cartItems, quantity));
-			console.log(
-				"Calculated Total Price:",
-				totalPrice,
-				"Type:",
-				typeof totalPrice
-			); // Log type
-
-			const response = await axios.post(
-				"http://localhost:3001/api/checkout/order",
-				{ userId, products: orderDetails, totalPrice }
+			await Promise.all(
+				cartItems.map((item) =>
+					axios.delete(`http://localhost:3001/deleteCartItem/${item._id}`, {
+						data: { userId },
+					})
+				)
 			);
-
-			if (response.status === 201) {
-				alert("Order created successfully!");
-				navigate("/checkout");
-
-				await Promise.all(
-					cartItems.map((item) =>
-						axios.delete(`http://localhost:3001/deleteCartItem/${item._id}`, {
-							data: { userId },
-						})
-					)
-				);
-				setCartItems([]);
-				setTotalPrice(0);
-			}
-		} catch (error) {
-			console.error("Checkout failed:", error);
-			alert("Checkout failed, please try again.");
+			setCartItems([]);
+			setTotalPrice(0);
 		}
-	};
+	} catch (error) {
+		console.error("Checkout failed:", error);
+		alert("Checkout failed, please try again.");
+	}
+};
+
 
 	if (error) {
 		return <div className="text-red-500">{error}</div>;

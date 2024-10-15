@@ -34,7 +34,11 @@ const acceptOrderSchema = new mongoose.Schema({
     type: Number,
     required: true // Required validation
   },
-  imageURL: {
+  totalPrice: { // Added totalPrice field
+    type: Number,
+    required: true // Required validation
+  },
+  imgUrl: {
     type: String, // Optional image URL
   },
   userId: {
@@ -43,9 +47,9 @@ const acceptOrderSchema = new mongoose.Schema({
   companyName: {
     type: String,
   },
-  status:{
-    type:String,
-    default:'No'
+  status: {
+    type: String,
+    default: 'No'
   }
 }, { timestamps: true }); // Automatically adds createdAt and updatedAt fields
 
