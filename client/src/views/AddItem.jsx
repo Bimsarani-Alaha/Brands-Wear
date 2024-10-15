@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom';
 
 function Supplier() {
   const { userId } = useParams(); // Extract userId from URL params
-
+  const [totalPrice, setTotalPrice] = useState(0); // New state for total price
   const [formData, setFormData] = useState({
     itemCode: '',
     itemName: '',
@@ -18,12 +18,13 @@ function Supplier() {
     large: 0,
     extraLarge: 0,
     Price: '',
-    imageURL: '', // Field for image URL
+    totalPrice: totalPrice,
+    imgUrl: '', // Field for image URL
     deliveryDate: '', // New field for delivery date
-    companyId: userId // Field for company name
+    companyId: userId, // Field for company ID
+    companyName: '', // Initial placeholder for companyName
   });
 
-  const [totalPrice, setTotalPrice] = useState(0); // New state for total price
   const [previousCodes, setPreviousCodes] = useState(new Set());
 
   // Fetch supplier data when the component mounts
@@ -33,7 +34,7 @@ function Supplier() {
       .then(response => {
         setFormData(prevFormData => ({
           ...prevFormData,
-          companyName: response.data.company // Set companyName
+          companyName: response.data.company // Set companyName properly after fetch
         }));
       })
       .catch(error => {
@@ -90,7 +91,7 @@ function Supplier() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const submissionData = { ...formData, userId }; // Include userId in form submission
+      const submissionData = { ...formData, userId, totalPrice }; // Include userId and totalPrice in form submission
       const response = await axios.post('http://localhost:3001/AddProduct', submissionData);
       toast.success('Product added successfully!'); 
       setFormData({
@@ -102,7 +103,8 @@ function Supplier() {
         large: 0,
         extraLarge: 0,
         Price: '',
-        imageURL: '',
+        totalPrice: 0,
+        imgUrl: '',
         deliveryDate: '', // Reset the deliveryDate
         companyName: '' // Reset company name
       });
@@ -249,8 +251,8 @@ function Supplier() {
               </label>
               <input
                 type="text"
-                name="imageURL"
-                value={formData.imageURL}
+                name="imgUrl"
+                value={formData.imgUrl}
                 onChange={handleChange}
                 className="w-full p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
                 placeholder="Enter image URL"

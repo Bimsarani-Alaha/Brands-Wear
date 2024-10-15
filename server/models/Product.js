@@ -8,13 +8,14 @@ const ProductSchema = new mongoose.Schema({
     large: String,
     extraLarge: String,
     Price: Number,
-    TotalPrice: Number, // This field will be updated in the pre-save hook
+    totalPrice: Number, // This field will be updated in the pre-save hook
     Quantity: Number,
     itemName: String,
     itemCode: String,
-    imageURL: String,
+    imgUrl: String,
     companyId: String,
     Status: { type: String, default: 'No' }, // Corrected syntax for default value
+    companyName: String,
     deliveryDate: { type: Date }, // Added delivery date field
     date: { type: Date, default: Date.now }
 });
