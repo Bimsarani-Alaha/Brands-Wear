@@ -23,11 +23,11 @@ function Navigation() {
             <button className='transition duration-300 ease-in-out transform hover:scale-105'>Product category</button>
           </Link>
           <span>&nbsp;|&nbsp;</span>
-          <Link to='/Inventory'>
+          <Link to={`/Inventory/${userId}`}>
             <button className='transition duration-300 ease-in-out transform hover:scale-105'>Inventory</button>
           </Link>
           <span>&nbsp;|&nbsp;</span>
-          <Link to='/AdminBuyItem'>
+          <Link to={`/AdminBuyItem/${userId}`}>
             <button className='transition duration-300 ease-in-out transform hover:scale-105'>Supplier Products</button>
           </Link>
         </div>

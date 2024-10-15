@@ -34,7 +34,7 @@ const handleBuyItem = async (product) => {
       price: product.Price,
       size: "L", // Adjust size based on user selection if applicable
       itemCode: product.itemCode,
-      imgUrl: product.imageURL,
+      imgUrl: product.imgUrl,
       large: product.large,
       small: product.small,
       medium: product.medium,
@@ -96,7 +96,7 @@ const handleBuyItem = async (product) => {
                 className={`relative p-10 rounded-xl shadow flex items-center space-x-4 mt-10 w-[50rem] transition duration-300 ease-in-out transform 
                 ${product.purchased ? 'border-2 border-red-500' : 'border-2 border-green-500'} bg-white`}
               >
-                <img className="w-32 h-32 rounded-md object-cover mr-4" src={product.imageURL} alt={product.itemName} />
+                <img className="w-32 h-32 rounded-md object-cover mr-4" src={product.imgUrl} alt={product.itemName} />
                 <div className="flex-1">
                   <div className="text-lg font-semibold mb-2">Name: {product.itemName}</div>
                   <div className="text-lg font-semibold mb-2">Category: {product.Category}</div>

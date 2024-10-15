@@ -59,17 +59,17 @@ function App() {
         <Route path="/UpdateItem" element={<UpdateItem />} />
       
         {/* Inventory and Purchase Pages */}
-        <Route path="/Inventory" element={<Inventory />} />
-        <Route path="/AdminPlaceOrder/:itemId" element={<AdminPlaceOrder />} /> {/* Added Route */}
-        <Route path="/AdminBuyItem" element={<AdminBuyItem />} />
-        <Route path="/UpdateAdmin/:itemId" element={<UpdateAdmin />} />
+        <Route path="/Inventory/:userId" element={<Inventory />} />
+        <Route path="/AdminPlaceOrder/:itemId/:userId" element={<AdminPlaceOrder />} /> {/* Added Route */}
+        <Route path="/AdminBuyItem/:userId" element={<AdminBuyItem />} />
+        <Route path="/UpdateAdmin/:itemId/:userId" element={<UpdateAdmin />} />
         <Route path="/AdminInventory" element={<AdminInventory/>} />
         <Route path="/CustomerSignUp" element={<CustomerSignUp />} />
         <Route path="/UserHome/:userId" element={<UserHome />} />
         <Route path="/UserProfile/:userId" element={<UserProfile />} />
         <Route path="/ItemPage/:itemId/:userId" element={<ItemPage />} />
         <Route path="/MyCart/:userId" element={<MyCart />} />
-        <Route path="/AdminOrderStatus" element={<AdminOrderStatus />} />
+        <Route path="/AdminOrderStatus/:userId" element={<AdminOrderStatus />} />
 
 
         
