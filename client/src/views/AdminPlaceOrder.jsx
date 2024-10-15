@@ -35,34 +35,40 @@ const UpdateItemForm = () => {
   }, [itemId]);
 
   // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // Handle form submission
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    // Prepare the data for order creation
-    const orderData = {
-      ...itemData,
-      quantity: 
-        (50 - itemData.small) + 
-        (50 - itemData.medium) + 
-        (50 - itemData.large) + 
-        (50 - itemData.extraLarge)
-    };
-
-    // Remove _id to avoid duplicate key error
-    delete orderData._id;
-
-    try {
-      const response = await axios.post(`http://localhost:3001/createOrder`, orderData);
-      if (response.status === 200) {
-        alert("Order placed successfully!");
-      } else {
-        alert("Failed to place order. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error placing order:", error);
-      alert("An error occurred while placing the order.");
-    }
+  // Prepare the data for order creation
+  const orderData = {
+    ...itemData,
+    small: 50 - itemData.small, // Send remaining quantities
+    medium: 50 - itemData.medium,
+    large: 50 - itemData.large,
+    extraLarge: 50 - itemData.extraLarge,
+    quantity: 
+      (50 - itemData.small) + 
+      (50 - itemData.medium) + 
+      (50 - itemData.large) + 
+      (50 - itemData.extraLarge),
   };
+
+  // Remove _id to avoid duplicate key error
+  delete orderData._id;
+
+  try {
+    const response = await axios.post(`http://localhost:3001/createOrder`, orderData);
+    if (response.status === 200) {
+      alert("Order placed successfully!");
+    } else {
+      alert("Failed to place order. Please try again.");
+    }
+  } catch (error) {
+    console.error("Error placing order:", error);
+    alert("An error occurred while placing the order.");
+  }
+};
+
 
   // Handle form input changes
   const handleInputChange = (e) => {
