@@ -96,7 +96,7 @@ function SupplierProduct() {
           ) : (
             products.map(product => (
               <div key={product._id} className="bg-gray-100 p-4 rounded-lg shadow-md flex mb-6">
-                <img className="w-32 h-32 rounded-md object-cover mr-4" src={product.imageURL || 'placeholder.jpg'} alt={product.itemName} />
+                <img className="w-32 h-32 rounded-md object-cover mr-4" src={product.imgUrl || 'placeholder.jpg'} alt={product.itemName} />
                 <div className="flex-1">
                   <div className="text-lg font-semibold mb-2">Category: {product.Category}</div>
                   <div className="text-sm mb-4">Item Code: {product.itemCode}</div>

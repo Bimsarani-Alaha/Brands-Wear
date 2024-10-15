@@ -19,7 +19,7 @@ function AcceptAdminOrder() {
     extraLarge: 0,
     price: '',
     neededDate: '',
-    imageURL: '',
+    imgUrl: '',
     userId: '', // Initially set to empty string
   });
 
@@ -40,18 +40,18 @@ function AcceptAdminOrder() {
           extraLarge: orderData.extraLarge,
           price: orderData.price,
           neededDate: orderData.neededDate || '',
-          imageURL: '',
-          userId: userId, // Set userId from URL parameters
+          imgUrl: orderData.imgUrl || '', // Ensure this is set correctly
+          userId: userId,
+          companyName: orderData.companyName,
         });
       } catch (error) {
         console.error('Error fetching order details:', error);
         toast.error('Failed to fetch order details.');
       }
     };
-    
-
+  
     fetchOrder();
-  }, [orderId, userId]); // Add userId as a dependency
+  }, [orderId, userId]);
 
   const generateItemCode = () => {
     let code;
@@ -121,6 +121,7 @@ function AcceptAdminOrder() {
           <h2 className="text-3xl font-bold text-center mb-6">Accept New Order</h2>
           <form onSubmit={handleSubmit}>
             {/* Item Code */}
+            <img className="w-32 h-32 rounded-md object-cover mr-4" src={formData.imgUrl} alt={formData.itemName} />
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="itemCode">
                 Item Code
@@ -205,23 +206,6 @@ function AcceptAdminOrder() {
                 className="w-full p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
                 placeholder="Enter price"
                 required // Still keep this required if needed
-              />
-            </div>
-
-          
-
-            {/* Image URL */}
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="imageURL">
-                Image URL
-              </label>
-              <input
-                type="text"
-                name="imageURL"
-                value={formData.imageURL}
-                onChange={handleChange}
-                className="w-full p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
-                placeholder="Enter image URL"
               />
             </div>
 

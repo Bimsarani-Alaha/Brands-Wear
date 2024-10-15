@@ -40,6 +40,9 @@ const acceptOrderSchema = new mongoose.Schema({
   userId: {
     type: String, // Optional image URL
   },
+  companyName: {
+    type: String,
+  },
   status:{
     type:String,
     default:'No'
