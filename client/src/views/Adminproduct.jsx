@@ -78,7 +78,7 @@ function AdminProduct() {
             }}
             >
               Add Your Product Here
-            </h1>
+            </h1>   
 
             {/* Add Item Button */}
             <div className="text-center mb-6">
