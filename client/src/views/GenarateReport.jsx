@@ -188,7 +188,7 @@ const GenerateReport = () => {
         <h3 className="text-lg font-semibold">Sub Total Price: {totalPrice} LKR</h3>
         <button
           onClick={generatePDF}
-          className="mt-4 px-6 py-2 bg-blue-600 text-white font-semibold rounded shadow-lg hover:bg-blue-700 transition duration-200 ease-in-out"
+          className="mt-4 px-6 py-2 bg-blue-300 text-white font-semibold rounded shadow-lg hover:bg-blue-600 transition duration-200 ease-in-out"
         >
           Generate PDF
         </button>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navigation from './Components/Navigation';
 import Footer from './Components/Footer';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify'; //display the notification
 import 'react-toastify/dist/ReactToastify.css';
 import { useParams } from 'react-router-dom';
 

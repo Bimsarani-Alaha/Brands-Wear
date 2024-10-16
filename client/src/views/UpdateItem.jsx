@@ -218,7 +218,7 @@ function UpdateItem() {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-52 h-16 text-xl bg-purple-600 text-white p-2 rounded hover:bg-white hover:text-purple-600 border hover:border-purple-600 transition duration-300 ease-in-out"
+            className="bg-purple-500 text-white px-8 py-4 rounded-mdt"
           >
             Update Item
           </button>

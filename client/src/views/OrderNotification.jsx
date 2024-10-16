@@ -52,9 +52,10 @@ const ShowOrders = () => {
         <div className="flex flex-col min-h-screen">
             <Navigation />
             <main className="flex-grow container mx-auto p-6">
-                <h2 className="text-5xl font-bold mt-10 mb-10 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500">
-                    Order Details
-                </h2>
+            <h2  className="text-4xl font-bold mb-6 whitespace-nowrap"  style={{  background: "linear-gradient(to right, #35155D, #66347F)", WebkitBackgroundClip: "text",  WebkitTextFillColor: "transparent",color: "transparent" }}>
+              Order Details
+            </h2>
+
                 <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
                     {orders.map((order) => {
                         const isRejected = rejectedOrders.some(rejected => rejected.userId === userId && rejected.orderId === order._id);
@@ -71,43 +72,43 @@ const ShowOrders = () => {
                                 </div>
                                 <div className="p-6 flex flex-col justify-between">
                                     <div className="mb-4">
-                                        <p className="text-lg font-semibold text-indigo-600">Item Name:</p>
-                                        <p className="text-2xl font-bold text-gray-800">{order.itemName}</p>
+                                        <p className="text-xl font-semibold text-black-600">Item Name:</p>
+                                        <p className="text-lg font text-black-100">{order.itemName}</p>
                                     </div>
                                     <div className="mb-4">
-                                        <p className="text-lg font-semibold text-indigo-600">Item Code:</p>
-                                        <p className="text-xl font-bold text-gray-800">{order.itemCode}</p>
+                                        <p className="text-xl font-semibold text-black-600">Item Code:</p>
+                                        <p className="text-lg font text-black-100">{order.itemCode}</p>
                                     </div>
                                     <div className="mb-4">
-                                        <p className="text-lg font-semibold text-indigo-600">Category:</p>
-                                        <p className="text-xl font-bold text-gray-800">{order.category}</p>
+                                        <p className="text-xl font-semibold text-black-600">Category:</p>
+                                        <p className="text-lg font text-black-100">{order.category}</p>
                                     </div>
                                     <div className="grid grid-cols-4 gap-2 text-center mt-6">
                                         <div>
                                             <p className="text-sm text-indigo-600 font-medium">S:</p>
-                                            <p className="text-xl font-bold text-gray-800">{order.small}</p>
+                                            <p className="text-xl text-gray-800">{order.small}</p>
                                         </div>
                                         <div>
                                             <p className="text-sm text-indigo-600 font-medium">M:</p>
-                                            <p className="text-xl font-bold text-gray-800">{order.medium}</p>
+                                            <p className="text-xl text-gray-800">{order.medium}</p>
                                         </div>
                                         <div>
                                             <p className="text-sm text-indigo-600 font-medium">L:</p>
-                                            <p className="text-xl font-bold text-gray-800">{order.large}</p>
+                                            <p className="text-xl text-gray-800">{order.large}</p>
                                         </div>
                                         <div>
                                             <p className="text-sm text-indigo-600 font-medium">XL:</p>
-                                            <p className="text-xl font-bold text-gray-800">{order.extraLarge}</p>
+                                            <p className="text-xl text-gray-800">{order.extraLarge}</p>
                                         </div>
                                     </div>
                                     <div className="mt-6 flex justify-between items-center">
                                         <div>
-                                            <p className="text-lg text-indigo-600 font-medium">Total Quantity:</p>
-                                            <p className="text-2xl font-bold text-gray-800">{order.quantity}</p>
+                                            <p className="text-xl font-semibold text-black-600">Total Quantity:</p>
+                                            <p className="text-lg font text-black-100">{order.quantity}</p>
                                         </div>
                                         <div>
-                                            <p className="text-lg text-indigo-600 font-medium">Delivery At:</p>
-                                            <p className="text-xl font-bold text-gray-800">{new Date(order.neededDate).toLocaleString()}</p>
+                                            <p className="text-xl font-semibold text-black-600">Delivery At:</p>
+                                            <p className="text-lg font text-black-100">{new Date(order.neededDate).toLocaleString()}</p>
                                         </div>
                                     </div>
                                     <div className="mt-6 flex justify-center space-x-4">
