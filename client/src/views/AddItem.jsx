@@ -263,7 +263,7 @@ function Supplier() {
             <div className="text-center">
               <button
                 type="submit"
-                className="bg-purple-600 text-white font-bold py-2 px-4 rounded hover:bg-purple-700"
+                className="bg-purple-500 text-white px-8 py-4 rounded-mdt"
               >
                 Add Product
               </button>

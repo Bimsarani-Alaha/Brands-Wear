@@ -85,12 +85,12 @@ function SupplierProduct() {
       {/* Main Content */}
        {/* Add Item Button */}
        <div className="flex justify-center mt-8">
-            <Link to={`/AddItem/${userId}`}><button className="bg-purple-500 text-white px-8 py-3 rounded-lg">Add item</button></Link>
+            <Link to={`/AddItem/${userId}`}><button className="bg-purple-500 text-white px-8 py-3 rounded-lg">+ Add item</button></Link>
           </div>
           
           {/* Generate Report Button */}
           <div className="flex justify-center mt-8">
-            <button onClick={generatePDF} className="bg-green-500 text-white px-8 py-3 rounded-lg">Generate Report PDF</button>
+            <button onClick={generatePDF} className="mt-4 px-6 py-2 bg-blue-300 text-white font-semibold rounded shadow-lg hover:bg-blue-600 transition duration-200 ease-in-out">Generate Report PDF</button>
           </div>
 
       <div className="flex-grow flex justify-center items-center p-8">
