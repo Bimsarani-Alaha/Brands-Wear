@@ -74,7 +74,11 @@ function AdminProduct() {
 
         <div className="flex-grow container mx-auto p-6">
           <div className="flex flex-col items-center space-x-4 bg-[#D9D9D9] ml-52 mr-52 mt-10 rounded-xl py-10 mb-20">
-            <h1 className="text-4xl font-thin text-gray-700 mb-6">Add Your Product Here</h1>
+          <h1  className="text-3xl font-bold mb-6 whitespace-nowrap"  style={{  background: "linear-gradient(to right, #35155D, #66347F)", WebkitBackgroundClip: "text",  WebkitTextFillColor: "transparent",color: "transparent" 
+            }}
+            >
+              Add Your Product Here
+            </h1>
 
             {/* Add Item Button */}
             <div className="text-center mb-6">

@@ -1,203 +1,158 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AdminNavigation from './Components/AdminNavigation';
 import Footer from './Components/Footer';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify'; // Import Toastify
+import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
 
-const UpdateItemForm = () => {
-  const { itemId ,userId} = useParams();
-  
-  const [itemData, setItemData] = useState({
-    category: "",
-    itemName: "",
-    itemCode: "",
-    large: 0,
-    small: 0,
-    extraLarge: 0,
-    medium: 0,
-    imgUrl: "",
-    neededDate: "", // New needed date field
-    companyId: "",
-    companyName:"",
-  });
+function AdminOrderStatus() {
+  const navigate = useNavigate();
+  const [orders, setOrders] = useState([]);
 
-  // Fetch data for the item
+  // Fetching orders on component mount
   useEffect(() => {
-    const fetchItem = async () => {
-      try {
-        const response = await axios.get(`http://localhost:3001/showCustomerById/${itemId}`);
-        setItemData(response.data);
-      } catch (error) {
-        console.error("Error fetching item data:", error);
-        alert("Failed to fetch item data. Please try again.");
-      }
-    };
-    fetchItem();
-  }, [itemId]);
+    axios
+      .get('http://localhost:3001/showAcceptOrders')
+      .then((response) => {
+        const sortedOrders = response.data.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+        setOrders(sortedOrders);
+      })
+      .catch((error) => {
+        console.error('Error fetching orders:', error);
+      });
+  }, []);
 
-  // Handle form submission
-  // Handle form submission
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  // Prepare the data for order creation
-  const orderData = {
-    ...itemData,
-    small: 50 - itemData.small, // Send remaining quantities
-    medium: 50 - itemData.medium,
-    large: 50 - itemData.large,
-    extraLarge: 50 - itemData.extraLarge,
-    quantity: 
-      (50 - itemData.small) + 
-      (50 - itemData.medium) + 
-      (50 - itemData.large) + 
-      (50 - itemData.extraLarge),
+  const handleGoToInventory = () => {
+    navigate('/Inventory');
   };
 
-  // Remove _id to avoid duplicate key error
-  delete orderData._id;
+  const handleAcceptOrder = (itemCode, sizes) => {
+    axios
+      .post('http://localhost:3001/UpdateInventoryByOrders', {
+        itemCode,
+        ...sizes,
+      })
+      .then((response) => {
+        toast.success('Inventory updated successfully!'); // Show success toast
 
-  try {
-    const response = await axios.post(`http://localhost:3001/createOrder`, orderData);
-    if (response.status === 200) {
-      alert("Order placed successfully!");
-    } else {
-      alert("Failed to place order. Please try again.");
-    }
-  } catch (error) {
-    console.error("Error placing order:", error);
-    alert("An error occurred while placing the order.");
-  }
-};
-
-
-  // Handle form input changes
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    const newValue = e.target.type === 'number' ? parseInt(value) || 0 : value; // Handle numbers correctly
-    setItemData({ ...itemData, [name]: newValue });
+        axios
+          .put(`http://localhost:3001/statusToYes/${itemCode}`)
+          .then((response) => {
+            setOrders((prevOrders) =>
+              prevOrders.map((order) =>
+                order.itemCode === itemCode
+                  ? { ...order, status: 'Yes' }
+                  : order
+              )
+            );
+            toast.success('Order status updated to "Yes"!'); // Show success toast
+          })
+          .catch((error) => {
+            console.error('Error updating order status:', error);
+            toast.error('Failed to update order status.'); // Show error toast
+          });
+      })
+      .catch((error) => {
+        console.error('Error accepting order:', error);
+        toast.error('Failed to update inventory.'); // Show error toast
+      });
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-100">
+    <div className="min-h-screen flex flex-col">
       <AdminNavigation />
-      <div className="flex-grow flex justify-center items-center">
-        <div className="bg-white shadow-lg rounded-lg p-8 max-w-2xl w-full mt-10 mb-20">
-          <h2 className="text-2xl font-bold text-center mb-4">Place Order</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label className="block text-gray-700 font-semibold mb-2">Item Name:</label>
-              <input
-                type="text"
-                name="itemName"
-                value={itemData.itemName}
-                onChange={handleInputChange}
-                className="w-[20rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
-                readOnly // Make the field read-only
-                required
-              />
-            </div>
-            {/* <div>hi{itemData.companyId}</div> */}
-            <div className="mb-4">
-              <label className="block text-gray-700 font-semibold mb-2">Category:</label>
-              <input
-                type="text"
-                name="category"
-                value={itemData.category}
-                onChange={handleInputChange}
-                className="w-[20rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
-                readOnly // Make the field read-only
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 font-semibold mb-2">Item Code:</label>
-              <input
-                type="text"
-                name="itemCode"
-                value={itemData.itemCode}
-                onChange={handleInputChange}
-                className="w-[20rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
-                readOnly // Make the field read-only
-                required
-              />
-            </div>
-            <div className="mb-4 grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">Small:</label>
-                <input
-                  type="number"
-                  name="small"
-                  value={50-itemData.small}
-                  onChange={handleInputChange}
-                  className="w-[10rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
+      <ToastContainer position="top-center" autoClose={3000} /> {/* Toast Container */}
+
+      <div className="flex-grow container mx-auto p-6">
+        <div className="flex flex-col items-center space-x-4 bg-[#D9D9D9] ml-52 mr-52 mt-10 rounded-xl py-10 mb-20">
+          <h1
+            className="text-3xl font-bold mb-6 whitespace-nowrap"
+            style={{
+              background: 'linear-gradient(to right, #35155D, #66347F)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              color: 'transparent',
+            }}
+          >
+            Supplier Order Status
+          </h1>
+
+          {orders.length > 0 ? (
+            orders.map((order) => (
+              <div
+                key={order._id}
+                className="relative bg-white p-10 rounded-xl shadow flex items-center space-x-4 mt-10 w-[50rem] transition duration-300 ease-in-out transform hover:scale-105"
+              >
+                <img
+                  className="w-32 h-32 rounded-md object-cover mr-4"
+                  src={order.imgUrl}
+                  alt={order.itemName}
                 />
+                <div className="flex-1 justify-center">
+                  <div className="text-lg font-semibold mb-2">
+                    Name: {order.itemName}
+                  </div>
+                  <div className="text-lg mb-2">Category: {order.category}</div>
+                  <div className="text-lg  mb-2">Item Code: {order.itemCode}</div>
+                  <div className="text-lg mb-2">
+                    Company Name: {order.companyName}
+                  </div>
+
+                  <div className="flex justify-center gap-5">
+                    <div className="text-sm mb-4">
+                      <strong>S</strong>: {order.small}
+                    </div>
+                    <div className="text-sm mb-4">
+                      <strong>M</strong>: {order.medium}
+                    </div>
+                    <div className="text-sm mb-4">
+                      <strong>L</strong>: {order.large}
+                    </div>
+                    <div className="text-sm mb-4">
+                      <strong>XL</strong>: {order.extraLarge}
+                    </div>
+                  </div>
+
+                  <div className="text-sm mb-2">Price: {order.price}</div>
+                  <div className="text-sm mb-2">
+                    Total Price: {order.totalPrice}
+                  </div>
+
+                  <div className="text-sm mb-4 p-5">Status: {order.status}</div>
+                  <button
+                    onClick={() =>
+                      handleAcceptOrder(order.itemCode, {
+                        small: order.small,
+                        medium: order.medium,
+                        large: order.large,
+                        extraLarge: order.extraLarge,
+                      })
+                    }
+                    className={`${
+                      order.status === 'Yes'
+                        ? 'bg-gray-400 cursor-not-allowed'
+                        : 'bg-purple-600 hover:bg-white hover:border-black hover:text-black'
+                    } border text-white px-4 py-2 rounded-md transition duration-300 ease-in-out`}
+                    disabled={order.status === 'Yes'}
+                  >
+                    {order.status === 'Yes'
+                      ? 'Inventory Added'
+                      : '+ Add Inventory'}
+                  </button>
+                </div>
               </div>
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">Medium:</label>
-                <input
-                  type="number"
-                  name="medium"
-                  value={50-itemData.medium}
-                  onChange={handleInputChange}
-                  className="w-[10rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">Large:</label>
-                <input
-                  type="number"
-                  name="large"
-                  value={50-itemData.large}
-                  onChange={handleInputChange}
-                  className="w-[10rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">Extra Large:</label>
-                <input
-                  type="number"
-                  name="extraLarge"
-                  value={50-itemData.extraLarge}
-                  onChange={handleInputChange}
-                  className="w-[10rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
-                />
-              </div>
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 font-semibold mb-2">Image URL:</label>
-              <input
-                type="text"
-                name="imgUrl"
-                value={itemData.imgUrl}
-                onChange={handleInputChange}
-                className="w-[20rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
-                readOnly // Make the field read-only
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 font-semibold mb-2">Needed Date:</label>
-              <input
-                type="date"
-                name="neededDate"
-                value={itemData.neededDate}
-                onChange={handleInputChange}
-                className="w-[20rem] p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-64 h-12 mt-5 mb-6 bg-purple-600 text-white text-xl font-thin p-2 rounded-xl hover:bg-purple-200 hover:text-black transition-colors duration-200 focus:ring-2 focus:ring-purple-600"
-            >
-              + Place Order
-            </button>
-          </form>
+            ))
+          ) : (
+            <div>No orders available.</div>
+          )}
         </div>
+        <Footer />
       </div>
-      <Footer />
     </div>
   );
-};
+}
 
-export default UpdateItemForm;
+export default AdminOrderStatus;

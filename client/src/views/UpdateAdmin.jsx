@@ -38,7 +38,7 @@ function UpdateAdmin() {
 
   // Function to handle updating the item
   const handleUpdate = () => {
-    axios.put(`http://localhost:3001/updateItem/${itemId}`, itemData) // Update item
+    axios.put(`http://localhost:3001/updateInventoryById/${itemId}`, itemData) // Update item
       .then(response => {
         alert('Item updated successfully!'); // Show success message
       })
