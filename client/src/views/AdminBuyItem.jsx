@@ -84,17 +84,25 @@ const handleBuyItem = async (product) => {
   };
 
   return (
-    <div className='min-h-screen flex flex-col'>
+    <div className='min-h-screen flex flex-col '>
       <AdminNavigation />
-      
+      <div className="flex-grow container mx-auto p-6">
+        <div className="flex flex-col items-center space-x-4 bg-[#D9D9D9] ml-52 mr-52 mt-10 rounded-xl py-10 mb-15">
+        <h1 className="text-3xl font-bold mb-6"  style={{  background: "linear-gradient(to right, #35155D, #66347F)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", color: "transparent" }}
+>
+          Supplier New Products
+        </h1>
+
+
+
+          {/* Main Content */}
       <div className="flex-grow container mx-auto p-6">
         <div className="flex flex-col items-center space-x-4 bg-[#D9D9D9] ml-52 mr-52 mt-10 rounded-xl py-10 mb-20">
           {products.length > 0 ? (
             products.map((product) => (
               <div 
                 key={product._id}
-                className={`relative p-10 rounded-xl shadow flex items-center space-x-4 mt-10 w-[50rem] transition duration-300 ease-in-out transform 
-                ${product.purchased ? 'border-2 border-red-500' : 'border-2 border-green-500'} bg-white`}
+                className={`relative p-10 rounded-xl shadow flex items-center space-x-4 mt-10 w-[50rem] transition duration-300 ease-in-out transfor bg-white`}
               >
                 <img className="w-32 h-32 rounded-md object-cover mr-4" src={product.imgUrl} alt={product.itemName} />
                 <div className="flex-1">
@@ -136,8 +144,11 @@ const handleBuyItem = async (product) => {
         </div>
       </div>
 
-      <Footer />
+     
       <ToastContainer />
+    </div>
+    </div>
+    <Footer />
     </div>
   );
 }

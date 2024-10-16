@@ -138,5 +138,47 @@ router.post('/checkoutInventoryByOrders', async (req, res) => {
   }
 });
 
+router.put("/updateInventoryById/:itemId", async (req, res) => {
+  try {
+    const { small, medium, large, extraLarge } = req.body;
+
+    // Validate inputs to ensure they are numbers or undefined
+    if (
+      [small, medium, large, extraLarge].some(
+        (value) => value !== undefined && isNaN(value)
+      )
+    ) {
+      return res.status(400).json({ error: "Sizes must be numeric values." });
+    }
+
+    const item = await Item.findById(req.params.itemId);
+    if (!item) {
+      return res.status(404).json({ error: "Item not found" });
+    }
+
+    // Prepare the sizes object with only provided fields
+    const updatedSizes = {
+      ...(small !== undefined && { small: Number(small) }),
+      ...(medium !== undefined && { medium: Number(medium) }),
+      ...(large !== undefined && { large: Number(large) }),
+      ...(extraLarge !== undefined && { extraLarge: Number(extraLarge) }),
+    };
+
+    // Update the item with new sizes
+    const updatedItem = await Item.findByIdAndUpdate(
+      req.params.itemId,
+      { $set: updatedSizes },
+      { new: true }
+    );
+
+    res.json(updatedItem);
+  } catch (err) {
+    console.error("Failed to update inventory:", err);
+    res.status(500).json({ error: "Failed to update inventory", details: err.message });
+  }
+});
+
+
+
 module.exports = router;
 
